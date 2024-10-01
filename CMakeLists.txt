@@ -16,6 +16,7 @@ add_executable(demo
  src/demo/main.cpp
  src/demo/TestScene.cpp
  src/demo/TestScene.h
+
 )
 
 target_link_libraries(demo mainEngine)
