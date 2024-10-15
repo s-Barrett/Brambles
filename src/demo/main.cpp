@@ -1,11 +1,33 @@
+#include <Brambles/Brambles.h>
 #include <iostream>
-#include <mainEngine/Core.h>
+
+using namespace Brambles;
+
+
+struct Player : Component
+{
+	void on_initialize()
+	{
+		std::cout << "player init" << std::endl;
+	}
+	void on_tick()
+	{
+		std::cout << "player tick" << std::endl;
+	}
+};
+
 
 int main()
 {
-	std::cout << "Hello World" << std::endl;
+	std::shared_ptr<Core> core = Core::initialize();
 
-	dummy();
+	std::shared_ptr<Entity> ent = core->add_Entity();
+
+	std::shared_ptr<Player> p = ent->add_component<Player>();
+
+
+	//core->add_Entity();
+	core->start();
 
 	return 0;
 }
