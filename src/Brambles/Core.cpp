@@ -1,5 +1,9 @@
 #include "Core.h"
 #include "Entity.h"
+//#include "Window.h"
+#include <GL/glew.h>
+#include <SDL2/SDL.h>
+
 
 namespace Brambles
 {
@@ -8,8 +12,8 @@ namespace Brambles
 	{
 		std::shared_ptr<Core> rtn = std::make_shared<Core>();
 		rtn->m_self = rtn;
+		//rtn->m_window = std::make_shared<Window>();
 
-		//creating window
 
 		return rtn;
 	}
@@ -23,6 +27,8 @@ namespace Brambles
 		return rtn;
 
 	}
+
+
 
 	void Core::start()
 	{
