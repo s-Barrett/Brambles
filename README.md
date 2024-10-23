@@ -4,15 +4,11 @@ Brambles is a game engine being developed by me at university for a unit called 
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository: 🖥️
    ```bash
    git clone https://github.com/s-Barrett/Brambles.git>
-Install dependencies:
 
-OpenGL
-SDL2
-CMake
-Build the project using CMake:
+Build the project using CMake: 🔨
 
 bash
 Copy code
