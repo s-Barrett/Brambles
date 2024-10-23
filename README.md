@@ -1,6 +1,9 @@
 # Brambles
-
 Brambles is a game engine being developed by me at university for a unit called **Games Engine Programming**.
+
+## Project Status
+- Status: **In Progress**
+##
 
 ## Installation
 
