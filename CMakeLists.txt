@@ -15,6 +15,7 @@ link_directories(
 )
 
 add_library(rend
+ src/rend/rend.h
  src/rend/Mesh.cpp
  src/rend/RenderTexture.cpp
  src/rend/Shader.cpp
@@ -25,6 +26,7 @@ add_library(rend
  src/rend/Model.h
  src/rend/Shader.h
  src/rend/Texture.h
+ src/rend/Texture.cpp
 )
 target_link_libraries(rend SDL2 SDL2main GLEW32 OpenGL32)
 
@@ -33,6 +35,8 @@ add_library(Brambles
 	src/Brambles/Brambles.h
 	src/Brambles/Core.cpp
 	src/Brambles/Entity.cpp
+	src/Brambles/Window.h
+	src/Brambles/Window.cpp
 	src/Brambles/Core.h
 	src/Brambles/Entity.h
 	src/Brambles/Component.h
