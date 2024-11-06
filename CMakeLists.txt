@@ -28,6 +28,8 @@ add_library(rend
  src/rend/Shader.h
  src/rend/Texture.h
  src/rend/Texture.cpp
+ src/rend/TriangleRenderer.cpp
+ src/rend/TriangleRenderer.h
 )
 target_link_libraries(rend SDL2 SDL2main GLEW32 OpenGL32)
 

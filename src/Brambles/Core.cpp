@@ -19,7 +19,7 @@ namespace Brambles
 		return rtn;
 	}
 
-	std::shared_ptr<Entity> Core::add_Entity()
+	std::shared_ptr<Entity> Core::addEntity()
 	{
 		std::shared_ptr<Entity> rtn = std::make_shared<Entity>();
 		rtn->m_core = m_self;
@@ -53,21 +53,6 @@ namespace Brambles
 
 			}
 
-
-			rend::Texture tex("../assets/texture.png");
-
-			rend::Mesh quad;
-			rend::Face tri;
-
-			tri.a.position = rend::vec3(0, 0, 0);
-			tri.b.position = rend::vec3(1, 0, 0);
-			tri.c.position = rend::vec3(0, 1, 0);
-
-			quad.addFace(tri);
-
-
-			glBindVertexArray(quad.getVAOId());
-			glDrawArrays(GL_TRIANGLES, 0, quad.vertexCount());
 
 		}
 		stop();

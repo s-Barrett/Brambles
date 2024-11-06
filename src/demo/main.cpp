@@ -30,13 +30,13 @@ int main(int argc, char *argv[])
 
 	std::shared_ptr<Core> core = Core::initialize();
 
-	std::shared_ptr<Entity> ent = core->add_Entity();
+	std::shared_ptr<Entity> ent = core->addEntity();
 
-	std::shared_ptr<Player> p = ent->add_component<Player>();
+	std::shared_ptr<Player> p = ent->addComponent<Player>();
 
 
 	core->run();
-	core->add_Entity();
+	core->addEntity();
 	
 
 	return 0;

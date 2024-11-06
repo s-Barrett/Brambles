@@ -10,7 +10,7 @@ namespace Brambles
 	struct Entity
 	{
 		template <typename T>
-		std::shared_ptr<T> add_component()
+		std::shared_ptr<T> addComponent()
 		{
 			std::shared_ptr<T> rtn = std::make_shared<T>();
 
