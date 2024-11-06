@@ -1,7 +1,7 @@
 #include "Core.h"
 #include "Entity.h"
 #include "Window.h"
-#include "rend.h"
+#include "rend/rend.h"
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 
@@ -29,19 +29,50 @@ namespace Brambles
 
 	}
 
-
-
-	void Core::start()
+	void Core::run()
 	{
-		for (size_t ei = 0; ei < m_entities.size(); ++ei)
+		bool running = true;
+		SDL_Event e;
+		while (running)
 		{
-			m_entities[ei]->tick();
+			while (SDL_PollEvent(&e))
+			{
+				if (e.type == SDL_QUIT)
+				{
+					running = false;
+				}
+			}
+			for (size_t ei = 0; ei < m_entities.size(); ++ei)
+			{
+				m_entities[ei]->tick();
+			}
+
+
+			for (size_t ei = 0; ei < m_entities.size(); ++ei)
+			{
+
+			}
+
+
+			rend::Texture tex("../assets/texture.png");
+
+			rend::Mesh quad;
+			rend::Face tri;
+
+			tri.a.position = rend::vec3(0, 0, 0);
+			tri.b.position = rend::vec3(1, 0, 0);
+			tri.c.position = rend::vec3(0, 1, 0);
+
+			quad.addFace(tri);
+
+
+			glBindVertexArray(quad.getVAOId());
+			glDrawArrays(GL_TRIANGLES, 0, quad.vertexCount());
+
 		}
-		for (size_t ei = 0; ei < m_entities.size(); ++ei)
-		{
-			
-		}
+		stop();
 	}
+
 
 	void Core::stop()
 	{

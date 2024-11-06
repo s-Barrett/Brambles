@@ -11,7 +11,7 @@ namespace Brambles
 	{
 		static std::shared_ptr<Core> initialize();
 
-		void start();
+		void run();
 		void stop();
 
 

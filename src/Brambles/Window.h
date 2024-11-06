@@ -1,4 +1,4 @@
-#include "rend.h"
+#include <rend/rend.h>
 #include <SDL2/SDL.h>
 #include <memory.h>
 #include <iostream>
@@ -10,6 +10,7 @@ namespace Brambles
 		Window();
 		~Window();
 
+		rend::ivec2 size();
 
 	private:
 

@@ -2,21 +2,23 @@
 
 #include <vector>
 #include <string>
-
-
-struct Texture
+namespace rend
 {
-	Texture(const std::string& _path);
-	GLuint id();
 
-private:
-	GLuint m_id;
+	struct Texture
+	{
+		Texture(const std::string& _path);
+		GLuint id();
+
+	private:
+		GLuint m_id;
 
 
-	int m_width;
-	int m_hight;
-	bool m_dirty;
+		int m_width;
+		int m_hight;
+		bool m_dirty;
 
-	std::vector<unsigned char> m_data;
+		std::vector<unsigned char> m_data;
 
-};
+	};
+}

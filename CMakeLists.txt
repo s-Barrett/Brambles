@@ -18,6 +18,7 @@ add_library(rend
  src/rend/rend.h
  src/rend/Mesh.cpp
  src/rend/RenderTexture.cpp
+ src/rend/RenderTexture.h
  src/rend/Shader.cpp
  src/rend/Texture.cpp
  src/rend/Utilities.cpp

@@ -1,10 +1,10 @@
 #include <Brambles/Brambles.h>
-#include <rend.h>
 #include <iostream>
 
 
 
 using namespace Brambles;
+
 
 
 struct Player : Component
@@ -35,28 +35,9 @@ int main(int argc, char *argv[])
 	std::shared_ptr<Player> p = ent->add_component<Player>();
 
 
-	core->start();
+	core->run();
 	core->add_Entity();
 	
-
-	bool quit = false;	
-	while (!quit)
-	{
-		SDL_Event event = {};
-
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-
-			
-
-		}
-		
-		
-	}
 
 	return 0;
 }

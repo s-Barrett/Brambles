@@ -6,40 +6,42 @@
 #include <gl/glew.h>
 #include <glm/glm.hpp>
 
-struct Vertex
+namespace rend
 {
+    struct Vertex
+    {
 
-    glm::vec3 position;
-    glm::vec2 texcoord;
-    glm::vec3 normal;
-};
+        glm::vec3 position;
+        glm::vec2 texcoord;
+        glm::vec3 normal;
+    };
 
-struct Face
-{
-    Vertex a;
-    Vertex b;
-    Vertex c;
-};
+    struct Face
+    {
+        Vertex a;
+        Vertex b;
+        Vertex c;
+    };
 
-class Mesh {
-public:
-    Mesh();
-    ~Mesh();
+    class Mesh {
+    public:
+        Mesh();
+        ~Mesh();
 
-    void addFace(Face _face);
-    GLuint getVAOId();
-    GLsizei vertexCount() const;
-
-
-
-
-private:
-    std::vector<Face> m_faces;
-    GLuint m_vboid;
-	GLuint m_vaoid;
-	bool m_dirty = false;
+        void addFace(Face _face);
+        GLuint getVAOId();
+        GLsizei vertexCount() const;
 
 
-};
 
-#endif // MESH_HPP
+
+    private:
+        std::vector<Face> m_faces;
+        GLuint m_vboid;
+        GLuint m_vaoid;
+        bool m_dirty = false;
+
+
+    };
+}
+ #endif // MESH_HPP
