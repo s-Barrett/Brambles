@@ -6,17 +6,14 @@ namespace rend
 	{
 	public:
 
-		TriangleRenderer();
-		~TriangleRenderer();
-
-		void onInit();
+		void TriangleRenderer::onInit();
 
 
 
 		
 	private:
 
-		void onDisplay();
+		void TriangleRenderer::onDisplay();
 
 		GLuint programId;
 		GLuint vboId;

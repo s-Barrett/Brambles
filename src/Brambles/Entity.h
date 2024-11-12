@@ -17,8 +17,20 @@ namespace Brambles
 			rtn->on_initialize();
 			m_components.push_back(rtn);
 
+			/*addComponent<T>() : std::shared_ptr<T>;
+
+			addComponent<T, A>(a:A) : std::shared_ptr<T>;
+
+			addComponent<T, A, B>(a:A, b : B) : std::shared_ptr<T>;
+
+			addComponent<T, A, B, C>(a:A, b : B, c : C) : std::shared_ptr<T>;*/
+
+
 			return rtn;
 		}
+
+
+		
 
 	private:
 		friend struct Brambles::Core;

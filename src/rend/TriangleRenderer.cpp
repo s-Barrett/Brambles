@@ -3,13 +3,6 @@
 namespace rend
 {
 
-	TriangleRenderer::TriangleRenderer()
-	{
-	}
-
-	TriangleRenderer::~TriangleRenderer()
-	{
-	}
 
 	void TriangleRenderer::onInit()
 	{
