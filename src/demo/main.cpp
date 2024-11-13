@@ -9,11 +9,11 @@ using namespace Brambles;
 
 struct Player : Component
 {
-	void on_initialize()
+	void onInitialize()
 	{
 		std::cout << "init" << std::endl;
 	}
-	void on_tick()
+	void onTick()
 	{
 		std::cout << "on tick" << std::endl;
 	}
@@ -33,6 +33,8 @@ int main(int argc, char *argv[])
 	std::shared_ptr<Entity> ent = core->addEntity();
 
 	std::shared_ptr<Player> p = ent->addComponent<Player>();
+
+	std::shared_ptr<TriangleRenderer> tr = ent->addComponent<TriangleRenderer>();
 
 
 	core->run();

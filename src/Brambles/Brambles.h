@@ -4,6 +4,8 @@
 #include "Core.h"
 #include "Entity.h"
 #include "Component.h"
+#include "Window.h"
+#include "TriangleRenderer.h"
 
 #include <GL/glew.h>
 #include <SDL2/SDL.h>

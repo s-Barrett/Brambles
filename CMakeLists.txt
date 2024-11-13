@@ -28,8 +28,6 @@ add_library(rend
  src/rend/Shader.h
  src/rend/Texture.h
  src/rend/Texture.cpp
- src/rend/TriangleRenderer.cpp
- src/rend/TriangleRenderer.h
 )
 target_link_libraries(rend SDL2 SDL2main GLEW32 OpenGL32)
 
@@ -44,6 +42,8 @@ add_library(Brambles
 	src/Brambles/Entity.h
 	src/Brambles/Component.h
 	src/Brambles/Component.cpp
+	src/Brambles/TriangleRenderer.cpp
+	src/Brambles/TriangleRenderer.h
 )
 
 target_link_libraries(Brambles rend)

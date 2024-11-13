@@ -14,7 +14,7 @@ namespace Brambles
 		{
 			std::shared_ptr<T> rtn = std::make_shared<T>();
 
-			rtn->on_initialize();
+			rtn->onInitialize();
 			m_components.push_back(rtn);
 
 			/*addComponent<T>() : std::shared_ptr<T>;
@@ -39,6 +39,7 @@ namespace Brambles
 		std::vector<std::shared_ptr<Component> > m_components;
 
 		void tick();
+		void render();
 	};
 
 }

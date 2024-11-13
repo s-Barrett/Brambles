@@ -49,6 +49,10 @@ namespace rend
         glLinkProgram(m_id);
         checkProgramLinkErrors(m_id);
 
+        glBindAttribLocation(m_id, 0, "a_Position");
+        glBindAttribLocation(m_id, 1, "a_TexCoord");
+        glBindAttribLocation(m_id, 2, "a_Normal");
+
         glDetachShader(m_id, vertexShaderId);
         glDetachShader(m_id, fragmentShaderId);
         glDeleteShader(vertexShaderId);

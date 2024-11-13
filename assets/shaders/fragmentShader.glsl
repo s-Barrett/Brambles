@@ -26,4 +26,5 @@ void main() {
 
     vec3 lighting = ambient + diffuse + specular;
     gl_FragColor = vec4(lighting, 1) * tex;
+    gl_FragColor = vec4(0, 1, 0, 1);
 }

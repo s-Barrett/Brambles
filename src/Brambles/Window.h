@@ -5,6 +5,7 @@
 
 namespace Brambles
 {
+	struct Core;
 	struct Window
 	{
 		Window();
@@ -12,8 +13,11 @@ namespace Brambles
 
 		rend::ivec2 size();
 
-	private:
+		int WINDOW_WIDTH = 700;
+		int WINDOW_HEIGHT = 700;
 
+	private:
+		friend struct Brambles::Core;
 		SDL_Window* m_raw;
 
 		SDL_GLContext m_context;

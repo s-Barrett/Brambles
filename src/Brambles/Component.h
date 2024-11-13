@@ -1,3 +1,5 @@
+#pragma once
+
 #include <memory>
 
 namespace Brambles
@@ -5,10 +7,12 @@ namespace Brambles
 
 	struct Component
 	{
-		virtual void on_initialize();
-		virtual void on_tick();
+		virtual void onInitialize();
+		virtual void onTick();
+		virtual void onRender();
 	
 		void tick();
+		void render();
 	};
 
 }

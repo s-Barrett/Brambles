@@ -1,5 +1,5 @@
-#ifndef BRAMBLES_BRAMBLES_H
-#define BRAMBLES_BRAMBLES_H
+#ifndef REND_REND_H
+#define REND_REND_H
 
 #include "Mesh.h"
 #include "Shader.h"
@@ -23,4 +23,4 @@ namespace rend
 }
 
 
-#endif // !BRAMBLES_BRAMBLES_H
+#endif // !REND_REND_H

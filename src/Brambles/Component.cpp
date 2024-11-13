@@ -2,10 +2,12 @@
 
 namespace Brambles {
 
-	void Component::on_initialize() {}
-	void Component::on_tick(){}
+	void Component::onInitialize() {}
+	void Component::onTick(){}
+	void Component::onRender() {}
 
 
-	void Component::tick() { on_tick(); }
+	void Component::tick() { onTick(); }
+	void Component::render() { onRender(); }
 
 }
