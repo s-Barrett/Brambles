@@ -56,6 +56,9 @@ namespace Brambles
 			{				
 					m_entities[i]->render();				
 			}	
+
+
+
 	
 			SDL_GL_SwapWindow(m_window->m_raw);
 		}

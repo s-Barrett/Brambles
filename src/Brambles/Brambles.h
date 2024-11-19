@@ -6,6 +6,8 @@
 #include "Component.h"
 #include "Window.h"
 #include "TriangleRenderer.h"
+#include "Resources.h"
+#include "Resources/Texture.h"
 
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
