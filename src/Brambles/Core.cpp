@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Window.h"
 #include "rend/rend.h"
+#include "Resources.h"
 #include <stb_image.h>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
@@ -14,6 +15,7 @@ namespace Brambles
 	{
 		std::shared_ptr<Core> rtn = std::make_shared<Core>();
 		rtn->m_window = std::make_shared<Window>();
+		rtn->m_resources = std::make_shared<Resources>();
 		rtn->m_self = rtn;
 		
 

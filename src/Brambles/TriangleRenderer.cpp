@@ -24,6 +24,14 @@ namespace Brambles
 
 	}
 
+	void TriangleRenderer::setTexture(std::shared_ptr<rend::Texture> _texture)
+	{
+		m_texture = _texture;
+	}
+
+
+
+
 	void TriangleRenderer::onRender()
 	{
 
@@ -46,9 +54,21 @@ namespace Brambles
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1, 0, 0));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0, 0, 1));
 
+
+
+		//shader.uniform("u_Model", getEntity()->GetComponent<Tranform>()->GetModel());
+
+
+
+
+
+
 		shader.use();
 
 		//shader.attribute("a_Position", mesh);
+
+
+		glBindTexture(GL_TEXTURE_2D, m_texture->id());
 
 		shader.uniform("u_View", view);
 		shader.uniform("u_Model", model);

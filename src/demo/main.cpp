@@ -36,7 +36,9 @@ int main(int argc, char *argv[])
 
 	std::shared_ptr<TriangleRenderer> tr = ent->addComponent<TriangleRenderer>();
 
-	core->getResources()->load<Texture>("res/texture.png");
+
+
+	tr->setTexture(core->getResources()->load<Texture>("../assets/texture.png"));
 
 
 	core->run();
