@@ -4,6 +4,8 @@
 
 namespace Brambles
 {
+	struct Model;
+	struct Texture;
 	struct TriangleRenderer : Component
 	{
 		TriangleRenderer();
@@ -12,7 +14,8 @@ namespace Brambles
 
 	public:
 
-		void setTexture(std::shared_ptr<rend::Texture> _texture);
+		void setTexture(std::shared_ptr<Texture> _texture);
+		void setModel(std::string _modelPath);
   
 
 
@@ -30,7 +33,8 @@ namespace Brambles
 		rend::Mesh mesh;
 		rend::Shader shader;
 		GLuint texture;
-		std::shared_ptr<rend::Texture> m_texture;
+		std::shared_ptr<Texture> m_texture;
+		std::shared_ptr<Model> m_model;
 
 
 	};

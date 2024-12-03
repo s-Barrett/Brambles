@@ -1,12 +1,10 @@
 #include "TriangleRenderer.h"
 #include "glm/glm.hpp"
+#include "Resources/Texture.h"
 
 
 namespace Brambles
 {
-
-
-
 
 	TriangleRenderer::TriangleRenderer()
 		: shader("../assets/shaders/vertexShader.glsl", "../assets/shaders/fragmentShader.glsl")
@@ -24,12 +22,15 @@ namespace Brambles
 
 	}
 
-	void TriangleRenderer::setTexture(std::shared_ptr<rend::Texture> _texture)
+	void TriangleRenderer::setTexture(std::shared_ptr<Texture> _texturePath)
 	{
-		m_texture = _texture;
+		m_texture = _texturePath;
 	}
 
-
+	void TriangleRenderer::setModel(std::shared_ptr<Model> _modelPath)
+	{
+		m_model = _modelPath;
+	}
 
 
 	void TriangleRenderer::onRender()
@@ -59,16 +60,12 @@ namespace Brambles
 		//shader.uniform("u_Model", getEntity()->GetComponent<Tranform>()->GetModel());
 
 
-
-
-
-
 		shader.use();
 
 		//shader.attribute("a_Position", mesh);
 
 
-		glBindTexture(GL_TEXTURE_2D, m_texture->id());
+		glBindTexture(GL_TEXTURE_2D, m_texture->m_texture->id());
 
 		shader.uniform("u_View", view);
 		shader.uniform("u_Model", model);
@@ -78,6 +75,7 @@ namespace Brambles
 
 		// 3 = mesh data size
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+
 	}
 
 }
