@@ -8,6 +8,8 @@
 #include "TriangleRenderer.h"
 #include "Resources.h"
 #include "Resources/Texture.h"
+#include "Resources/Model.h"
+
 
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
