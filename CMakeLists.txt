@@ -44,6 +44,8 @@ add_library(Brambles
 	src/Brambles/Component.cpp
 	src/Brambles/TriangleRenderer.cpp
 	src/Brambles/TriangleRenderer.h
+	src/Brambles/Renderer.cpp
+	src/Brambles/Renderer.h
 	src/Brambles/Resource.h
 	src/Brambles/Resource.cpp
 	src/Brambles/Resources.h

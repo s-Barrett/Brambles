@@ -64,13 +64,14 @@ int main(int argc, char *argv[])
 {
 
 
+
 	std::shared_ptr<Core> core = Core::initialize();
 	std::shared_ptr<Entity> ent = core->addEntity();
 	std::shared_ptr<Player> p = ent->addComponent<Player>();
-	std::shared_ptr<TriangleRenderer> tr = ent->addComponent<TriangleRenderer>();
+	std::shared_ptr<Renderer> render = ent->addComponent<Renderer>();
 
-	tr->setTexture(core->getResources()->load<Texture>("../assets/texture.png"));
-	tr->setModel(core->getResources()->load<Model>("../assets/monkey.obj"));
+	render->setTexture(core->getResources()->load<Texture>("../assets/walter/skycull.png"));
+	render->setModel(core->getResources()->load<Model>("../assets/walter/walter.obj"));
 
 	core->run();
 	core->addEntity();

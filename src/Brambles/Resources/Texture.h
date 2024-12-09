@@ -4,13 +4,13 @@
 
 namespace Brambles
 {
-	struct TriangleRenderer;
+	struct Renderer;
 	struct Texture : Resource
 	{
 		void onLoad();
 
 	private:
-		friend struct Brambles::TriangleRenderer;
+		friend struct Brambles::Renderer;
 		std::shared_ptr<rend::Texture> m_texture;
 	};
 }

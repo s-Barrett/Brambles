@@ -6,6 +6,7 @@
 #include "Component.h"
 #include "Window.h"
 #include "TriangleRenderer.h"
+#include "Renderer.h"
 #include "Resources.h"
 #include "Resources/Texture.h"
 #include "Resources/Model.h"
