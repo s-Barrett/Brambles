@@ -63,14 +63,18 @@ struct Player : Component
 int main(int argc, char *argv[])
 {
 
-
-
 	std::shared_ptr<Core> core = Core::initialize();
+
 	std::shared_ptr<Entity> ent = core->addEntity();
+
+	ent->GetComponent<Transform>()->setPosition(glm::vec3(0.0f, 0.0f, -10.0f));
+
 	std::shared_ptr<Player> p = ent->addComponent<Player>();
+
+
 	std::shared_ptr<Renderer> render = ent->addComponent<Renderer>();
 	
-	ent->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
 
 
 	render->setTexture(core->getResources()->load<Texture>("../assets/walter/skycull.png"));

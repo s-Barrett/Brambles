@@ -16,10 +16,12 @@ namespace Brambles
 
 		std::shared_ptr<Entity> getEntity();
 
+
 	private:
 
+		friend struct Entity;
 		std::shared_ptr<Entity> m_entity;
-
+		
 
 	};
 

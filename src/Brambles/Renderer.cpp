@@ -48,28 +48,12 @@ namespace Brambles
 		view = glm::rotate(view, glm::radians(0.0f), glm::vec3(0, 0, 1));
 		view = glm::inverse(view);
 
-
-
-		glm::mat4 model(1.0f);
-		model = glm::translate(model, glm::vec3(0, 0, -10.0f));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0, 1, 0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1, 0, 0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0, 0, 1));
-
-
-
-		//shader.uniform("u_Model", getEntity()->GetComponent<Tranform>()->GetModel());
-
-
 		shader.use();
-
-		//shader.attribute("a_Position", mesh);
-
 
 		glBindTexture(GL_TEXTURE_2D, m_texture->m_texture->id());
 
 		shader.uniform("u_View", view);
-		shader.uniform("u_Model", getEntity()->getTransform()->getModelMatrix());
+		shader.uniform("u_Model", getEntity()->GetComponent<Transform>()->getModelMatrix());
 		shader.uniform("u_Projection", perspectiveProjection);
 
 		glBindVertexArray(m_model->m_model->vao_id());

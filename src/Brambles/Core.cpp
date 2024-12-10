@@ -26,10 +26,13 @@ namespace Brambles
 	std::shared_ptr<Entity> Core::addEntity()
 	{
 		std::shared_ptr<Entity> rtn = std::make_shared<Entity>();
-		rtn->m_core = m_self;
-		m_entities.push_back(rtn);
 
-		rtn->m_transform = rtn->addComponent<Transform>();
+		rtn->m_self = rtn;
+		rtn->m_core = m_self;
+	
+		rtn->addComponent<Transform>();
+
+		m_entities.push_back(rtn);
 
 		return rtn;
 
