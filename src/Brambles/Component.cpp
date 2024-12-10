@@ -6,8 +6,12 @@ namespace Brambles {
 	void Component::onTick(){}
 	void Component::onRender() {}
 
-
 	void Component::tick() { onTick(); }
 	void Component::render() { onRender(); }
+
+	std::shared_ptr<Entity> Component::getEntity()
+	{
+		return m_entity;
+	}
 
 }

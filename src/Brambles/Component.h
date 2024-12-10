@@ -4,7 +4,7 @@
 
 namespace Brambles
 {
-
+	struct Entity;
 	struct Component
 	{
 		virtual void onInitialize();
@@ -13,6 +13,14 @@ namespace Brambles
 	
 		void tick();
 		void render();
+
+		std::shared_ptr<Entity> getEntity();
+
+	private:
+
+		std::shared_ptr<Entity> m_entity;
+
+
 	};
 
 }

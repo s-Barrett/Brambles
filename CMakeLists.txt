@@ -42,10 +42,10 @@ add_library(Brambles
 	src/Brambles/Entity.h
 	src/Brambles/Component.h
 	src/Brambles/Component.cpp
-	src/Brambles/TriangleRenderer.cpp
-	src/Brambles/TriangleRenderer.h
 	src/Brambles/Renderer.cpp
 	src/Brambles/Renderer.h
+	src/Brambles/Transform.h
+	src/Brambles/Transform.cpp
 	src/Brambles/Resource.h
 	src/Brambles/Resource.cpp
 	src/Brambles/Resources.h

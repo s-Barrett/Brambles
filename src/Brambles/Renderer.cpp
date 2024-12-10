@@ -1,6 +1,10 @@
+
 #include "Renderer.h"
 #include "glm/glm.hpp"
 #include "Resources/Model.h"
+#include "Transform.h"
+#include "Entity.h"
+
 #include "Resources/Texture.h"
 
 
@@ -8,7 +12,8 @@ namespace Brambles
 {
 
 	Renderer::Renderer()
-		: shader("../assets/shaders/vertexShader.glsl", "../assets/shaders/fragmentShader.glsl")
+		: shader("../assets/shaders/lightvert.glsl"
+			, "../assets/shaders/lightfrag.glsl")
 	{
 
 
@@ -64,7 +69,7 @@ namespace Brambles
 		glBindTexture(GL_TEXTURE_2D, m_texture->m_texture->id());
 
 		shader.uniform("u_View", view);
-		shader.uniform("u_Model", model);
+		shader.uniform("u_Model", getEntity()->getTransform()->getModelMatrix());
 		shader.uniform("u_Projection", perspectiveProjection);
 
 		glBindVertexArray(m_model->m_model->vao_id());

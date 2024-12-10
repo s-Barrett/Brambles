@@ -6,6 +6,7 @@
 #include <stb_image.h>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
+#include "Transform.h"
 
 
 namespace Brambles
@@ -27,6 +28,8 @@ namespace Brambles
 		std::shared_ptr<Entity> rtn = std::make_shared<Entity>();
 		rtn->m_core = m_self;
 		m_entities.push_back(rtn);
+
+		rtn->m_transform = rtn->addComponent<Transform>();
 
 		return rtn;
 
@@ -51,8 +54,6 @@ namespace Brambles
 			}
 
 
-
-
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -61,8 +62,10 @@ namespace Brambles
 					m_entities[i]->render();				
 			}	
 
-
-
+			for (size_t ei = 0; ei < m_entities.size(); ++ei)
+			{
+				m_entities[ei]->tick();
+			}
 	
 			SDL_GL_SwapWindow(m_window->m_raw);
 		}

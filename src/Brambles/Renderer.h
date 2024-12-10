@@ -17,8 +17,7 @@ namespace Brambles
 		void setTexture(std::shared_ptr<Texture> _texture);
 		void setModel(std::shared_ptr<Model> _modelPath);
 
-
-
+		
 
 	private:
 
@@ -33,8 +32,7 @@ namespace Brambles
 		rend::Shader shader;
 
 		std::shared_ptr<Texture> m_texture;
-		std::shared_ptr<Model> m_model;
-
+		std::shared_ptr<Model> m_model;	
 
 	};
 
