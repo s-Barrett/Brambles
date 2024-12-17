@@ -7,14 +7,18 @@ namespace Brambles
 	class Transform : public Component
 	{
 	public:
-		void SetPosition(glm::vec3 _position) { m_Position = _position; }
+		void setPosition(glm::vec3 _position) { m_Position = _position; }
 		glm::vec3 GetPosition() { return m_Position; }
 
-		void SetRotation(glm::vec3 _rotation) { m_Rotation = _rotation; }
+		void setRotation(glm::vec3 _rotation) { m_Rotation = _rotation; }
 		glm::vec3 GetRotation() { return m_Rotation; }
 
-		void SetScale(glm::vec3 _scale) { m_Scale = _scale; }
+		void setScale(glm::vec3 _scale) { m_Scale = _scale; }
 		glm::vec3 GetScale() { return m_Scale; }
+
+		void move(glm::vec3 _movement) { m_Position += _movement; }
+		void rotate(glm::vec3 _rotation) { m_Rotation += _rotation; }
+		void scale(glm::vec3 _scale) { m_Scale += _scale; }
 
 		glm::mat4 getModelMatrix() const;
 		glm::vec3 Transform::getPosition();

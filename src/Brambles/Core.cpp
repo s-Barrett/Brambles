@@ -1,6 +1,7 @@
 #include "Core.h"
 #include "Entity.h"
 #include "Window.h"
+#include "Input.h"
 #include "rend/rend.h"
 #include "Resources.h"
 #include <stb_image.h>
@@ -17,6 +18,7 @@ namespace Brambles
 		std::shared_ptr<Core> rtn = std::make_shared<Core>();
 		rtn->m_window = std::make_shared<Window>();
 		rtn->m_resources = std::make_shared<Resources>();
+		rtn->m_input = std::make_shared<Input>();
 		rtn->m_self = rtn;
 		
 
@@ -31,6 +33,8 @@ namespace Brambles
 		rtn->m_core = m_self;
 	
 		rtn->addComponent<Transform>();
+
+
 
 		m_entities.push_back(rtn);
 
@@ -49,6 +53,21 @@ namespace Brambles
 				if (e.type == SDL_QUIT)
 				{
 					running = false;
+				}
+				else if(e.type == SDL_KEYDOWN)
+				{
+					m_input->keys.push_back(e.key.keysym.sym);
+				}
+				else if (e.type == SDL_KEYUP)
+				{
+					for (size_t i = 0; i < m_input->keys.size(); i++)
+					{
+						if (m_input->keys[i] == e.key.keysym.sym)
+						{
+							m_input->keys.erase(m_input->keys.begin() + i);
+							--i;
+						}
+					}
 				}
 			}
 			for (size_t ei = 0; ei < m_entities.size(); ++ei)

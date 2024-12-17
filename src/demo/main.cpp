@@ -41,8 +41,6 @@ using namespace Brambles;
 //}
 
 
-
-
 struct Player : Component
 {
 	void onInitialize()
@@ -51,14 +49,50 @@ struct Player : Component
 	}
 	void onTick()
 	{
-		std::cout << "on tick" << std::endl;
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_w))
+		{
+			std::cout << "Key pressed!" << std::endl;
+
+			getEntity()->GetComponent<Transform>()->move(glm::vec3(0,0,-0.01));
+		}
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_s))
+		{
+			std::cout << "Key pressed!" << std::endl;
+
+			getEntity()->GetComponent<Transform>()->move(glm::vec3(0, 0, 0.01));
+		}
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_a))
+		{
+			std::cout << "Key pressed!" << std::endl;
+
+			getEntity()->GetComponent<Transform>()->move(glm::vec3(-0.01, 0, 0));
+		}
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_d))
+		{
+			std::cout << "Key pressed!" << std::endl;
+
+			getEntity()->GetComponent<Transform>()->move(glm::vec3(0.01, 0, 0));
+		}
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_q))
+		{
+			std::cout << "Key pressed!" << std::endl;
+
+			getEntity()->GetComponent<Transform>()->rotate(glm::vec3(0, 1.0, 0));
+		}
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_e))
+		{
+			std::cout << "Key pressed!" << std::endl;
+
+			getEntity()->GetComponent<Transform>()->rotate(glm::vec3(0, -1.0, 0));
+		}
+	
+
 	}
 	void tick()
 	{
 		std::cout << "tick" << std::endl;
-	}	
+	}
 };
-
 
 int main(int argc, char *argv[])
 {
@@ -67,15 +101,18 @@ int main(int argc, char *argv[])
 
 	std::shared_ptr<Entity> ent = core->addEntity();
 
-	ent->GetComponent<Transform>()->setPosition(glm::vec3(0.0f, 0.0f, -10.0f));
-
 	std::shared_ptr<Player> p = ent->addComponent<Player>();
 
-
 	std::shared_ptr<Renderer> render = ent->addComponent<Renderer>();
-	
+
+	std::shared_ptr<SoundSource> sound = ent->addComponent<SoundSource>();
+
+	sound->setSound("..assets/sounds/dixie_horn.ogg.wav");
 
 
+	ent->GetComponent<Transform>()->setPosition(glm::vec3(0.0f, 0.0f, -10.0f));
+	ent->GetComponent<Transform>()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
+	ent->GetComponent<Transform>()->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	render->setTexture(core->getResources()->load<Texture>("../assets/walter/skycull.png"));
 	render->setModel(core->getResources()->load<Model>("../assets/walter/walter.obj"));
@@ -85,4 +122,5 @@ int main(int argc, char *argv[])
 	
 	return 0;
 }
+
 

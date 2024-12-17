@@ -6,6 +6,8 @@
 #include "Component.h"
 #include "Window.h"
 #include "Renderer.h"
+#include "Input.h"
+#include "SoundSource.h"
 #include "Transform.h"
 #include "Resources.h"
 #include "Resources/Texture.h"
