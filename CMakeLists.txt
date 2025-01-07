@@ -46,8 +46,10 @@ add_library(Brambles
 	src/Brambles/Renderer.h
 	src/Brambles/Transform.h
 	src/Brambles/Transform.cpp
-	src/Brambles/SoundSource.h
-	src/Brambles/SoundSource.cpp
+	src/Brambles/AudioSource.h
+	src/Brambles/AudioSource.cpp
+	src/Brambles/Sound.h
+	src/Brambles/Sound.cpp
 	src/Brambles/Input.h
 	src/Brambles/Input.cpp
 	src/Brambles/Resource.h
@@ -66,8 +68,7 @@ target_link_libraries(Brambles rend)
 
 add_executable(demo
 	src/demo/main.cpp
-	src/demo/Employee.cpp
-	src/demo/Employee.h
+
 	
 )
 target_link_libraries(Brambles openal32)

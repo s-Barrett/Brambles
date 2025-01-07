@@ -2,15 +2,21 @@
 #include "../Resource.h"
 #include "rend/rend.h"
 
-
-
+#include <AL/al.h>
+#include <AL/alc.h>
 
 namespace Brambles
 {
-	struct Audio : Resource
+	class Audio : public Resource
 	{
-		void onLoad();
+	public:
+		Audio();
+		~Audio();
+
+		void onLoad() override;
+
 	private:
-		std::shared_ptr<rend::Texture> m_audio;
+		ALCcontext* m_context = 0;
+		ALCdevice* m_device = 0;
 	};
 }

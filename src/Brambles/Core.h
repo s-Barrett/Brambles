@@ -8,6 +8,7 @@ namespace Brambles
 	struct Entity;
 	struct Window;
 	struct Input;
+	struct Audio;
 	struct Screen;
 	struct Gui;
 	struct Resources;
@@ -32,6 +33,7 @@ namespace Brambles
 	private:
 
 		std::shared_ptr<Window> m_window;
+		std::shared_ptr<Audio> m_audio;
 		std::shared_ptr<Resources> m_resources;
 		std::shared_ptr<Gui> m_gui;
 		std::shared_ptr<Input> m_input;

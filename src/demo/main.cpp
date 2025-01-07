@@ -105,10 +105,10 @@ int main(int argc, char *argv[])
 
 	std::shared_ptr<Renderer> render = ent->addComponent<Renderer>();
 
-	std::shared_ptr<SoundSource> sound = ent->addComponent<SoundSource>();
+	std::shared_ptr<AudioSource> sound = ent->addComponent<AudioSource>();
 
-	sound->setSound("..assets/sounds/dixie_horn.ogg.wav");
-
+	sound->setSound(core->getResources()->load<Sound>("../assets/sounds/halflife/hellofreeman"));
+	sound->play();
 
 	ent->GetComponent<Transform>()->setPosition(glm::vec3(0.0f, 0.0f, -10.0f));
 	ent->GetComponent<Transform>()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));

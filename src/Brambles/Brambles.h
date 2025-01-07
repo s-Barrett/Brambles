@@ -7,11 +7,13 @@
 #include "Window.h"
 #include "Renderer.h"
 #include "Input.h"
-#include "SoundSource.h"
+#include "AudioSource.h"
+#include "Sound.h"
 #include "Transform.h"
 #include "Resources.h"
 #include "Resources/Texture.h"
 #include "Resources/Model.h"
+#include "Resources/Audio.h"
 
 
 #include <GL/glew.h>

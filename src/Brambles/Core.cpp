@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Window.h"
 #include "Input.h"
+#include "Resources/Audio.h"
 #include "rend/rend.h"
 #include "Resources.h"
 #include <stb_image.h>
@@ -17,6 +18,7 @@ namespace Brambles
 	{
 		std::shared_ptr<Core> rtn = std::make_shared<Core>();
 		rtn->m_window = std::make_shared<Window>();
+		rtn->m_audio = std::make_shared<Audio>();
 		rtn->m_resources = std::make_shared<Resources>();
 		rtn->m_input = std::make_shared<Input>();
 		rtn->m_self = rtn;
