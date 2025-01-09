@@ -7,6 +7,8 @@
 #include "Window.h"
 #include "Renderer.h"
 #include "Input.h"
+#include "Camera.h"
+#include "CameraController.h"
 #include "AudioSource.h"
 #include "Sound.h"
 #include "Transform.h"

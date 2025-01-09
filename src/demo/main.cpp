@@ -40,53 +40,68 @@ using namespace Brambles;
 //#endif
 //}
 
+struct CameraController : public Component
+{
 
-struct Player : Component
+	void onInitialize()
+	{
+		
+	}
+	void onTick()
+	{
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_UP))
+		{
+			std::cout << "Key pressed! Up Arrow" << std::endl;
+			move(getTransform()->getForward() * 40.0f);
+			std::cout << "Position: " << getTransform()->getPosition().x << ", " << getTransform()->getPosition().y << ", " << getTransform()->getPosition().z << std::endl;
+		}
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_DOWN))
+		{
+			std::cout << "Key pressed! Down Arrow" << std::endl;
+			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, 0.01));
+		}
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_LEFT))
+		{
+			std::cout << "Key pressed! Left Arrow" << std::endl;
+			getEntity()->getComponent<Transform>()->move(glm::vec3(-0.01, 0, 0));
+		}
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_RIGHT))
+		{
+			std::cout << "Key pressed! Right Arrow" << std::endl;
+			getEntity()->getComponent<Transform>()->move(glm::vec3(0.01, 0, 0));
+		}
+	}
+};
+
+
+struct EntityController : public Component
 {
 	void onInitialize()
 	{
-		std::cout << "init" << std::endl;
+		std::cout << "EntityrController Initialize" << std::endl;
 	}
 	void onTick()
 	{
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_w))
 		{
-			std::cout << "Key pressed!" << std::endl;
-
-			getEntity()->GetComponent<Transform>()->move(glm::vec3(0,0,-0.01));
+			std::cout << "Key pressed! W" << std::endl;
+			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, -0.01));
 		}
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_s))
 		{
-			std::cout << "Key pressed!" << std::endl;
-
-			getEntity()->GetComponent<Transform>()->move(glm::vec3(0, 0, 0.01));
+			std::cout << "Key pressed! S" << std::endl;
+			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, 0.01));
 		}
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_a))
 		{
-			std::cout << "Key pressed!" << std::endl;
-
-			getEntity()->GetComponent<Transform>()->move(glm::vec3(-0.01, 0, 0));
+			std::cout << "Key pressed! A" << std::endl;
+			getEntity()->getComponent<Transform>()->move(glm::vec3(-0.01, 0, 0));
 		}
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_d))
 		{
-			std::cout << "Key pressed!" << std::endl;
-
-			getEntity()->GetComponent<Transform>()->move(glm::vec3(0.01, 0, 0));
+			std::cout << "Key pressed! D" << std::endl;
+			getEntity()->getComponent<Transform>()->move(glm::vec3(0.01, 0, 0));
 		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_q))
-		{
-			std::cout << "Key pressed!" << std::endl;
-
-			getEntity()->GetComponent<Transform>()->rotate(glm::vec3(0, 1.0, 0));
-		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_e))
-		{
-			std::cout << "Key pressed!" << std::endl;
-
-			getEntity()->GetComponent<Transform>()->rotate(glm::vec3(0, -1.0, 0));
-		}
-	
-
 	}
 	void tick()
 	{
@@ -94,33 +109,35 @@ struct Player : Component
 	}
 };
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 
 	std::shared_ptr<Core> core = Core::initialize();
 
-	std::shared_ptr<Entity> ent = core->addEntity();
 
-	std::shared_ptr<Player> p = ent->addComponent<Player>();
+	std::shared_ptr<Entity> camera = core->addEntity();
+	camera->addComponent<Camera>();
+	camera->addComponent<CameraController>();
 
-	std::shared_ptr<Renderer> render = ent->addComponent<Renderer>();
 
-	std::shared_ptr<AudioSource> sound = ent->addComponent<AudioSource>();
+	std::shared_ptr<Entity> entity = core->addEntity();
+	entity->addComponent<EntityController>();
+	entity->addComponent<Transform>();
+	std::shared_ptr<Renderer> entityRender = entity->addComponent<Renderer>();
+
+	entityRender->setTexture(core->getResources()->load<Texture>("../assets/walter/skycull.png"));
+	entityRender->setModel(core->getResources()->load<Model>("../assets/walter/walter.obj"));
+
+	std::shared_ptr<AudioSource> sound = entity->addComponent<AudioSource>();
 
 	sound->setSound(core->getResources()->load<Sound>("../assets/sounds/halflife/hellofreeman"));
 	sound->play();
 
-	ent->GetComponent<Transform>()->setPosition(glm::vec3(0.0f, 0.0f, -10.0f));
-	ent->GetComponent<Transform>()->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-	ent->GetComponent<Transform>()->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-
-	render->setTexture(core->getResources()->load<Texture>("../assets/walter/skycull.png"));
-	render->setModel(core->getResources()->load<Model>("../assets/walter/walter.obj"));
+	
 
 	core->run();
-	core->addEntity();
-	
+
+
 	return 0;
 }
-
 

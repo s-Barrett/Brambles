@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Component.h"
+#include "Core.h"
 
 
 namespace Brambles
@@ -8,14 +9,15 @@ namespace Brambles
 	{
 		return m_core.lock();
 	}
-	void Entity::tick()
+
+	void Entity::onTick()
 	{
 		for (size_t ci = 0; ci < m_components.size(); ++ci)
 		{
 			m_components.at(ci)->tick();
 		}
 	}
-	void Entity::render()
+	void Entity::onRender()
 	{
 		for (size_t ci = 0; ci < m_components.size(); ++ci)
 		{

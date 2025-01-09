@@ -4,29 +4,37 @@
 
 namespace Brambles
 {
-	class Transform : public Component
+	struct Transform : public Component
 	{
 	public:
-		void setPosition(glm::vec3 _position) { m_Position = _position; }
-		glm::vec3 GetPosition() { return m_Position; }
+	
 
-		void setRotation(glm::vec3 _rotation) { m_Rotation = _rotation; }
-		glm::vec3 GetRotation() { return m_Rotation; }
+		void setPosition(glm::vec3 _position) { m_position = _position; }
 
-		void setScale(glm::vec3 _scale) { m_Scale = _scale; }
-		glm::vec3 GetScale() { return m_Scale; }
+		glm::vec3 getPosition() { return m_position; }
 
-		void move(glm::vec3 _movement) { m_Position += _movement; }
-		void rotate(glm::vec3 _rotation) { m_Rotation += _rotation; }
-		void scale(glm::vec3 _scale) { m_Scale += _scale; }
+		void setRotation(glm::vec3 _rotation) { m_rotation = _rotation; }
+
+		glm::vec3 getRotation() { return m_rotation; }
+
+		void setScale(glm::vec3 _scale) { m_scale = _scale; }
+
+		glm::vec3 getScale() { return m_scale; }
+
+
+		void move(glm::vec3 _movement) { m_position += _movement; }
+		void rotate(glm::vec3 _rotation) { m_rotation += _rotation; }
+		void scale(glm::vec3 _scale) { m_scale += _scale; }
+
+		glm::vec3 getForward() const;
+		glm::vec3 getRight() const;
+		glm::vec3 getUp() const;
 
 		glm::mat4 getModelMatrix() const;
-		glm::vec3 Transform::getPosition();
-		void Transform::setPosition(glm::vec3& position);
 
 	private:
-		glm::vec3 m_Position{ 0.0f };
-		glm::vec3 m_Rotation{ 0.0f };
-		glm::vec3 m_Scale{ 1.0f };
+		glm::vec3 m_position{ 0.0f };
+		glm::vec3 m_rotation{ 0.0f };
+		glm::vec3 m_scale{ 1.0f };
 	};
 }

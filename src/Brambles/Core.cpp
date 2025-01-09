@@ -1,6 +1,7 @@
 #include "Core.h"
 #include "Entity.h"
 #include "Window.h"
+#include "Camera.h"
 #include "Input.h"
 #include "Resources/Audio.h"
 #include "rend/rend.h"
@@ -19,6 +20,7 @@ namespace Brambles
 		std::shared_ptr<Core> rtn = std::make_shared<Core>();
 		rtn->m_window = std::make_shared<Window>();
 		rtn->m_audio = std::make_shared<Audio>();
+		rtn->m_camera = std::make_shared<Camera>();
 		rtn->m_resources = std::make_shared<Resources>();
 		rtn->m_input = std::make_shared<Input>();
 		rtn->m_self = rtn;
@@ -30,19 +32,23 @@ namespace Brambles
 	std::shared_ptr<Entity> Core::addEntity()
 	{
 		std::shared_ptr<Entity> rtn = std::make_shared<Entity>();
+		rtn->m_self = rtn; // Initialize m_self first
+		rtn->m_core = m_self; // Assign the Core reference
 
-		rtn->m_self = rtn;
-		rtn->m_core = m_self;
-	
-		rtn->addComponent<Transform>();
+		// Debug logging
+		std::cout << "Entity created with m_self and m_core initialized." << std::endl;
 
+		// Assertions to ensure m_self and m_core are set
+		assert(!rtn->m_self.expired() && "m_self is not properly initialized.");
+		assert(!rtn->m_core.expired() && "m_core is not properly initialized.");
 
+		rtn->addComponent<Transform>(); // Now add components safely
 
 		m_entities.push_back(rtn);
-
 		return rtn;
-
 	}
+
+
 
 	void Core::run()
 	{
@@ -74,21 +80,16 @@ namespace Brambles
 			}
 			for (size_t ei = 0; ei < m_entities.size(); ++ei)
 			{
-				m_entities[ei]->tick();
+				m_entities[ei]->onTick();
 			}
 
 
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			for (size_t i = 0; i < m_entities.size(); ++i)
-			{				
-					m_entities[i]->render();				
-			}	
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
 			for (size_t ei = 0; ei < m_entities.size(); ++ei)
 			{
-				m_entities[ei]->tick();
+				m_entities[ei]->onRender();
 			}
 	
 			SDL_GL_SwapWindow(m_window->m_raw);

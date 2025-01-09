@@ -44,12 +44,16 @@ add_library(Brambles
 	src/Brambles/Component.cpp
 	src/Brambles/Renderer.cpp
 	src/Brambles/Renderer.h
+	src/Brambles/CameraController.h
+	src/Brambles/CameraController.cpp
 	src/Brambles/Transform.h
 	src/Brambles/Transform.cpp
 	src/Brambles/AudioSource.h
 	src/Brambles/AudioSource.cpp
 	src/Brambles/Sound.h
 	src/Brambles/Sound.cpp
+	src/Brambles/Camera.h
+	src/Brambles/Camera.cpp
 	src/Brambles/Input.h
 	src/Brambles/Input.cpp
 	src/Brambles/Resource.h
