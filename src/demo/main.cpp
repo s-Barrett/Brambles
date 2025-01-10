@@ -49,16 +49,18 @@ struct CameraController : public Component
 	}
 	void onTick()
 	{
+		float cameraSpeed = 40.0;
+
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_UP))
 		{
 			std::cout << "Key pressed! Up Arrow" << std::endl;
-			move(getTransform()->getForward() * 40.0f);
+			move(getTransform()->getForward() * cameraSpeed);
 			std::cout << "Position: " << getTransform()->getPosition().x << ", " << getTransform()->getPosition().y << ", " << getTransform()->getPosition().z << std::endl;
 		}
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_DOWN))
 		{
 			std::cout << "Key pressed! Down Arrow" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, 0.01));
+			move(-getTransform()->getForward() * cameraSpeed);
 		}
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_LEFT))
 		{
@@ -85,22 +87,22 @@ struct EntityController : public Component
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_w))
 		{
 			std::cout << "Key pressed! W" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, -0.01));
+			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, -10.0));
 		}
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_s))
 		{
 			std::cout << "Key pressed! S" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, 0.01));
+			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, 10.0));
 		}
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_a))
 		{
 			std::cout << "Key pressed! A" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(-0.01, 0, 0));
+			getEntity()->getComponent<Transform>()->move(glm::vec3(-10.0, 0, 0));
 		}
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_d))
 		{
 			std::cout << "Key pressed! D" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(0.01, 0, 0));
+			getEntity()->getComponent<Transform>()->move(glm::vec3(10.0, 0, 0));
 		}
 	}
 	void tick()

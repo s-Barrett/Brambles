@@ -6,6 +6,7 @@
 
 namespace Brambles
 {
+	struct Core;
 	struct Camera : public Component
 	{
 	public:

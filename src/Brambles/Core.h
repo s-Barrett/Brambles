@@ -22,6 +22,12 @@ namespace Brambles
 		void run();
 		void stop();
 
+		template <typename T>
+		std::shared_ptr<T> seekComponent();
+
+		template <typename T>
+		void seekComponents(std::vector<std::shared_ptr<T>>& _out);
+
 		std::shared_ptr<Entity> addEntity();
 
 		std::shared_ptr<Window> getWindow() { return m_window; }
@@ -30,7 +36,9 @@ namespace Brambles
 
 		std::shared_ptr<Input> getInput() { return m_input; }
 
-		std::shared_ptr<Camera> getCamera() { return m_camera; }
+		std::shared_ptr<Camera> getCamera();
+
+
 
 
 	private:
