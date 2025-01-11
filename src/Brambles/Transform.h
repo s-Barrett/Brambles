@@ -32,6 +32,7 @@ namespace Brambles
 
 		glm::mat4 getModelMatrix() const;
 
+
 	private:
 		glm::vec3 m_position{ 0.0f };
 		glm::vec3 m_rotation{ 0.0f };

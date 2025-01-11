@@ -49,28 +49,34 @@ struct CameraController : public Component
 	}
 	void onTick()
 	{
-		float cameraSpeed = 40.0;
+		float cameraSpeed = 0.5;
 
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_UP))
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_w))
 		{
 			std::cout << "Key pressed! Up Arrow" << std::endl;
-			move(getTransform()->getForward() * cameraSpeed);
+			move(-getTransform()->getForward() * cameraSpeed);
 			std::cout << "Position: " << getTransform()->getPosition().x << ", " << getTransform()->getPosition().y << ", " << getTransform()->getPosition().z << std::endl;
 		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_DOWN))
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_s))
 		{
 			std::cout << "Key pressed! Down Arrow" << std::endl;
-			move(-getTransform()->getForward() * cameraSpeed);
+			move(getTransform()->getForward() * cameraSpeed);
 		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_LEFT))
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_a))
 		{
-			std::cout << "Key pressed! Left Arrow" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(-0.01, 0, 0));
+			move(getTransform()->getRight() * cameraSpeed);
 		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_RIGHT))
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_d))
 		{
-			std::cout << "Key pressed! Right Arrow" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(0.01, 0, 0));
+			move(-getTransform()->getRight() * cameraSpeed);
+		}
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_e))
+		{
+			move(getTransform()->getUp() * cameraSpeed);
+		}
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_q))
+		{
+			move(-getTransform()->getUp() * cameraSpeed);
 		}
 	}
 };
@@ -84,25 +90,25 @@ struct EntityController : public Component
 	}
 	void onTick()
 	{
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_w))
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_UP))
 		{
 			std::cout << "Key pressed! W" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, -10.0));
+			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, -0.3));
 		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_s))
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_DOWN))
 		{
 			std::cout << "Key pressed! S" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, 10.0));
+			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, 0.3));
 		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_a))
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_LEFT))
 		{
 			std::cout << "Key pressed! A" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(-10.0, 0, 0));
+			getEntity()->getComponent<Transform>()->move(glm::vec3(-0.3, 0, 0));
 		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_d))
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_RIGHT))
 		{
 			std::cout << "Key pressed! D" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(10.0, 0, 0));
+			getEntity()->getComponent<Transform>()->move(glm::vec3(0.3, 0, 0));
 		}
 	}
 	void tick()
@@ -116,21 +122,35 @@ int main(int argc, char* argv[])
 
 	std::shared_ptr<Core> core = Core::initialize();
 
+	std::shared_ptr<Entity> map = core->addEntity();
+	map->addComponent<Transform>();
+	std::shared_ptr<Renderer> mapp = map->addComponent<Renderer>();
+
+	mapp->setTexture(core->getResources()->load<Texture>("../assets/map/map2.png"));
+	mapp->setModel(core->getResources()->load<Model>("../assets/map/map.obj"));
+
+	map->getComponent<Transform>()->setPosition(glm::vec3(0, 15, 0.0));
+	map->getComponent<Transform>()->setScale(glm::vec3(10, 10, 10));
+
 
 	std::shared_ptr<Entity> camera = core->addEntity();
 	camera->addComponent<Camera>();
 	camera->addComponent<CameraController>();
+	camera->getComponent<Camera>()->setFov(60.0);
 
 
 	std::shared_ptr<Entity> entity = core->addEntity();
 	entity->addComponent<EntityController>();
 	entity->addComponent<Transform>();
+	entity->getComponent<Transform>()->setScale(glm::vec3(5, 5, 5));
 	std::shared_ptr<Renderer> entityRender = entity->addComponent<Renderer>();
 
 	entityRender->setTexture(core->getResources()->load<Texture>("../assets/walter/skycull.png"));
 	entityRender->setModel(core->getResources()->load<Model>("../assets/walter/walter.obj"));
 
 	std::shared_ptr<AudioSource> sound = entity->addComponent<AudioSource>();
+
+	entity->getComponent<Transform>()->setPosition(glm::vec3(2, -9, -25.0));
 
 	sound->setSound(core->getResources()->load<Sound>("../assets/sounds/halflife/hellofreeman"));
 	sound->play();

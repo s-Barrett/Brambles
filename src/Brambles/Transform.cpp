@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -20,9 +21,10 @@ namespace Brambles
 	glm::vec3 Transform::getForward() const
 	{
 		glm::vec3 forward;
-		forward.x = cos(glm::radians(m_rotation.y)) * cos(glm::radians(m_rotation.x));
-		forward.y = sin(glm::radians(m_rotation.x));
-		forward.z = sin(glm::radians(m_rotation.y)) * cos(glm::radians(m_rotation.x));
+
+		forward.x = sin(glm::radians(m_rotation.y));
+		forward.y = 0;
+		forward.z = cos(glm::radians(m_rotation.y));
 
 		return glm::normalize(forward);
 	}
