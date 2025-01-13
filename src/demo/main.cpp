@@ -74,9 +74,10 @@ int main(int argc, char* argv[])
 	entity->addComponent<Transform>();
 	entity->getComponent<Transform>()->setScale(glm::vec3(5, 5, 5));
 	entity->getComponent<Transform>()->setPosition(glm::vec3(2, -9, -25.0));
+	entity->addComponent<RigidBody>();
 	std::shared_ptr<BoxCollider> ebc = entity->addComponent<BoxCollider>();
-	//entity->addComponent<RigidBody>();
-	//entity->getComponent<RigidBody>()->setMass(0.1);
+	//entity->getComponent<BoxCollider>()->setSize(glm::vec3(1.0, 2.0, 1.0));
+	//entity->getComponent<RigidBody>()->setDebugRenderer(false);
 	std::shared_ptr<Renderer> entityRender = entity->addComponent<Renderer>();
 
 	entityRender->setTexture(core->getResources()->load<Texture>("../assets/objects/walter/skycull.png"));
@@ -86,16 +87,17 @@ int main(int argc, char* argv[])
 
 	std::shared_ptr<Entity> entity2 = core->addEntity();
 	entity2->addComponent<Transform>();
-	entity2->getComponent<Transform>()->setScale(glm::vec3(0.3, 0.3, 0.3));
+	entity2->getComponent<Transform>()->setScale(glm::vec3(1.0, 1.0, 1.0));
 	entity2->getComponent<Transform>()->setPosition(glm::vec3(10, -9, -20.0));
-	entity2->addComponent<RigidBody>();
 	std::shared_ptr<BoxCollider> ebc2 = entity2->addComponent<BoxCollider>();
-	entity2->addComponent<RigidBody>()->renderDebug();
-	//entity->getComponent<RigidBody>()->setMass(1.0);
+	//entity2->addComponent<RigidBody>();
+	//entity2->getComponent<RigidBody>()->setDebugRenderer(true);
+	//entity2->getComponent<BoxCollider>()->setOffset(glm::vec3(0.0, 2.0, 0.0));
+	entity2->getComponent<BoxCollider>()->setSize(glm::vec3(1.0, 2.0, 1.0));
 	std::shared_ptr<Renderer> entityRender2 = entity2->addComponent<Renderer>();
 
-	entityRender2->setTexture(core->getResources()->load<Texture>("../assets/objects/medkit/medkit.png"));
-	entityRender2->setModel(core->getResources()->load<Model>("../assets/objects/medkit/medkit.obj"));
+	entityRender2->setTexture(core->getResources()->load<Texture>("../assets/objects/headcrab/headcrab.png"));
+	entityRender2->setModel(core->getResources()->load<Model>("../assets/objects/headcrab/headcrab.obj"));
 
 
 	sound->setSound(core->getResources()->load<Sound>("../assets/sounds/halflife/hellofreeman"));

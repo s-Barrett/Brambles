@@ -12,12 +12,25 @@ namespace Brambles
 {
     void RigidBody::renderDebug()
     {
-        // Assuming the RigidBody has a BoxCollider attached
         auto collider = getEntity()->getComponent<BoxCollider>();
         if (collider)
         {
-            DebugRenderer::drawBoxCollider(collider, glm::vec3(1.0f, 0.0f, 0.0f)); // Red for colliders
+            DebugRenderer::drawBoxCollider(collider, glm::vec3(1.0f, 0.0f, 0.0f));
         }
+    }
+
+   
+    void RigidBody::onRender()
+    {
+        if (debugRenderer == true)
+        {
+            renderDebug();
+        }
+        else
+        {
+
+        }
+        
     }
 
 

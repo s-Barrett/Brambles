@@ -10,10 +10,11 @@ namespace Brambles
 	bool BoxCollider::isColliding(std::shared_ptr<BoxCollider> _other)
 	{
 
-		glm::vec3 a = getPosition() + m_offset;
-		glm::vec3 b = _other->getPosition() + _other->m_offset;
-		glm::vec3 sizeA = m_size;
-		glm::vec3 sizeB = _other->m_size;
+		glm::vec3 a = getTransform()->getPosition() + m_offset;
+		glm::vec3 b = _other->getTransform()->getPosition() + _other->m_offset;
+
+		glm::vec3 sizeA = m_size / 2.0f; 
+		glm::vec3 sizeB = _other->m_size / 2.0f;
 
 		if (a.x + sizeA.x < b.x - sizeB.x || a.x - sizeA.x > b.x + sizeB.x)
 		{
@@ -27,6 +28,7 @@ namespace Brambles
 		{
 			return false;
 		}
+
 		return true;
 
 

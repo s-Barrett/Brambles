@@ -40,6 +40,7 @@ namespace Brambles
 		}
 
 
+
 	private:
 		friend struct Brambles::Core;
 
