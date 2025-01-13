@@ -1,4 +1,7 @@
 #include "Camera.h"
+#include "Component.h"
+#include "Entity.h"
+#include "Transform.h"
 #include "Core.h"
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -14,17 +17,21 @@ namespace Brambles
 
     glm::mat4 Camera::getViewMatrix()
     {
-        glm::mat4 view(1.0f);
-        view = glm::translate(view, -getPosition());
-        view = glm::rotate(view, glm::radians(getRotation().x), glm::vec3(1, 0, 0));
-        view = glm::rotate(view, glm::radians(getRotation().y), glm::vec3(0, 1, 0));
-        view = glm::rotate(view, glm::radians(getRotation().z), glm::vec3(0, 0, 1));
-        return view;
+        // Camera position and target
+        glm::vec3 position = getTransform()->getPosition();
+        glm::vec3 forward = getTransform()->getForward(); // Forward direction
+        glm::vec3 up = getTransform()->getUp();           // Up direction
+
+        // Target the camera is looking at
+        glm::vec3 target = position + forward;
+
+        // Use glm::lookAt to create the view matrix
+        return glm::lookAt(position, target, up);
     }
 
     glm::mat4 Camera::getProjectionMatrix()
     {
-        float aspectRatio = 4.0f / 4.0f; 
+        float aspectRatio = 4.0f / 4.0f; // Adjust aspect ratio based on your window size
         return glm::perspective(glm::radians(m_fov), aspectRatio, m_nearClip, m_farClip);
     }
 

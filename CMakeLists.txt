@@ -44,8 +44,10 @@ add_library(Brambles
 	src/Brambles/Component.cpp
 	src/Brambles/Renderer.cpp
 	src/Brambles/Renderer.h
-	src/Brambles/CameraController.h
-	src/Brambles/CameraController.cpp
+	src/Brambles/Controllers/CameraController.h
+	src/Brambles/Controllers/CameraController.cpp
+	src/Brambles/Controllers/PlayerController.h
+	src/Brambles/Controllers/PlayerController.cpp
 	src/Brambles/Transform.h
 	src/Brambles/Transform.cpp
 	src/Brambles/AudioSource.h

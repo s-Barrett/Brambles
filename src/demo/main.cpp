@@ -40,85 +40,15 @@ using namespace Brambles;
 //#endif
 //}
 
-struct CameraController : public Component
-{
-
-	void onInitialize()
-	{
-		
-	}
-	void onTick()
-	{
-		float cameraSpeed = 0.5;
-
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_w))
-		{
-			std::cout << "Key pressed! Up Arrow" << std::endl;
-			move(-getTransform()->getForward() * cameraSpeed);
-			std::cout << "Position: " << getTransform()->getPosition().x << ", " << getTransform()->getPosition().y << ", " << getTransform()->getPosition().z << std::endl;
-		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_s))
-		{
-			std::cout << "Key pressed! Down Arrow" << std::endl;
-			move(getTransform()->getForward() * cameraSpeed);
-		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_a))
-		{
-			move(getTransform()->getRight() * cameraSpeed);
-		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_d))
-		{
-			move(-getTransform()->getRight() * cameraSpeed);
-		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_e))
-		{
-			move(getTransform()->getUp() * cameraSpeed);
-		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_q))
-		{
-			move(-getTransform()->getUp() * cameraSpeed);
-		}
-	}
-};
 
 
-struct EntityController : public Component
-{
-	void onInitialize()
-	{
-		std::cout << "EntityrController Initialize" << std::endl;
-	}
-	void onTick()
-	{
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_UP))
-		{
-			std::cout << "Key pressed! W" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, -0.3));
-		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_DOWN))
-		{
-			std::cout << "Key pressed! S" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(0, 0, 0.3));
-		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_LEFT))
-		{
-			std::cout << "Key pressed! A" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(-0.3, 0, 0));
-		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_RIGHT))
-		{
-			std::cout << "Key pressed! D" << std::endl;
-			getEntity()->getComponent<Transform>()->move(glm::vec3(0.3, 0, 0));
-		}
-	}
-	void tick()
-	{
-		std::cout << "tick" << std::endl;
-	}
-};
+
+
+
 
 int main(int argc, char* argv[])
 {
+	CameraController;
 
 	std::shared_ptr<Core> core = Core::initialize();
 
@@ -140,7 +70,7 @@ int main(int argc, char* argv[])
 
 
 	std::shared_ptr<Entity> entity = core->addEntity();
-	entity->addComponent<EntityController>();
+	entity->addComponent<PlayerController>();
 	entity->addComponent<Transform>();
 	entity->getComponent<Transform>()->setScale(glm::vec3(5, 5, 5));
 	std::shared_ptr<Renderer> entityRender = entity->addComponent<Renderer>();

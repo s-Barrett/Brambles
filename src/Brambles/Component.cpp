@@ -77,6 +77,7 @@ namespace Brambles
 		getTransform()->scale(scale);
 	}
 
+
 	void Component::tick()
 	{
 		auto entity = m_entity.lock();

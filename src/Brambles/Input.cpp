@@ -32,4 +32,33 @@ namespace Brambles
 		return false;
 	}
 
+	void Input::onMouseMove(float x, float y)
+	{
+		if (firstMouse)
+		{
+			lastMouseX = x;
+			lastMouseY = y;
+			firstMouse = false;
+		}
+
+		mouseX = x;
+		mouseY = y;
+	}
+
+	void Input::setMousePosition(float& x, float& y)
+	{
+		x = mouseX;
+		y = mouseY;
+	}
+
+	void Input::getMousePosition(float& dx, float& dy)
+	{
+		dx = mouseX;
+		dy = mouseY;
+
+		// Reset deltas after reading
+		mouseX = 0.0f;
+		mouseY = 0.0f;
+	}
+
 }

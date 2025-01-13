@@ -116,6 +116,12 @@ namespace Brambles
 		{
 			while (SDL_PollEvent(&e))
 			{
+				if (e.type == SDL_MOUSEMOTION)
+				{
+					m_input->mouseX += e.motion.xrel;
+					m_input->mouseY += e.motion.yrel;
+				}
+				else
 				if (e.type == SDL_QUIT)
 				{
 					running = false;

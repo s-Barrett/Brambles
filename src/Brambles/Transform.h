@@ -1,41 +1,41 @@
+#pragma once
+
 #include "Component.h"
 #include <glm/glm.hpp>
 
-
 namespace Brambles
 {
-	struct Transform : public Component
-	{
-	public:
-	
+    class Transform : public Component
+    {
+    public:
+        Transform()
+            : m_position(0.0f), m_rotation(0.0f), m_scale(1.0f) {}
 
-		void setPosition(glm::vec3 _position) { m_position = _position; }
+        // Position
+        void setPosition(const glm::vec3& position) { m_position = position; }
+        glm::vec3 getPosition() const { return m_position; }
+        void move(const glm::vec3& delta) { m_position += delta; }
 
-		glm::vec3 getPosition() { return m_position; }
+        // Rotation
+        void setRotation(const glm::vec3& rotation) { m_rotation = rotation; }
+        glm::vec3 getRotation() const { return m_rotation; }
+        void rotate(const glm::vec3& delta) { m_rotation += delta; }
 
-		void setRotation(glm::vec3 _rotation) { m_rotation = _rotation; }
+        // Scale
+        void setScale(const glm::vec3& scale) { m_scale = scale; }
+        glm::vec3 getScale() const { return m_scale; }
 
-		glm::vec3 getRotation() { return m_rotation; }
+        // Direction Vectors
+        glm::vec3 getForward() const;
+        glm::vec3 getRight() const;
+        glm::vec3 getUp() const;
 
-		void setScale(glm::vec3 _scale) { m_scale = _scale; }
+        // Transformation Matrix
+        glm::mat4 getModelMatrix() const;
 
-		glm::vec3 getScale() { return m_scale; }
-
-
-		void move(glm::vec3 _movement) { m_position += _movement; }
-		void rotate(glm::vec3 _rotation) { m_rotation += _rotation; }
-		void scale(glm::vec3 _scale) { m_scale += _scale; }
-
-		glm::vec3 getForward() const;
-		glm::vec3 getRight() const;
-		glm::vec3 getUp() const;
-
-		glm::mat4 getModelMatrix() const;
-
-
-	private:
-		glm::vec3 m_position{ 0.0f };
-		glm::vec3 m_rotation{ 0.0f };
-		glm::vec3 m_scale{ 1.0f };
-	};
+    private:
+        glm::vec3 m_position;
+        glm::vec3 m_rotation; // Stored as Euler angles (pitch, yaw, roll)
+        glm::vec3 m_scale;
+    };
 }
