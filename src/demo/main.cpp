@@ -46,6 +46,8 @@ int main(int argc, char* argv[])
 {
 	CameraController;
 
+
+
 	std::shared_ptr<Core> core = Core::initialize();
 
 	std::shared_ptr<Entity> map = core->addEntity();
@@ -58,6 +60,8 @@ int main(int argc, char* argv[])
 	map->getComponent<Transform>()->setPosition(glm::vec3(0, 15, 0.0));
 	map->getComponent<Transform>()->setScale(glm::vec3(10, 10, 10));
 
+	std::shared_ptr<BoxCollider> mapbc = map->addComponent<BoxCollider>();
+	
 
 	std::shared_ptr<Entity> camera = core->addEntity();
 	camera->addComponent<Camera>();
@@ -69,14 +73,30 @@ int main(int argc, char* argv[])
 	entity->addComponent<PlayerController>();
 	entity->addComponent<Transform>();
 	entity->getComponent<Transform>()->setScale(glm::vec3(5, 5, 5));
+	entity->getComponent<Transform>()->setPosition(glm::vec3(2, -9, -25.0));
+	std::shared_ptr<BoxCollider> ebc = entity->addComponent<BoxCollider>();
+	//entity->addComponent<RigidBody>();
+	//entity->getComponent<RigidBody>()->setMass(0.1);
 	std::shared_ptr<Renderer> entityRender = entity->addComponent<Renderer>();
 
-	entityRender->setTexture(core->getResources()->load<Texture>("../assets/walter/skycull.png"));
-	entityRender->setModel(core->getResources()->load<Model>("../assets/walter/walter.obj"));
+	entityRender->setTexture(core->getResources()->load<Texture>("../assets/objects/walter/skycull.png"));
+	entityRender->setModel(core->getResources()->load<Model>("../assets/objects/walter/walter.obj"));
 
 	std::shared_ptr<AudioSource> sound = entity->addComponent<AudioSource>();
 
-	entity->getComponent<Transform>()->setPosition(glm::vec3(2, -9, -25.0));
+	std::shared_ptr<Entity> entity2 = core->addEntity();
+	entity2->addComponent<Transform>();
+	entity2->getComponent<Transform>()->setScale(glm::vec3(0.3, 0.3, 0.3));
+	entity2->getComponent<Transform>()->setPosition(glm::vec3(10, -9, -20.0));
+	entity2->addComponent<RigidBody>();
+	std::shared_ptr<BoxCollider> ebc2 = entity2->addComponent<BoxCollider>();
+	entity2->addComponent<RigidBody>()->renderDebug();
+	//entity->getComponent<RigidBody>()->setMass(1.0);
+	std::shared_ptr<Renderer> entityRender2 = entity2->addComponent<Renderer>();
+
+	entityRender2->setTexture(core->getResources()->load<Texture>("../assets/objects/medkit/medkit.png"));
+	entityRender2->setModel(core->getResources()->load<Model>("../assets/objects/medkit/medkit.obj"));
+
 
 	sound->setSound(core->getResources()->load<Sound>("../assets/sounds/halflife/hellofreeman"));
 	sound->play();

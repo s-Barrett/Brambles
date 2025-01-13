@@ -30,12 +30,12 @@ namespace Brambles
         glm::vec3 getRight() const;
         glm::vec3 getUp() const;
 
-        // Transformation Matrix
+
         glm::mat4 getModelMatrix() const;
 
     private:
         glm::vec3 m_position;
-        glm::vec3 m_rotation; // Stored as Euler angles (pitch, yaw, roll)
+        glm::vec3 m_rotation; 
         glm::vec3 m_scale;
     };
 }

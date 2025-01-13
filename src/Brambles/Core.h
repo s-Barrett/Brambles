@@ -22,10 +22,6 @@ namespace Brambles
 		void run();
 		void stop();
 
-
-		template <typename T>
-		void seekComponents(std::vector<std::shared_ptr<T>>& _out);
-
 		std::shared_ptr<Entity> addEntity();
 
 		std::shared_ptr<Window> getWindow() { return m_window; }
@@ -37,7 +33,21 @@ namespace Brambles
 		std::shared_ptr<Camera> getCamera();
 
 
+		template <typename T>
+		void seekComponents(std::vector<std::shared_ptr<T>>& _out) {
+			for (size_t ei = 0; ei < m_entities.size(); ++ei) {
+				std::shared_ptr<Entity> e = m_entities.at(ei);
+				for (size_t ci = 0; ci < e->m_components.size(); ++ci) {
+					std::shared_ptr<Component> c = e->m_components.at(ci);
+					std::shared_ptr<T> t = std::dynamic_pointer_cast<T>(c);
 
+					if (t) {
+						_out.push_back(t);
+					}
+				}
+			}
+		}
+	
 
 	private:
 
