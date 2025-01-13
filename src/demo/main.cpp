@@ -42,10 +42,6 @@ using namespace Brambles;
 
 
 
-
-
-
-
 int main(int argc, char* argv[])
 {
 	CameraController;
@@ -66,7 +62,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Entity> camera = core->addEntity();
 	camera->addComponent<Camera>();
 	camera->addComponent<CameraController>();
-	camera->getComponent<Camera>()->setFov(60.0);
+	camera->getComponent<Camera>()->setFov(90.0);
 
 
 	std::shared_ptr<Entity> entity = core->addEntity();

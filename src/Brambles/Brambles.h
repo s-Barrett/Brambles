@@ -13,6 +13,8 @@
 #include "AudioSource.h"
 #include "Sound.h"
 #include "Transform.h"
+#include "RigidBody.h"
+#include "BoxCollider.h"
 #include "Resources.h"
 #include "Resources/Texture.h"
 #include "Resources/Model.h"

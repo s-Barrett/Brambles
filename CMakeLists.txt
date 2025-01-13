@@ -52,6 +52,10 @@ add_library(Brambles
 	src/Brambles/Transform.cpp
 	src/Brambles/AudioSource.h
 	src/Brambles/AudioSource.cpp
+	src/Brambles/BoxCollider.h
+	src/Brambles/BoxCollider.cpp
+	src/Brambles/RigidBody.h
+	src/Brambles/RigidBody.cpp
 	src/Brambles/Sound.h
 	src/Brambles/Sound.cpp
 	src/Brambles/Camera.h

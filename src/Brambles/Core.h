@@ -22,8 +22,6 @@ namespace Brambles
 		void run();
 		void stop();
 
-		template <typename T>
-		std::shared_ptr<T> seekComponent();
 
 		template <typename T>
 		void seekComponents(std::vector<std::shared_ptr<T>>& _out);
