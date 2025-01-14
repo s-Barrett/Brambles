@@ -15,19 +15,13 @@
 namespace Brambles
 {
 
-	DebugRenderer::DebugRenderer()
-        : debugShader("../assets/shaders/debugvert.glsl"
-            , "../assets/shaders/debugfrag.glsl")
-	{
-
-	}
     
 
     std::shared_ptr<rend::Mesh> DebugRenderer::generateBoxMesh(const glm::vec3& size)
     {
         auto mesh = std::make_shared<rend::Mesh>();
 
-        glm::vec3 halfSize = size * 0.5f;
+        glm::vec3 halfSize = size * 0.1f;
 
 
         glm::vec3 corners[8] = {
@@ -65,44 +59,55 @@ namespace Brambles
 
     void DebugRenderer::drawWireframeBox(const glm::vec3& position, const glm::vec3& size, const glm::vec3& color)
     {
+       
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
 
+
+        debugShader->use();
+        
 
         auto mesh = generateBoxMesh(size);
 
-        debugShader.use();
-
+		glm::vec3 boxOffset = getEntity()->getComponent<BoxCollider>()->getOffset();
+		glm::vec3 boxSize = getEntity()->getComponent<BoxCollider>()->getSize();
+       
         GLuint vao = mesh->getVAOId();
         GLsizei vertexCount = mesh->vertexCount();
 
+        glm::mat4 m_modelMatrix = glm::mat4(1.0f);
+        m_modelMatrix = glm::translate(m_modelMatrix, getTransform()->getPosition() + boxOffset);
+        m_modelMatrix = glm::scale(m_modelMatrix, glm::vec3(boxSize.x / 2, boxSize.y / 2, boxSize.z / 2));
 
-        glm::mat4 model(1.0f);
-        model = glm::translate(model, position);
-        model = glm::scale(model, size);
+
 
         auto camera = getEntity()->getCore()->getCamera();
-		if (camera)
-		{
-			glm::mat4 perspectiveProjection = camera->getProjectionMatrix();
-			glm::mat4 view = camera->getViewMatrix();
+        if (camera)
+        {
+            glm::mat4 perspectiveProjection = camera->getProjectionMatrix();
+            glm::mat4 view = camera->getViewMatrix();
 
-			debugShader.uniform("u_Model", model);
-			debugShader.uniform("u_Color", color);
-
-			glBindVertexArray(vao);
-			glDrawArrays(GL_LINES, 0, vertexCount);
-		}
+            debugShader->uniform("debugview", view);
+            debugShader->uniform("debugprojection", perspectiveProjection);
+            debugShader->uniform("debugmodel", m_modelMatrix);
+            debugShader->uniform("debuglineColor", glm::vec3(0, 0, 1)); // Green outline
+			debugShader->uniform("debuglinewidth", 1.5f);
+            
+        }
         else
         {
-			std::cout << "No camera found" << std::endl;
-        }
-
+			std::cerr << "No camera found" << std::endl;
+            
+		}
+		debugShader->drawOutline(vao, vertexCount);
     }
 
     void DebugRenderer::drawBoxCollider(std::shared_ptr<BoxCollider> collider, const glm::vec3& color)
     {
-        glm::vec3 position = collider->getPosition() + collider->getOffset();
-		std::cout << collider->getOffset().x << " " << collider->getOffset().y << " " << collider->getOffset().z << std::endl;
+        glm::vec3 position = collider->getTransform()->getPosition() + collider->getOffset();
+	
         glm::vec3 size = collider->getSize();
+
 
         drawWireframeBox(position, size, color);
     }

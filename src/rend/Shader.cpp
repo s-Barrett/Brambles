@@ -95,4 +95,20 @@ namespace rend
         glUniform3f(loc, value.x, value.y, value.z);
     }
 
+	void Shader::uniform(const std::string& name, float value)
+	{
+		GLint loc = glGetUniformLocation(m_id, name.c_str());
+		glUniform1f(loc, value);
+	}
+
+    void Shader::drawOutline(GLuint _vao, GLsizei _vertexCount)
+    {
+
+        glUseProgram(id());
+        glBindVertexArray(_vao);
+        glDrawArrays(GL_LINE_LOOP, 0, _vertexCount);
+        glBindVertexArray(0);
+        glUseProgram(0);
+    }
+
 }

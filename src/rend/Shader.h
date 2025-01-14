@@ -7,6 +7,7 @@
 #include <glm/ext.hpp>
 #include <string.h>
 #include "Utilities.h"
+#include "Model.h"
 
 
 namespace rend
@@ -23,6 +24,9 @@ namespace rend
         void stop() const { glUseProgram(0); }
         void uniform(const std::string& name, const glm::mat4& value);
         void uniform(const std::string& name, const glm::vec3& value);
+		void uniform(const std::string& name, float value);
+        void drawOutline(GLuint _vao, GLsizei _vertexCount);
+    
 
     private:
         GLuint m_id;

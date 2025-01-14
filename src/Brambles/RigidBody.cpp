@@ -10,79 +10,65 @@
 
 namespace Brambles
 {
-    void RigidBody::renderDebug()
-    {
-		if (!getEntity()->getComponent<DebugRenderer>())
-        {
-			getEntity()->addComponent<DebugRenderer>();
-		}
-
-        auto collider = getEntity()->getComponent<BoxCollider>();
-        if (collider)
-        {
-            getEntity()->getComponent<DebugRenderer>()->drawBoxCollider(collider, glm::vec3(1.0f, 0.0f, 0.0f));
-        }
-    }
-
-   
-    void RigidBody::onRender()
-    {
-        if (debugRenderer == true)
-        {
-            renderDebug();
-        }
-        else
-        {
-
-        }
-        
-    }
-
 
     void RigidBody::onTick()
     {
-        std::vector<std::shared_ptr<BoxCollider>> colliders;
-        getEntity()->getCore()->seekComponents(colliders);
+		// Get all box colliders in the scene
+		std::vector<std::shared_ptr<BoxCollider>> boxColliders;
+		getEntity()->getCore()->seekComponents(boxColliders);
 
-        auto boxCollider = getEntity()->getComponent<BoxCollider>();
+		// Iterate through all box colliders to see if we're colliding with any
+		for (auto boxCollider : boxColliders)
+		{
+			// Skip if it is ourself
+			if (boxCollider->getTransform() == getTransform())
+				continue;
 
-        for (const auto& collider : colliders)
-        {
-            if (collider->getTransform() == getTransform())
-            {
-                continue;
-            }
-            if (collider->isColliding(boxCollider))
-            {
-                float amount = 0.001f;
-                const float step = 0.001f;
+			// Check if colliding
+			if (boxCollider->isColliding(getEntity()->getComponent<BoxCollider>()))
+			{
+				// Kludge (*vomit emoji*)
+				float amount = 0.001f;
+				float step = 0.001f;
+				while (true)
+				{
+					if (!boxCollider->isColliding(getEntity()->getComponent<BoxCollider>()))
+						break;
 
-                while (collider->isColliding(boxCollider))
-                {
-                    glm::vec3 directions[] = {
-                        { amount, 0, 0 }, { -amount, 0, 0 },
-                        { 0, 0, amount }, { 0, 0, -amount },
-                        { 0, amount, 0 }, { 0, -amount, 0 }
-                    };
+					setPosition(getPosition() + glm::vec3(amount, 0, 0));
+					if (!boxCollider->isColliding(getEntity()->getComponent<BoxCollider>()))
+						break;
 
-                    bool resolved = false;
+					setPosition(getPosition() - glm::vec3(amount, 0, 0));
+					setPosition(getPosition() - glm::vec3(amount, 0, 0));
+					if (!boxCollider->isColliding(getEntity()->getComponent<BoxCollider>()))
+						break;
 
-                    for (const auto& dir : directions)
-                    {
-                        setPosition(getPosition() + dir);
-                        if (!collider->isColliding(boxCollider))
-                        {
-                            resolved = true;
-                            break;
-                        }
-                        setPosition(getPosition() - dir);
-                    }
+					setPosition(getPosition() + glm::vec3(amount, 0, 0));
+					setPosition(getPosition() + glm::vec3(0, 0, amount));
+					if (!boxCollider->isColliding(getEntity()->getComponent<BoxCollider>()))
+						break;
 
-                    if (resolved) break;
+					setPosition(getPosition() - glm::vec3(0, 0, amount));
+					setPosition(getPosition() - glm::vec3(0, 0, amount));
+					if (!boxCollider->isColliding(getEntity()->getComponent<BoxCollider>()))
+						break;
 
-                    amount += step;
-                }
-            }
-        }
-    }
+					setPosition(getPosition() + glm::vec3(0, 0, amount));
+					setPosition(getPosition() + glm::vec3(0, amount, 0));
+					if (!boxCollider->isColliding(getEntity()->getComponent<BoxCollider>()))
+						break;
+
+					setPosition(getPosition() - glm::vec3(0, amount, 0));
+					setPosition(getPosition() - glm::vec3(0, amount, 0));
+					if (!boxCollider->isColliding(getEntity()->getComponent<BoxCollider>()))
+						break;
+
+					setPosition(getPosition() + glm::vec3(0, amount, 0));
+					amount += step;
+				}
+
+			}
+		}
+	}
 }

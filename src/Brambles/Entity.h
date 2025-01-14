@@ -39,7 +39,20 @@ namespace Brambles
 			return nullptr;
 		}
 
+		template <typename T>
+		std::shared_ptr<T> hasComponent()
+		{
+			for (size_t i = 0; i < m_components.size(); ++i)
+			{
+				std::shared_ptr<T> rtn = std::dynamic_pointer_cast<T>(m_components[i]);
+				if (rtn)
+				{
+					return rtn;
+				}
+			}
 
+			return nullptr;
+		}
 
 	private:
 		friend struct Brambles::Core;
