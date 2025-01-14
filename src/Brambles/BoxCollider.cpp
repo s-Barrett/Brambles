@@ -10,18 +10,25 @@ namespace Brambles
 
 	void BoxCollider::renderDebug()
 	{
-		
-		if (!getEntity()->hasComponent<DebugRenderer>())
+		if (debugRenderer == true)
 		{
-			getEntity()->addComponent<DebugRenderer>();
-		}
+			if (!getEntity()->hasComponent<DebugRenderer>())
+			{
+				getEntity()->addComponent<DebugRenderer>();
+			}
 
-		auto collider = getEntity()->getComponent<BoxCollider>();
-		if (collider)
-		{
-			getEntity()->getComponent<DebugRenderer>()->drawBoxCollider(collider, glm::vec3(1.0f, 0.0f, 0.0f));
+			auto collider = getEntity()->getComponent<BoxCollider>();
+			if (collider)
+			{
+				getEntity()->getComponent<DebugRenderer>()->drawBoxCollider(collider, glm::vec3(1.0f, 0.0f, 0.0f));
+			}
+
 		}
-		
+		else
+		{
+
+		}
+	
 	}
 
 	void BoxCollider::onRender()

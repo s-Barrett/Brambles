@@ -49,13 +49,7 @@ int main(int argc, char* argv[])
 
 
 	std::shared_ptr<Core> core = Core::initialize();
-
-	//std::shared_ptr<Entity> debug = core->addEntity();
-	//debug->addComponent<Transform>();
-	//debug->addComponent<BoxCollider>();
-	//debug->getComponent<BoxCollider>()->setDebugRenderer(false);
 	
-
 
 	std::shared_ptr<Entity> map = core->addEntity();
 	map->addComponent<Transform>();
@@ -84,9 +78,9 @@ int main(int argc, char* argv[])
 
 
 	std::shared_ptr<BoxCollider> ebc = entity->addComponent<BoxCollider>();
-	entity->addComponent<RigidBody>();
-	ebc->setOffset(glm::vec3(0.0, 5.0, 0.0));
-	ebc->setSize(glm::vec3(5.0, 10.0, 5.0));
+	ebc->setDebugRenderer(true);
+	ebc->setOffset(glm::vec3(0.0, 4.0, 0.0));
+	ebc->setSize(glm::vec3(3.0, 6.5, 3.0));
 
 	std::shared_ptr<Renderer> entityRender = entity->addComponent<Renderer>();
 
@@ -102,18 +96,19 @@ int main(int argc, char* argv[])
 
 	std::shared_ptr<Entity> entity2 = core->addEntity();
 	entity2->addComponent<Transform>();
-	entity2->getComponent<Transform>()->setScale(glm::vec3(0.4, 0.4, 0.4));
+	entity2->getComponent<Transform>()->setScale(glm::vec3(0.1, 0.1, 0.1));
 	entity2->getComponent<Transform>()->setPosition(glm::vec3(10, -9, -20.0));
 
 	std::shared_ptr<BoxCollider> ebc2 = entity2->addComponent<BoxCollider>();
 	entity2->addComponent<RigidBody>();
-	ebc2->setOffset(glm::vec3(-1.0, 1.0, -1.0));
-	ebc2->setSize(glm::vec3(5.0, 2.0, 5.0));
+	ebc2->setDebugRenderer(true);
+	ebc2->setOffset(glm::vec3(0.0, 1.0, 0.0));
+	ebc2->setSize(glm::vec3(3.0, 3.0, 3.0));
 
 	std::shared_ptr<Renderer> entityRender2 = entity2->addComponent<Renderer>();
 
-	entityRender2->setTexture(core->getResources()->load<Texture>("../assets/objects/medkit/medkit.png"));
-	entityRender2->setModel(core->getResources()->load<Model>("../assets/objects/medkit/medkit.obj"));
+	entityRender2->setTexture(core->getResources()->load<Texture>("../assets/objects/headcrab/headcrab.png"));
+	entityRender2->setModel(core->getResources()->load<Model>("../assets/objects/headcrab/headcrab.obj"));
 
 
 	

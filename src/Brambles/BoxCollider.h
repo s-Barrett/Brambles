@@ -31,7 +31,7 @@ namespace Brambles
 
 		float m_mass{ 1.0f };
 
-		bool debugRenderer = false;
+		bool debugRenderer;
 	};
 
 };

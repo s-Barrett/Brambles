@@ -21,7 +21,7 @@ namespace Brambles
     {
         auto mesh = std::make_shared<rend::Mesh>();
 
-        glm::vec3 halfSize = size * 0.1f;
+        glm::vec3 halfSize = size * 1.1f;
 
 
         glm::vec3 corners[8] = {
@@ -67,10 +67,12 @@ namespace Brambles
         debugShader->use();
         
 
-        auto mesh = generateBoxMesh(size);
-
 		glm::vec3 boxOffset = getEntity()->getComponent<BoxCollider>()->getOffset();
 		glm::vec3 boxSize = getEntity()->getComponent<BoxCollider>()->getSize();
+
+        glm::vec3 genBoxSize = glm::vec3(boxSize.x / 5, boxSize.y / 5, boxSize.z / 5);
+
+        auto mesh = generateBoxMesh(genBoxSize);
        
         GLuint vao = mesh->getVAOId();
         GLsizei vertexCount = mesh->vertexCount();
