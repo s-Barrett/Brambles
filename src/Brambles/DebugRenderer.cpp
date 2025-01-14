@@ -1,10 +1,27 @@
 #include "DebugRenderer.h"
 #include "BoxCollider.h"
-#include <GL/gl.h> // Replace with your rendering API
+#include "Renderer.h"
+#include "Camera.h"
+#include "Transform.h"
+#include "Entity.h"
+
+#include "Core.h"
+
+
+
+#include <iostream>
+#include <GL/gl.h> 
 
 namespace Brambles
 {
 
+	DebugRenderer::DebugRenderer()
+        : debugShader("../assets/shaders/debugvert.glsl"
+            , "../assets/shaders/debugfrag.glsl")
+	{
+
+	}
+    
 
     std::shared_ptr<rend::Mesh> DebugRenderer::generateBoxMesh(const glm::vec3& size)
     {
@@ -45,28 +62,46 @@ namespace Brambles
         return mesh;
     }
 
+
     void DebugRenderer::drawWireframeBox(const glm::vec3& position, const glm::vec3& size, const glm::vec3& color)
     {
+
+
         auto mesh = generateBoxMesh(size);
+
+        debugShader.use();
 
         GLuint vao = mesh->getVAOId();
         GLsizei vertexCount = mesh->vertexCount();
 
-        glPushMatrix();
-        glTranslatef(position.x, position.y, position.z);
 
-        glColor3f(color.r, color.g, color.b);
+        glm::mat4 model(1.0f);
+        model = glm::translate(model, position);
+        model = glm::scale(model, size);
 
-        glBindVertexArray(vao);
-        glDrawArrays(GL_LINES, 0, vertexCount);
-        glBindVertexArray(0);
+        auto camera = getEntity()->getCore()->getCamera();
+		if (camera)
+		{
+			glm::mat4 perspectiveProjection = camera->getProjectionMatrix();
+			glm::mat4 view = camera->getViewMatrix();
 
-        glPopMatrix();
+			debugShader.uniform("u_Model", model);
+			debugShader.uniform("u_Color", color);
+
+			glBindVertexArray(vao);
+			glDrawArrays(GL_LINES, 0, vertexCount);
+		}
+        else
+        {
+			std::cout << "No camera found" << std::endl;
+        }
+
     }
 
     void DebugRenderer::drawBoxCollider(std::shared_ptr<BoxCollider> collider, const glm::vec3& color)
     {
         glm::vec3 position = collider->getPosition() + collider->getOffset();
+		std::cout << collider->getOffset().x << " " << collider->getOffset().y << " " << collider->getOffset().z << std::endl;
         glm::vec3 size = collider->getSize();
 
         drawWireframeBox(position, size, color);

@@ -5,7 +5,7 @@ namespace Brambles
 
 	AudioSource::AudioSource()
 	{
-			alGenSources(1, &m_sourceId);
+		alGenSources(1, &m_sourceId);
 	}
 
 	AudioSource::~AudioSource()
