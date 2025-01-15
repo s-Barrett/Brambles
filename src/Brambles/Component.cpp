@@ -32,6 +32,19 @@ namespace Brambles
 		return transform;
 	}
 
+	std::shared_ptr<Gui> Component::getGui()
+	{
+		auto entity = getEntity();
+		if (!entity) {
+			throw std::runtime_error("Entity is null in getGui()");
+		}
+		auto gui = entity->getCore()->getGui();
+		if (!gui) {
+			throw std::runtime_error("Gui is missing in getGui()");
+		}
+		return gui;
+	}
+
 	glm::vec3 Component::getPosition()
 	{
 		return getTransform()->getPosition();
@@ -77,6 +90,16 @@ namespace Brambles
 		getTransform()->scale(scale);
 	}
 
+	void Component::gui()
+	{
+		auto entity = m_entity.lock();
+		assert(entity && "Entity is null in gui()");
+		if (!entity) {
+			std::cerr << "Entity is null in gui()" << std::endl;
+			return;
+		}
+		onGui();
+	}
 
 	void Component::tick()
 	{

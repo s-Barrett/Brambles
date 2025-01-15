@@ -9,6 +9,11 @@ namespace Brambles
 	{
 		void onLoad();
 
+		std::shared_ptr<rend::Texture> getTexture()
+		{
+			return m_texture;
+		}
+
 	private:
 		friend struct Brambles::Renderer;
 		std::shared_ptr<rend::Texture> m_texture;

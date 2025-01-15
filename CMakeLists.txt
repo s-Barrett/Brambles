@@ -56,6 +56,10 @@ add_library(Brambles
 	src/Brambles/BoxCollider.cpp
 	src/Brambles/RigidBody.h
 	src/Brambles/RigidBody.cpp
+	src/Brambles/Timer.h 
+	src/Brambles/Timer.cpp
+	src/Brambles/Gui.h 
+	src/Brambles/Gui.cpp
 	src/Brambles/DebugRenderer.h
 	src/Brambles/DebugRenderer.cpp
 	src/Brambles/Sound.h

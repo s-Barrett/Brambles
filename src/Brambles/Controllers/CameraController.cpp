@@ -1,9 +1,10 @@
 
 
 #include "CameraController.h"
+#include "../Core.h"
+#include "../Timer.h"
 #include "../Transform.h"
 #include "../Entity.h"
-#include "../Core.h"
 #include "../Input.h"
 
 #include <Windows.h>
@@ -45,23 +46,34 @@ namespace Brambles
     {
         auto transform = getTransform();
 
+		float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
+
+		float movementSpeed = 40.0f;
+
+		std::cout << "Time: " << timeDelta << std::endl;
+
+       
+        if (getEntity()->getCore()->getInput()->isKey(SDLK_ESCAPE))
+        {
+            SDL_SetRelativeMouseMode(SDL_FALSE);
+        }
         if (getEntity()->getCore()->getInput()->isKey(SDLK_w)) {
-            transform->move(transform->getForward() * cameraSpeed);
+            transform->move(transform->getForward() * movementSpeed * timeDelta);
         }
         if (getEntity()->getCore()->getInput()->isKey(SDLK_s)) {
-            transform->move(-transform->getForward() * cameraSpeed);
+            transform->move(-transform->getForward() * movementSpeed * timeDelta);
         }
         if (getEntity()->getCore()->getInput()->isKey(SDLK_a)) {
-            transform->move(-transform->getRight() * cameraSpeed);
+            transform->move(-transform->getRight() * movementSpeed * timeDelta);
         }
         if (getEntity()->getCore()->getInput()->isKey(SDLK_d)) {
-            transform->move(transform->getRight() * cameraSpeed);
+            transform->move(transform->getRight() * movementSpeed * timeDelta);
         }
         if (getEntity()->getCore()->getInput()->isKey(SDLK_q)) {
-            transform->move(-transform->getUp() * cameraSpeed);
+            transform->move(-transform->getUp() * movementSpeed * timeDelta);
         }
         if (getEntity()->getCore()->getInput()->isKey(SDLK_e)) {
-            transform->move(transform->getUp() * cameraSpeed);
+            transform->move(transform->getUp() * movementSpeed * timeDelta);
         }
     }
 

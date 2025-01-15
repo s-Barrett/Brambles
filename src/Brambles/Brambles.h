@@ -12,6 +12,8 @@
 #include "Controllers/PlayerController.h"
 #include "AudioSource.h"
 #include "Sound.h"
+#include "Timer.h"
+#include "Gui.h"
 #include "Transform.h"
 #include "RigidBody.h"
 #include "BoxCollider.h"

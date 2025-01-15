@@ -11,7 +11,6 @@ namespace Brambles
 			yaw = -90.0f; // Default yaw to face along the negative Z axis
 			pitch = 0.0f; // Default pitch
 			sensitivity = 0.1f;
-			cameraSpeed = 0.5f;
 		}
 		void onTick();
 		void handleMouseInput();
@@ -22,7 +21,7 @@ namespace Brambles
 	private:
 		float yaw, pitch;
 		float sensitivity;
-		float cameraSpeed;
+		float movementSpeed = 40.0f;
 	};
 
 }

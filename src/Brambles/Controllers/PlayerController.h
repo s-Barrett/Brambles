@@ -8,18 +8,23 @@ namespace Brambles
 	{
 		void onInitialize()
 		{
-			playerStart = getPosition();
+
 
 		}
 		void onTick();
+
+		void onGui();
+
 		//void handleMouseInput();
 		void handleKeyboardInput();
 
 
 
 	private:
-		glm::vec3 playerStart = glm::vec3(0.0f, 0.0f, 0.0f);
-		float playerSpeed = 0.2f;
+
+		glm::vec3 playerStart;
+
+		float movementSpeed = 40.0f;
 
 	};
 }

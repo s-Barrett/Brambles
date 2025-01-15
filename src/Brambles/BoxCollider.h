@@ -25,6 +25,8 @@ namespace Brambles
 
 		bool getDebugRenderer() { return debugRenderer; }
 
+		//bool vertexColliding(std::shared_ptr<BoxCollider> _other);
+
 	private:
 		glm::vec3 m_size{ 1 , 1 , 1 };
 		glm::vec3 m_offset{ 0, 0, 0 };

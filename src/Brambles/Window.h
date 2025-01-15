@@ -11,7 +11,9 @@ namespace Brambles
 		Window();
 		~Window();
 
-		rend::ivec2 size();
+		void getWindowSize(int& _width, int& _height) { _width = WINDOW_WIDTH; _height = WINDOW_HEIGHT; }
+
+		glm::ivec2 size();
 
 		int WINDOW_WIDTH = 700;
 		int WINDOW_HEIGHT = 700;

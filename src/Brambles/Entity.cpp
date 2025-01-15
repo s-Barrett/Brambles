@@ -25,5 +25,12 @@ namespace Brambles
 
 		}
 	}
+	void Entity::onGui()
+	{
+		for (size_t ci = 0; ci < m_components.size(); ++ci)
+		{
+			m_components.at(ci)->gui();
+		}
+	}
 
 }

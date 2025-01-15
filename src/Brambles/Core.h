@@ -11,6 +11,7 @@ namespace Brambles
 	struct Input;
 	struct Camera;
 	struct Audio;
+	struct Timer;
 	struct Screen;
 	struct Gui;
 	struct Resources;
@@ -30,7 +31,11 @@ namespace Brambles
 
 		std::shared_ptr<Input> getInput() { return m_input; }
 
+		std::shared_ptr<Gui> getGui() { return m_gui; }
+
 		std::shared_ptr<Camera> getCamera();
+
+		std::shared_ptr<Timer> getTimer();
 
 
 		template <typename T>
@@ -57,6 +62,7 @@ namespace Brambles
 		std::shared_ptr<Gui> m_gui;
 		std::shared_ptr<Input> m_input;
 		std::shared_ptr<Camera> m_camera;
+		std::shared_ptr<Timer> m_timer;
 
 
 		std::vector<std::shared_ptr<Entity>> m_entities;

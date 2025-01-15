@@ -14,12 +14,12 @@ namespace Brambles
 
         void setPosition(const glm::vec3& position) { m_position = position; }
         glm::vec3 getPosition() const { return m_position; }
-        void move(const glm::vec3& delta) { m_position += delta; }
+        void move(const glm::vec3& pos) { m_position += pos; }
 
 
         void setRotation(const glm::vec3& rotation) { m_rotation = rotation; }
         glm::vec3 getRotation() const { return m_rotation; }
-        void rotate(const glm::vec3& delta) { m_rotation += delta; }
+        void rotate(const glm::vec3& pos) { m_rotation += pos; }
 
 
         void setScale(const glm::vec3& scale) { m_scale = scale; }

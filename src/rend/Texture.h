@@ -10,6 +10,8 @@ namespace rend
 		Texture(const std::string& _path);
 		GLuint id();
 
+		
+
 	private:
 		GLuint m_id;
 

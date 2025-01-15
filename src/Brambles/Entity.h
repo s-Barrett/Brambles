@@ -66,6 +66,7 @@ namespace Brambles
 
 		void onTick();
 		void onRender();
+		void onGui();
 
 	};
 

@@ -111,4 +111,12 @@ namespace rend
         glUseProgram(0);
     }
 
+    void Shader::draw(GLuint vaoId, GLsizei vertexCount)
+    {
+        glBindVertexArray(vaoId); 
+        glDrawArrays(GL_TRIANGLES, 0, vertexCount); 
+        glBindVertexArray(0);
+    }
+
+
 }

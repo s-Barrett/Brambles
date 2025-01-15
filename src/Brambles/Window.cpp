@@ -34,7 +34,7 @@ namespace Brambles
 	}
 
 
-	rend::ivec2 Window::size()
+	glm::ivec2 Window::size()
 	{
 		rend::ivec2 rtn;
 		SDL_GetWindowSize(m_raw, &rtn.x, &rtn.y);

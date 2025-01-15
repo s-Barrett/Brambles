@@ -6,17 +6,20 @@ namespace Brambles
 {
 	struct Transform;
 	struct Entity;
+	struct Gui;
 
 	struct Component
 	{
 		virtual void onInitialize() {}
 		virtual void onTick() {}
 		virtual void onRender() {}
+		virtual void onGui() {}
 	
 	
 
 		std::shared_ptr<Entity> getEntity();
 		std::shared_ptr<Transform> getTransform();
+		std::shared_ptr<Gui> getGui();
 
 		glm::vec3 getPosition();
 		glm::vec3 getRotation();
@@ -35,6 +38,7 @@ namespace Brambles
 
 		std::weak_ptr<Entity> m_entity;
 
+		void gui();
 		void tick();
 		void render();
 	};

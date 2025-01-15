@@ -3,6 +3,8 @@
 #include "Window.h"
 #include "Camera.h"
 #include "Input.h"
+#include "Gui.h"
+#include "Timer.h"
 #include "Resources/Audio.h"
 #include "rend/rend.h"
 #include "Resources.h"
@@ -22,7 +24,9 @@ namespace Brambles
 		rtn->m_audio = std::make_shared<Audio>();
 		rtn->m_camera = std::make_shared<Camera>();
 		rtn->m_resources = std::make_shared<Resources>();
+		rtn->m_timer = std::make_shared<Timer>();
 		rtn->m_input = std::make_shared<Input>();
+		rtn->m_gui = std::make_shared<Gui>();
 		rtn->m_self = rtn;
 		
 
@@ -32,22 +36,41 @@ namespace Brambles
 	std::shared_ptr<Entity> Core::addEntity()
 	{
 		std::shared_ptr<Entity> rtn = std::make_shared<Entity>();
-		rtn->m_self = rtn; // Initialize m_self first
-		rtn->m_core = m_self; // Assign the Core reference
+		rtn->m_self = rtn; 
+		rtn->m_core = m_self; 
 
-		// Debug logging
+
 		std::cout << "Entity created with m_self and m_core initialized." << std::endl;
 
-		// Assertions to ensure m_self and m_core are set
 		assert(!rtn->m_self.expired() && "m_self is not properly initialized.");
 		assert(!rtn->m_core.expired() && "m_core is not properly initialized.");
 
-		rtn->addComponent<Transform>(); // Now add components safely
+		rtn->addComponent<Transform>(); 
+		rtn->addComponent<Timer>();
+		rtn->getComponent<Timer>()->start();
 
 		m_entities.push_back(rtn);
 		return rtn;
 	}
 
+	std::shared_ptr<Timer> Core::getTimer()
+	{
+		std::vector<std::shared_ptr<Timer>> timers;
+		seekComponents(timers);
+
+		if (timers.size() == 0)
+		{
+			std::cout << "No entity with a timer component found" << std::endl;
+			throw std::exception();
+			return nullptr;
+		}
+
+		std::shared_ptr<Timer> rtn = timers[0];
+
+		rtn = timers[0];
+
+		return rtn;
+	}
 
 	std::shared_ptr<Camera> Core::getCamera()
 	{
@@ -107,7 +130,6 @@ namespace Brambles
 				m_entities[ei]->onTick();
 			}
 
-
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
@@ -115,6 +137,14 @@ namespace Brambles
 			{
 				m_entities[ei]->onRender();
 			}
+
+			glEnable(GL_DEPTH_TEST);
+
+			for (size_t ei = 0; ei < m_entities.size(); ++ei)
+			{
+				m_entities[ei]->onGui();
+			}
+			glEnable(GL_DEPTH_TEST);
 	
 			SDL_GL_SwapWindow(m_window->m_raw);
 		}

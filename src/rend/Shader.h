@@ -26,6 +26,7 @@ namespace rend
         void uniform(const std::string& name, const glm::vec3& value);
 		void uniform(const std::string& name, float value);
         void drawOutline(GLuint _vao, GLsizei _vertexCount);
+		void draw(GLuint vaoId, GLsizei vertexCount);
     
 
     private:
