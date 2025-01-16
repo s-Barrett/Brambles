@@ -48,8 +48,6 @@ namespace Brambles
 
 		float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
 
-		float movementSpeed = 40.0f;
-
 		std::cout << "Time: " << timeDelta << std::endl;
 
        
@@ -74,6 +72,14 @@ namespace Brambles
         }
         if (getEntity()->getCore()->getInput()->isKey(SDLK_e)) {
             transform->move(transform->getUp() * movementSpeed * timeDelta);
+        }
+        if (getEntity()->getCore()->getInput()->isKey(SDLK_LSHIFT))
+        {
+            movementSpeed = 70.0f;
+        }
+        else
+        {
+            movementSpeed = 40.0f;
         }
     }
 

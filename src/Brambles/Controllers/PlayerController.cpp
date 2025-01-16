@@ -28,8 +28,28 @@ namespace Brambles
 
 	void PlayerController::onGui()
 	{
-		getGui()->button(glm::vec2(100, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
-		getGui()->button(glm::vec2(300, 120), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCircle());
+	
+
+
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_LSHIFT))
+		{
+			getGui()->button(glm::vec2(650, 650), glm::vec2(600, 600), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshStar());
+		}
+		else
+		{
+			if (getEntity()->getCore()->getInput()->isKey(SDLK_f))
+			{
+				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/Gui/ortho.vert", "../assets/shaders/Gui/ortho.frag");
+				getGui()->setGuiShader(orthoShader);
+				getGui()->button(glm::vec2(100, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
+			}
+			else
+			{
+				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/Gui/fun.vert", "../assets/shaders/Gui/fun.frag");
+				getGui()->setGuiShader(orthoShader);
+				getGui()->button(glm::vec2(100, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
+			}
+		}
 
 	}
 
@@ -59,14 +79,6 @@ namespace Brambles
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_SPACE)) 
 		{
 			getTransform()->setPosition(playerStart);
-		}
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_LSHIFT)) 
-		{
-			movementSpeed = 60.0f;
-		}
-		else 
-		{
-			movementSpeed = 40.0f;
 		}
 	}
 }

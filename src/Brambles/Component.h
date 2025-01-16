@@ -38,6 +38,7 @@ namespace Brambles
 
 		std::weak_ptr<Entity> m_entity;
 
+
 		void gui();
 		void tick();
 		void render();

@@ -87,8 +87,9 @@ namespace Brambles
 
 	void Component::scale(glm::vec3 scale)
 	{
-		getTransform()->scale(scale);
+		getTransform()->scale(scale);  
 	}
+
 
 	void Component::gui()
 	{

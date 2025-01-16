@@ -46,8 +46,6 @@ int main(int argc, char* argv[])
 {
 	CameraController;
 
-
-
 	std::shared_ptr<Core> core = Core::initialize();
 	
 
@@ -60,14 +58,18 @@ int main(int argc, char* argv[])
 
 	map->getComponent<Transform>()->setPosition(glm::vec3(0, 15, 0.0));
 	map->getComponent<Transform>()->setScale(glm::vec3(10, 10, 10));
+
+	std::shared_ptr<BoxCollider> mbc = map->addComponent<BoxCollider>();
+	map->getComponent<BoxCollider>()->setOffset(glm::vec3(0.0, 0.0, 0.0));
+	mbc->setDebugRenderer(true);
+	mbc->setSize(glm::vec3(10.0, 3.0, 10.0));
+	mbc->setOffset(glm::vec3(0.0, -25.0, -20.0));
 	
 
 	std::shared_ptr<Entity> camera = core->addEntity();
 	camera->addComponent<Camera>();
 	camera->addComponent<CameraController>();
 	camera->getComponent<Camera>()->setFov(90.0);
-
-
 
 
 	std::shared_ptr<Entity> entity = core->addEntity();
@@ -78,6 +80,8 @@ int main(int argc, char* argv[])
 
 
 	std::shared_ptr<BoxCollider> ebc = entity->addComponent<BoxCollider>();
+	entity->addComponent<RigidBody>();
+	entity->getComponent<RigidBody>()->setMass(10.0);
 	ebc->setDebugRenderer(true);
 	ebc->setOffset(glm::vec3(0.0, 4.0, 0.0));
 	ebc->setSize(glm::vec3(3.0, 6.5, 3.0));
@@ -92,8 +96,6 @@ int main(int argc, char* argv[])
 	sound->play();
 
 
-
-
 	std::shared_ptr<Entity> entity2 = core->addEntity();
 	entity2->addComponent<Transform>();
 	entity2->getComponent<Transform>()->setScale(glm::vec3(0.1, 0.1, 0.1));
@@ -101,6 +103,7 @@ int main(int argc, char* argv[])
 
 	std::shared_ptr<BoxCollider> ebc2 = entity2->addComponent<BoxCollider>();
 	entity2->addComponent<RigidBody>();
+	entity2->getComponent<RigidBody>()->setMass(5.0);
 	ebc2->setDebugRenderer(true);
 	ebc2->setOffset(glm::vec3(0.0, 1.0, 0.0));
 	ebc2->setSize(glm::vec3(3.0, 3.0, 3.0));
@@ -109,8 +112,6 @@ int main(int argc, char* argv[])
 
 	entityRender2->setTexture(core->getResources()->load<Texture>("../assets/objects/headcrab/headcrab.png"));
 	entityRender2->setModel(core->getResources()->load<Model>("../assets/objects/headcrab/headcrab.obj"));
-
-
 	
 
 	core->run();

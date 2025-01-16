@@ -28,5 +28,5 @@ void main()
     
     // Adding a fun 'wave' effect on the position (you can use sin to distort)
     float waveAmount = sin(v_FragPos.x * 0.1 + u_Model[3][0] * 0.5) * 0.03;
-    v_FragPos.y += waveAmount; // Distort the y-position for a wavy effect
+    v_FragPos.x += waveAmount; // Distort the y-position for a wavy effect
 }

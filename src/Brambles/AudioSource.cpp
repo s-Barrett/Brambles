@@ -1,4 +1,7 @@
 #include "AudioSource.h"
+#include "Core.h"
+#include "Entity.h"
+#include "Camera.h"
 
 namespace Brambles
 {
@@ -18,13 +21,31 @@ namespace Brambles
 		m_sound = _sound;
 		m_bufferId = m_sound->getBufferId();
 		alSourcei(m_sourceId, AL_BUFFER, m_bufferId);
+		alSourcef(m_sourceId, AL_PITCH, m_pitch);
+		alSourcef(m_sourceId, AL_MAX_DISTANCE, m_distance);
+
 	}
 
 	void AudioSource::onTick()
 	{
+		std::shared_ptr<Core> core = getEntity()->getCore();
+		glm::vec3 cameraPos = core->getCamera()->getPosition();
+
+		alListener3f(AL_POSITION, cameraPos.x, cameraPos.y, cameraPos.z);
+		alSource3f(m_sourceId, AL_POSITION, getPosition().x, getPosition().y, getPosition().z);
+
+		if (glm::distance(getPosition(), cameraPos) > m_distance)
+		{
+			alSourcef(m_sourceId, AL_GAIN, 0.0f);
+		}
+		else
+		{
+			alSourcef(m_sourceId, AL_GAIN, m_gain);
+		}
+
 		if (!m_looping && !isPlaying())
 		{
-			//play();
+			play();
 		}
 	}
 

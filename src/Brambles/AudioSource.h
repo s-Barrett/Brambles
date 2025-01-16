@@ -34,6 +34,8 @@ namespace Brambles
 
 		bool m_looping = false;
 
+		float m_distance = 100.0f;
+
 		float m_pitch = 1.0f;
 		float m_gain = 1.0f;
 

@@ -45,6 +45,12 @@ namespace Brambles
 		glm::vec3 ahs = m_size / 2.0f;
 		glm::vec3 bhs = _other->m_size / 2.0f;
 
+		std::cout << "Entity 1 Position: " << a.x << ", " << a.y << ", " << a.z << std::endl;
+		std::cout << "Entity 2 Position: " << b.x << ", " << b.y << ", " << b.z << std::endl;
+
+
+
+
 		if (a.x > b.x)
 		{
 			if (b.x + bhs.x < a.x - ahs.x)
@@ -89,6 +95,7 @@ namespace Brambles
 				return false;
 			}
 		}
+
 
 		return true;
 	}

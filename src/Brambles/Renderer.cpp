@@ -14,8 +14,8 @@ namespace Brambles
 {
 
 	Renderer::Renderer()
-		: shader("../assets/shaders/lightvert.vert"
-			, "../assets/shaders/lightfrag.frag")
+		: shader("../assets/shaders/light/light.vert"
+			, "../assets/shaders/light/light.frag")
 	{
 
 
