@@ -21,12 +21,12 @@ namespace Brambles
 
 	}
 
-	void Renderer::setTexture(std::shared_ptr<Texture> _texturePath)
+	void Renderer::setTexture(std::shared_ptr<Texture> _texturePath)//Set the texture
 	{
 		m_texture = _texturePath;
 	}
 
-	void Renderer::setModel(std::shared_ptr<Model> _modelPath)
+	void Renderer::setModel(std::shared_ptr<Model> _modelPath)//Set the model
 	{
 		m_model = _modelPath;
 	}
@@ -42,13 +42,13 @@ namespace Brambles
 		glm::mat4 view = camera->getViewMatrix();
 
 		shader.use();
-		glBindTexture(GL_TEXTURE_2D, m_texture->m_texture->id());
+		glBindTexture(GL_TEXTURE_2D, m_texture->m_texture->id());//Binds the texture
 		shader.uniform("u_View", view);
-		shader.uniform("u_Model", getEntity()->getComponent<Transform>()->getModelMatrix());
+		shader.uniform("u_Model", getEntity()->getComponent<Transform>()->getModelMatrix());//Gets the model matrix for the shader
 		shader.uniform("u_Projection", perspectiveProjection);
 
 		glBindVertexArray(m_model->m_model->vao_id());
-		glDrawArrays(GL_TRIANGLES, 0, m_model->m_model->vertex_count());
+		glDrawArrays(GL_TRIANGLES, 0, m_model->m_model->vertex_count());//Drawing 
 	}
 
 

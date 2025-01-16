@@ -1,30 +1,28 @@
+
 #include "../Component.h"
 #include <glm/glm.hpp>
 
-
 namespace Brambles
 {
-	struct PlayerController : public Component
-	{
-		void onInitialize()
-		{
+	/**
+	 * @brief Controls the player movement and interactions.
+	 */
+    struct PlayerController : public Component
+    {
+        /** Initializes the player controller. */
+        void onInitialize() {};
 
+        /** Updates the player's state each frame. */
+        void onTick();
 
-		}
-		void onTick();
+        /** Handles the player's GUI interactions. */
+        void onGui();
 
-		void onGui();
+        /** Handles player keyboard input. */
+        void handleKeyboardInput();
 
-		//void handleMouseInput();
-		void handleKeyboardInput();
-
-
-
-	private:
-
-		glm::vec3 playerStart;
-
-		float movementSpeed = 40.0f;
-
-	};
+    private:
+        glm::vec3 playerStart; ///< Starting position of the player.
+        float movementSpeed = 40.0f; ///< Speed at which the player moves.
+    };
 }

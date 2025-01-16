@@ -21,14 +21,12 @@ namespace Brambles
 
     void RigidBody::collisionResponse(std::shared_ptr<BoxCollider> _collider, std::shared_ptr<BoxCollider>  _other)
     {
-        glm::vec3 posA = getTransform()->getPosition();
-        glm::vec3 posB = _other->getTransform()->getPosition();
+		glm::vec3 posA = getTransform()->getPosition(); // Get the position of the collider
+		glm::vec3 posB = _other->getTransform()->getPosition(); // Get the position of the other collider
 
-        // Get size (Half-Size)
         glm::vec3 sizeA = _collider->getSize() / 2.0f;
         glm::vec3 sizeB = _other->getSize() / 2.0f;
 
-        // Compute the minimum translation vector (MTV)
         glm::vec3 delta = posA - posB;
         glm::vec3 overlap = glm::vec3(
             sizeA.x + sizeB.x - abs(delta.x),
@@ -38,7 +36,7 @@ namespace Brambles
 
         if (overlap.x < overlap.y && overlap.x < overlap.z)
         {
-            posA.x += (delta.x > 0) ? overlap.x : -overlap.x;
+			posA.x += (delta.x > 0) ? overlap.x : -overlap.x;
             posB.x += (delta.x > 0) ? -overlap.x : overlap.x;
         }
         else if (overlap.y < overlap.z)
@@ -46,16 +44,16 @@ namespace Brambles
             posA.y += (delta.y > 0) ? overlap.y : -overlap.y;
             posB.y += (delta.y > 0) ? -overlap.y : overlap.y;
 
-            // Stop vertical velocity if colliding with floor (Y axis)
-            if (delta.y < 0)  // If moving down (falling)
+
+            if (delta.y < 0)  
             {
-                m_velocity.y = 0.0f; // Stop downward motion
+				m_velocity.y = 0.0f; 
             }
         }
         else
         {
             posA.z += (delta.z > 0) ? overlap.z : -overlap.z;
-            posB.z += (delta.z > 0) ? -overlap.z : overlap.z;
+			posB.z += (delta.z > 0) ? -overlap.z : overlap.z;// This pushes the rigid body back
         }
         _other->getTransform()->setPosition(posB);
         getTransform()->setPosition(posA);
@@ -66,19 +64,19 @@ namespace Brambles
     void RigidBody::onTick()
     {
         std::vector<std::shared_ptr<BoxCollider>> boxColliders;
-        getEntity()->getCore()->seekComponents(boxColliders);
+		getEntity()->getCore()->seekComponents(boxColliders);// Seeking all the box colliders
 
         for (auto boxCollider : boxColliders)
         {
-            if (boxCollider->getTransform() == getTransform())
+			if (boxCollider->getTransform() == getTransform())// If the box collider is self, skip
                 continue;
         
-            auto myCollider = getEntity()->getComponent<BoxCollider>();
+			auto myCollider = getEntity()->getComponent<BoxCollider>();// If the other box collider is self, skip
             if (!myCollider) continue;
 
-            if (boxCollider->isColliding(myCollider))
+			if (boxCollider->isColliding(myCollider))// If the box colliders are colliding
             {
-			    collisionResponse(myCollider, boxCollider);
+				collisionResponse(myCollider, boxCollider);// Call the collision response
             }
 
 
@@ -87,9 +85,8 @@ namespace Brambles
 		
         float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
 
-        m_velocity += m_gravity * timeDelta;
+        m_velocity += m_gravity * timeDelta;// Adding grav but is set to 0 right now
 
-        // Update the position based on the velocity
         glm::vec3 newPos = getTransform()->getPosition() + m_velocity * timeDelta;
         getTransform()->setPosition(newPos);
 

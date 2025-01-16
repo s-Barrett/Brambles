@@ -4,12 +4,12 @@
 namespace Brambles
 {
 
-	void Input::isKeyPressed(int key)
+	void Input::isKeyPressed(int key)//Adds keys to array
 	{
 		keys.push_back(key);
 	}
 
-	void Input::isKeyReleased(int key)
+	void Input::isKeyReleased(int key)//Removes keys from array
 	{
 		for (int i = 0; i < keys.size(); i++)
 		{
@@ -20,7 +20,7 @@ namespace Brambles
 		}
 	}
 
-	bool Input::isKey(int key)
+	bool Input::isKey(int key)//Checks if key is in array
 	{
 		for (int i = 0; i < keys.size(); i++)
 		{
@@ -32,7 +32,7 @@ namespace Brambles
 		return false;
 	}
 
-	void Input::onMouseMove(float x, float y)
+	void Input::onMouseMove(float x, float y)//Checks mouse position
 	{
 		if (firstMouse)
 		{
@@ -45,13 +45,13 @@ namespace Brambles
 		mouseY = y;
 	}
 
-	void Input::setMousePosition(float& x, float& y)
+	void Input::setMousePosition(float& x, float& y)//Sets mouse position
 	{
 		x = mouseX;
 		y = mouseY;
 	}
 
-	void Input::getMousePosition(float& dx, float& dy)
+	void Input::getMousePosition(float& dx, float& dy)//Gets mouse position
 	{
 		dx = mouseX;
 		dy = mouseY;

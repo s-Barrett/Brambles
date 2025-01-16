@@ -1,29 +1,58 @@
+
 #include "Component.h"
 #include <glm/glm.hpp>
 
 namespace Brambles
 {
     struct BoxCollider;
+
+    /**
+     * @brief Represents a RigidBody.
+     */
     struct RigidBody : public Component
     {
-        RigidBody() {} 
+        RigidBody() {}
         ~RigidBody() {}
 
+        /**
+         * @brief Updates physics each frame.
+         */
         void onTick();
-		void collisionResponse(std::shared_ptr<BoxCollider> _collider, std::shared_ptr<BoxCollider> _other);
 
+        /**
+         * @brief Handles collision response between colliders.
+         * @param _collider First collider.
+         * @param _other Second collider.
+         */
+        void collisionResponse(std::shared_ptr<BoxCollider> _collider, std::shared_ptr<BoxCollider> _other);
+
+        /**
+         * @brief Sets the rigid body's mass.
+         * @param _mass Mass to set.
+         */
         void setMass(float _mass) { m_mass = _mass; }
+
+        /**
+         * @brief Gets the rigid body's mass.
+         * @return The mass.
+         */
         float getMass() const { return m_mass; }
 
+        /**
+         * @brief Sets the rigid body's velocity.
+         * @param _velocity Velocity to set.
+         */
         void setVelocity(const glm::vec3& _velocity) { m_velocity = _velocity; }
+
+        /**
+         * @brief Gets the rigid body's velocity.
+         * @return The velocity.
+         */
         glm::vec3 getVelocity() const { return m_velocity; }
 
     private:
 
-
-        //const glm::vec3 m_gravity = glm::vec3(0.0f, -9.81f, 0.0f);
-		const glm::vec3 m_gravity = glm::vec3(0.0f, 0.0f, 0.0f);
-
+        const glm::vec3 m_gravity = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 m_velocity = glm::vec3(0.0f);
         float m_mass = 10.0f;
     };

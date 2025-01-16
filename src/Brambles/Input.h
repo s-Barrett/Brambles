@@ -1,37 +1,44 @@
+
 #include <vector>
 #include <glm/glm.hpp>
 
 namespace Brambles
 {
-	struct Input
-	{
-	public:
 
-		void onMouseMove(float x, float y);
-		
-		void setMousePosition(float& x, float& y);
+	/**
+	 * @brief Handles user input like mouse movements and key states.
+	 */
+    struct Input
+    {
+    public:
+        /** Updates mouse position. */
+        void onMouseMove(float x, float y);
 
-		void getMousePosition(float& dx, float& dy);
+        /** Sets mouse position. */
+        void setMousePosition(float& x, float& y);
 
-		void isKeyPressed(int key);
+        /** Gets mouse position. */
+        void getMousePosition(float& dx, float& dy);
 
-		void isKeyReleased(int key);
+        /** Checks if a key is pressed. */
+        void isKeyPressed(int key);
 
-		bool isKey(int key);
+        /** Checks if a key is released. */
+        void isKeyReleased(int key);
 
+        /** Checks if a key is held down. */
+        bool isKey(int key);
 
-		std::vector<int> keys;
-		std::vector<int> keysPressed;
-		std::vector<int> keysReleased;
-		
-		float lastMouseX = 0;
-		float lastMouseY = 0;
-		float mouseX = 0;
-		float mouseY = 0;
-		bool firstMouse = true;
+        std::vector<int> keys; ///< List of pressed keys.
+        std::vector<int> keysPressed; ///< List of recently pressed keys.
+        std::vector<int> keysReleased; ///< List of released keys.
 
-	private:
+        float lastMouseX = 0; ///< Last mouse x position.
+        float lastMouseY = 0; ///< Last mouse y position.
+        float mouseX = 0; ///< Current mouse x position.
+        float mouseY = 0; ///< Current mouse y position.
+        bool firstMouse = true; ///< Flag for first mouse movement.
 
-	};
-
+    private:
+    };
 }

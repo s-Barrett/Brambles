@@ -33,21 +33,27 @@ namespace Brambles
 
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_LSHIFT))
 		{
-			getGui()->button(glm::vec2(650, 650), glm::vec2(600, 600), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshStar());
+			getGui()->button(glm::vec2(650, 650), glm::vec2(600, 600), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshStar());//Creates a button this one covers the size of the screen on keypress LSHIFT
 		}
 		else
 		{
 			if (getEntity()->getCore()->getInput()->isKey(SDLK_f))
 			{
-				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/Gui/ortho.vert", "../assets/shaders/Gui/ortho.frag");
+				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/Gui/ortho.vert", "../assets/shaders/Gui/ortho.frag"); //loading shaders for the buttons
 				getGui()->setGuiShader(orthoShader);
-				getGui()->button(glm::vec2(100, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
+				getGui()->button(glm::vec2(80, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
+				getGui()->button(glm::vec2(285, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCircle());
+				getGui()->button(glm::vec2(450, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshTriangle());
+				getGui()->button(glm::vec2(650, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshStar()); //displaying all button types
 			}
 			else
 			{
-				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/Gui/fun.vert", "../assets/shaders/Gui/fun.frag");
+				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/Gui/fun.vert", "../assets/shaders/Gui/fun.frag");// loading another shader for the buttons
 				getGui()->setGuiShader(orthoShader);
-				getGui()->button(glm::vec2(100, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
+				getGui()->button(glm::vec2(80, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
+				getGui()->button(glm::vec2(285, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCircle());
+				getGui()->button(glm::vec2(450, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshTriangle());
+				getGui()->button(glm::vec2(650, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshStar());
 			}
 		}
 
@@ -57,10 +63,10 @@ namespace Brambles
 	{
 		auto transform = getTransform();
 
-		float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
+		float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();//gets the time delta
 
 	
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_UP)) 
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_UP)) //checks key presses
 		{
 			transform->move(-transform->getRight() * movementSpeed * timeDelta);
 		}
@@ -78,7 +84,7 @@ namespace Brambles
 		}
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_SPACE)) 
 		{
-			getTransform()->setPosition(playerStart);
+			getTransform()->setPosition(playerStart);//sets the player back to the start(0, 0, 0)
 		}
 	}
 }

@@ -1,5 +1,3 @@
-
-
 #include "CameraController.h"
 #include "../Core.h"
 #include "../Timer.h"
@@ -13,11 +11,9 @@
 
 namespace Brambles
 {
-
-
     void CameraController::onTick()
     {
-        SDL_SetRelativeMouseMode(SDL_TRUE);
+        SDL_SetRelativeMouseMode(SDL_TRUE); // Lock mouse to window and hide cursor
         handleMouseInput();
         handleKeyboardInput();
     }
@@ -27,34 +23,34 @@ namespace Brambles
         float sensitivity = 0.1f;
         float dx, dy;
 
+        // Get mouse movement delta
         getEntity()->getCore()->getInput()->getMousePosition(dx, dy);
 
-        yaw += dx * sensitivity; // Yaw changes based on horizontal mouse movement
-        pitch -= dy * sensitivity; // Pitch changes based on vertical mouse movement
+        yaw += dx * sensitivity;
+        pitch -= dy * sensitivity;
 
-        // Clamp pitch to avoid gimbal lock
+        // Clamp pitch to prevent flipping
         if (pitch > 89.0f) pitch = 89.0f;
         if (pitch < -89.0f) pitch = -89.0f;
 
-        // Update the transform's rotation
+        // Update camera rotation
         glm::vec3 rotation(pitch, yaw, 0.0f);
         getTransform()->setRotation(rotation);
     }
 
-
     void CameraController::handleKeyboardInput()
     {
         auto transform = getTransform();
+        float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
 
-		float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
 
-		std::cout << "Time: " << timeDelta << std::endl;
-
-       
+        // Unlock mouse when Escape is pressed
         if (getEntity()->getCore()->getInput()->isKey(SDLK_ESCAPE))
         {
             SDL_SetRelativeMouseMode(SDL_FALSE);
         }
+
+        // Movement controls
         if (getEntity()->getCore()->getInput()->isKey(SDLK_w)) {
             transform->move(transform->getForward() * movementSpeed * timeDelta);
         }
@@ -73,17 +69,15 @@ namespace Brambles
         if (getEntity()->getCore()->getInput()->isKey(SDLK_e)) {
             transform->move(transform->getUp() * movementSpeed * timeDelta);
         }
+
+        // Sprinting when holding Shift
         if (getEntity()->getCore()->getInput()->isKey(SDLK_LSHIFT))
         {
-            movementSpeed = 70.0f;
+            movementSpeed = 70.0f; // Increase speed
         }
         else
         {
-            movementSpeed = 40.0f;
+            movementSpeed = 40.0f; // Normal speed
         }
     }
-
-
 }
-
-

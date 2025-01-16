@@ -8,7 +8,7 @@ namespace Brambles
 		return m_path;
 	}
 
-	void Resource::load()
+	void Resource::load()//loading the resource
 	{
 		onLoad();
 	}

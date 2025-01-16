@@ -56,14 +56,14 @@ int main(int argc, char* argv[])
 	mapp->setTexture(core->getResources()->load<Texture>("../assets/map/map2.png"));
 	mapp->setModel(core->getResources()->load<Model>("../assets/map/map.obj"));
 
-	map->getComponent<Transform>()->setPosition(glm::vec3(0, 15, 0.0));
+	map->getComponent<Transform>()->setPosition(glm::vec3(0, 15, 20.0));
 	map->getComponent<Transform>()->setScale(glm::vec3(10, 10, 10));
 
 	std::shared_ptr<BoxCollider> mbc = map->addComponent<BoxCollider>();
 	map->getComponent<BoxCollider>()->setOffset(glm::vec3(0.0, 0.0, 0.0));
 	mbc->setDebugRenderer(true);
-	mbc->setSize(glm::vec3(10.0, 3.0, 10.0));
-	mbc->setOffset(glm::vec3(0.0, -25.0, -20.0));
+	mbc->setSize(glm::vec3(20.0, 2.0, 20.0));
+	mbc->setOffset(glm::vec3(0.0, -26.0, -40.0));
 	
 
 	std::shared_ptr<Entity> camera = core->addEntity();

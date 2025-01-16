@@ -17,36 +17,35 @@ namespace Brambles
 
     glm::mat4 Camera::getViewMatrix()
     {
-        // Camera position and target
         glm::vec3 position = getTransform()->getPosition();
-        glm::vec3 forward = getTransform()->getForward(); // Forward direction
-        glm::vec3 up = getTransform()->getUp();           // Up direction
+        glm::vec3 forward = getTransform()->getForward();
+        glm::vec3 up = getTransform()->getUp();
 
-        // Target the camera is looking at
+        // Calculate the target position the camera is looking at
         glm::vec3 target = position + forward;
 
-        // Use glm::lookAt to create the view matrix
+        // Generate view matrix using glm::lookAt
         return glm::lookAt(position, target, up);
     }
 
     glm::mat4 Camera::getProjectionMatrix()
     {
-        float aspectRatio = 4.0f / 4.0f; // Adjust aspect ratio based on your window size
+        float aspectRatio = 4.0f / 4.0f; // Placeholder aspect ratio, should be updated dynamically
         return glm::perspective(glm::radians(m_fov), aspectRatio, m_nearClip, m_farClip);
     }
 
     void Camera::setFov(float fov)
     {
-        m_fov = fov;
+        m_fov = fov; // Set field of view
     }
 
     void Camera::setNearClip(float nearClip)
     {
-        m_nearClip = nearClip;
+        m_nearClip = nearClip; // Set near clipping plane
     }
 
     void Camera::setFarClip(float farClip)
     {
-        m_farClip = farClip;
+        m_farClip = farClip; // Set far clipping plane
     }
 }

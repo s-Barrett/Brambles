@@ -14,13 +14,9 @@ namespace Brambles
 {
 
 
-	
-
-
-
 	Gui::Gui()
 	{
-		meshCube();
+		meshCube(); //initializes the mesh functions
 		meshCircle();
 		meshTriangle();
 		meshStar();
@@ -42,7 +38,7 @@ namespace Brambles
 		guiShader->use();
 		guiShader->uniform("u_Model", guiModel);
 
-		guiShader->uniform("u_ViewPos", glm::vec3(0.4f , 0.1f, 0.9f));
+		guiShader->uniform("u_ViewPos", glm::vec3(0.0f, 0.1f, 0.9f));//Not accurate but will do for now
 
 		
 		glm::mat4 uiProjection = glm::ortho(0.0f, static_cast<float>(700), 0.0f, static_cast<float>(700), 0.0f, 1.0f);
@@ -50,7 +46,7 @@ namespace Brambles
 		guiShader->uniform("u_Projection", uiProjection);
 		guiShader->uniform("u_View", glm::mat4(1.0f));
 
-		glBindTexture(GL_TEXTURE_2D, _texture->getTexture()->id());
+		glBindTexture(GL_TEXTURE_2D, _texture->getTexture()->id());//binds the texture to the shader
 
 		guiShader->draw(_shape->getVAOId(), _shape->vertexCount());
 
@@ -78,7 +74,7 @@ namespace Brambles
 		return 0;
 	}
 
-	std::shared_ptr<rend::Mesh> Gui::meshCube()
+	std::shared_ptr<rend::Mesh> Gui::meshCube()//creates a cube mesh
 	{
 		std::shared_ptr<rend::Mesh> guiMeshCube = std::make_shared<rend::Mesh>();
 
@@ -103,7 +99,7 @@ namespace Brambles
 		return guiMeshCube;
 	}
 
-	std::shared_ptr<rend::Mesh> Gui::meshCircle()
+	std::shared_ptr<rend::Mesh> Gui::meshCircle()//creates a circle mesh
 	{
 		std::shared_ptr<rend::Mesh> guiMeshCircle = std::make_shared<rend::Mesh>();
 
@@ -133,7 +129,7 @@ namespace Brambles
 
 		return guiMeshCircle;
 	}
-	std::shared_ptr<rend::Mesh> Gui::meshTriangle()
+	std::shared_ptr<rend::Mesh> Gui::meshTriangle()//creates a triangle mesh
 	{
 		std::shared_ptr<rend::Mesh> guiMeshTriangle = std::make_shared<rend::Mesh>();
 
@@ -152,7 +148,7 @@ namespace Brambles
 		return guiMeshTriangle;
 	}
 
-	std::shared_ptr<rend::Mesh> Gui::meshStar()
+	std::shared_ptr<rend::Mesh> Gui::meshStar()//creates a star mesh
 	{
 		std::shared_ptr<rend::Mesh> guiMeshStar = std::make_shared<rend::Mesh>();
 

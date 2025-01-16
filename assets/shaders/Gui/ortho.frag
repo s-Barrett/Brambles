@@ -1,4 +1,5 @@
 uniform sampler2D u_Texture;
+
 varying vec2 v_TexCoord;
 
 varying vec3 v_Normal;

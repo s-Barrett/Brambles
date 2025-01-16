@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 
-namespace Brambles 
+namespace Brambles
 {
 
 	std::shared_ptr<Entity> Component::getEntity()
@@ -13,7 +13,6 @@ namespace Brambles
 		auto entity = m_entity.lock();
 		if (!entity) {
 			std::cerr << "Entity is null in getEntity()" << std::endl;
-			// Handle the error here to avoid exceptions later
 			throw std::runtime_error("Entity is null in getEntity()");
 		}
 		return entity;
@@ -25,6 +24,8 @@ namespace Brambles
 		if (!entity) {
 			throw std::runtime_error("Entity is null in getTransform()");
 		}
+
+		// Retrieve the Transform component from the entity
 		auto transform = entity->getComponent<Transform>();
 		if (!transform) {
 			throw std::runtime_error("Transform component is missing in getTransform()");
@@ -38,6 +39,8 @@ namespace Brambles
 		if (!entity) {
 			throw std::runtime_error("Entity is null in getGui()");
 		}
+
+		// Retrieve the GUI instance from the core system
 		auto gui = entity->getCore()->getGui();
 		if (!gui) {
 			throw std::runtime_error("Gui is missing in getGui()");
@@ -45,6 +48,7 @@ namespace Brambles
 		return gui;
 	}
 
+	// Position functions
 	glm::vec3 Component::getPosition()
 	{
 		return getTransform()->getPosition();
@@ -55,6 +59,7 @@ namespace Brambles
 		getTransform()->setPosition(_position);
 	}
 
+	// Rotation functions
 	glm::vec3 Component::getRotation()
 	{
 		return getTransform()->getRotation();
@@ -65,6 +70,7 @@ namespace Brambles
 		getTransform()->setRotation(rotation);
 	}
 
+	// Scale functions
 	glm::vec3 Component::getScale()
 	{
 		return getTransform()->getScale();
@@ -75,6 +81,7 @@ namespace Brambles
 		getTransform()->setScale(scale);
 	}
 
+	// Transformation operations
 	void Component::move(glm::vec3 move)
 	{
 		getTransform()->move(move);
@@ -87,10 +94,10 @@ namespace Brambles
 
 	void Component::scale(glm::vec3 scale)
 	{
-		getTransform()->scale(scale);  
+		getTransform()->scale(scale);
 	}
 
-
+	// GUI rendering function
 	void Component::gui()
 	{
 		auto entity = m_entity.lock();
@@ -102,6 +109,7 @@ namespace Brambles
 		onGui();
 	}
 
+	// Per-frame update function
 	void Component::tick()
 	{
 		auto entity = m_entity.lock();
@@ -113,6 +121,7 @@ namespace Brambles
 		onTick();
 	}
 
+	// Rendering function
 	void Component::render()
 	{
 		auto entity = m_entity.lock();
@@ -125,4 +134,3 @@ namespace Brambles
 	}
 
 }
-

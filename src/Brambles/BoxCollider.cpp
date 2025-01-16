@@ -4,53 +4,44 @@
 #include "DebugRenderer.h"
 #include "Core.h"
 
-
 namespace Brambles
 {
-
 	void BoxCollider::renderDebug()
 	{
 		if (debugRenderer == true)
 		{
+			// Ensure the entity has a DebugRenderer component
 			if (!getEntity()->hasComponent<DebugRenderer>())
 			{
 				getEntity()->addComponent<DebugRenderer>();
 			}
 
+			// Draw the box collider using the DebugRenderer
 			auto collider = getEntity()->getComponent<BoxCollider>();
 			if (collider)
 			{
-				getEntity()->getComponent<DebugRenderer>()->drawBoxCollider(collider, glm::vec3(1.0f, 0.0f, 0.0f));
+				getEntity()->getComponent<DebugRenderer>()->drawBoxCollider(collider, glm::vec3(1.0f, 0.0f, 0.0f)); // Red color
 			}
-
 		}
-		else
-		{
-
-		}
-	
 	}
 
 	void BoxCollider::onRender()
 	{
-		renderDebug();
-		
+		renderDebug(); // Call debug rendering
 	}
 
 	bool BoxCollider::isColliding(std::shared_ptr<BoxCollider> _other)
 	{
+		// Get the positions of both colliders with offsets
 		glm::vec3 a = getTransform()->getPosition() + m_offset;
 		glm::vec3 b = _other->getTransform()->getPosition() + _other->m_offset;
 
+		// Calculate half sizes for both colliders
 		glm::vec3 ahs = m_size / 2.0f;
 		glm::vec3 bhs = _other->m_size / 2.0f;
 
-		std::cout << "Entity 1 Position: " << a.x << ", " << a.y << ", " << a.z << std::endl;
-		std::cout << "Entity 2 Position: " << b.x << ", " << b.y << ", " << b.z << std::endl;
 
-
-
-
+		// AABB collision check
 		if (a.x > b.x)
 		{
 			if (b.x + bhs.x < a.x - ahs.x)
@@ -96,8 +87,6 @@ namespace Brambles
 			}
 		}
 
-
-		return true;
+		return true; // Collision detected
 	}
-
 }

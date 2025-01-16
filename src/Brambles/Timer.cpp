@@ -1,4 +1,4 @@
-#include <ctime> // Ensure you include this for clock()
+#include <ctime> 
 
 #include "Timer.h"
 
@@ -11,7 +11,6 @@ namespace Brambles
         m_startTime = 0;
         m_stopTime = 0;
         m_pausedTime = 0;
-        m_lastFrameTime = 0; // Initialize last frame time
         m_paused = false;
         m_stopped = true;
     }
@@ -25,7 +24,7 @@ namespace Brambles
             m_stopped = false;
             m_paused = false;
             m_startTime = clock();
-            m_lastFrameTime = m_startTime; // Initialize last frame time when the timer starts
+            m_lastFrameTime = m_startTime; 
         }
     }
 
@@ -80,14 +79,14 @@ namespace Brambles
 
     float Timer::getDeltaTime()
     {
-        static float previousDeltaTime = 0.016f; // Assume ~60 FPS as the default
+        static float previousDeltaTime = 0.016f; // 60fps
         clock_t currentTime = clock();
         float deltaTime = (float)(currentTime - m_lastFrameTime) / CLOCKS_PER_SEC;
         m_lastFrameTime = currentTime;
 
-        // Smooth using a moving average
+
         deltaTime = 0.9f * previousDeltaTime + 0.1f * deltaTime;
-        previousDeltaTime = deltaTime;
+        previousDeltaTime = deltaTime; //Smoothing
 
         return deltaTime;
     }
