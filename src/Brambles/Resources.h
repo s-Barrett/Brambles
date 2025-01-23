@@ -1,11 +1,11 @@
+#include "Resource.h"
 
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
+#include <memory>
 
 namespace Brambles
 {
-    struct Resource;
-
     /**
      * @brief Handles loading and caching of resources.
      */

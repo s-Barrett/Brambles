@@ -1,7 +1,9 @@
 
-#include "iostream"
 #include "../Resource.h"
 #include "rend/rend.h"
+
+#include <iostream>
+#include <memory>
 
 namespace Brambles
 {

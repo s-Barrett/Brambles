@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <gl/glew.h>
+#include <GL/glew.h>
 #include <string>
 
 namespace rend

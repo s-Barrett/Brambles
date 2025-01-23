@@ -43,6 +43,6 @@ namespace Brambles
          */
         std::shared_ptr<rend::Mesh> generateBoxMesh(const glm::vec3& size);
 
-        std::shared_ptr<rend::Shader> debugShader = std::make_shared<rend::Shader>("../assets/shaders/Debug/debug.vert", "../assets/shaders/Debug/debug.frag");
+        std::shared_ptr<rend::Shader> debugShader = std::make_shared<rend::Shader>("../assets/shaders/debug/debug.vert", "../assets/shaders/debug/debug.frag");
     };
 }

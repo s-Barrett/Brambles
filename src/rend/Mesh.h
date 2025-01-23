@@ -3,7 +3,7 @@
 #define MESH_HPP
 
 #include <vector>
-#include <gl/glew.h>
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 
 namespace rend

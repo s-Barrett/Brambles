@@ -5,7 +5,11 @@
 #include "../Entity.h"
 #include "../Input.h"
 
-#include <Windows.h>
+#ifdef _WIN32
+  // TODO: Doe we need this?
+  #include <Windows.h>
+#endif
+
 #include <iostream>
 #include <SDL2/SDL.h>
 

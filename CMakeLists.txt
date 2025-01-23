@@ -1,18 +1,31 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
-
 project(BRAMBLES)
 
-
-
+if(MSVC)
 include_directories(
  src
  contrib/cl-windows-x86_64/include
  contrib/include
 )
-
 link_directories(
  ${PROJECT_SOURCE_DIR}/contrib/cl-windows-x86_64/lib
 )
+set(LIBGLEW glew32)
+set(LIBGL opengl32)
+set(LIBAL openal32)
+else()
+include_directories(
+ /usr/include
+ src
+ contrib/include
+)
+#link_directories(
+# ${PROJECT_SOURCE_DIR}/contrib/cl-windows-x86_64/lib
+#)
+set(LIBGLEW GLEW)
+set(LIBGL GL)
+set(LIBAL openal)
+endif()
 
 add_library(rend
  src/rend/rend.h
@@ -29,8 +42,7 @@ add_library(rend
  src/rend/Texture.h
  src/rend/Texture.cpp
 )
-target_link_libraries(rend SDL2 SDL2main GLEW32 OpenGL32)
-
+target_link_libraries(rend SDL2 SDL2main ${LIBGLEW} ${LIBGL})
 
 add_library(Brambles
 	src/Brambles/Brambles.h
@@ -79,14 +91,10 @@ add_library(Brambles
 	src/Brambles/Resources/Model.h
 	src/Brambles/Resources/Model.cpp
 )
-
-target_link_libraries(Brambles rend)
+target_link_libraries(Brambles rend ${LIBAL})
 
 add_executable(demo
-	src/demo/main.cpp
-
-	
+  src/demo/main.cpp
 )
-target_link_libraries(Brambles openal32)
 target_link_libraries(demo Brambles)
 

@@ -12,7 +12,10 @@
 #include "../Resources.h"
 #include "../Input.h"
 
-#include <Windows.h>
+#ifdef _WIN32
+  #include <Windows.h>
+#endif
+
 #include <iostream>
 #include <SDL2/SDL.h>
 
@@ -39,7 +42,7 @@ namespace Brambles
 		{
 			if (getEntity()->getCore()->getInput()->isKey(SDLK_f))
 			{
-				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/Gui/ortho.vert", "../assets/shaders/Gui/ortho.frag"); //loading shaders for the buttons
+				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/gui/ortho.vert", "../assets/shaders/gui/ortho.frag"); //loading shaders for the buttons
 				getGui()->setGuiShader(orthoShader);
 				getGui()->button(glm::vec2(80, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
 				getGui()->button(glm::vec2(285, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCircle());
@@ -48,7 +51,7 @@ namespace Brambles
 			}
 			else
 			{
-				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/Gui/fun.vert", "../assets/shaders/Gui/fun.frag");// loading another shader for the buttons
+				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/gui/fun.vert", "../assets/shaders/gui/fun.frag");// loading another shader for the buttons
 				getGui()->setGuiShader(orthoShader);
 				getGui()->button(glm::vec2(80, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
 				getGui()->button(glm::vec2(285, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCircle());

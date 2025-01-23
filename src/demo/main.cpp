@@ -44,8 +44,6 @@ using namespace Brambles;
 
 int main(int argc, char* argv[])
 {
-	CameraController;
-
 	std::shared_ptr<Core> core = Core::initialize();
 	
 
