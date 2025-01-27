@@ -46,6 +46,7 @@ namespace Brambles
     {
         auto transform = getTransform();
         float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
+        std::cout << "Delta time: " << timeDelta << std::endl;
 
 
         // Unlock mouse when Escape is pressed
