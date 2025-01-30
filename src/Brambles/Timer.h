@@ -1,7 +1,4 @@
-
-#include<time.h>
-#include<stdlib.h>
-#include<stdio.h>
+#include <chrono>
 #include "Component.h"
 
 namespace Brambles
@@ -12,8 +9,16 @@ namespace Brambles
     class Timer : public Component
     {
     public:
-        Timer();  /**< Constructor */
-        ~Timer(); /**< Destructor */
+        Timer()
+            : m_startTime(std::chrono::steady_clock::now()),
+              m_stopTime(std::chrono::steady_clock::now()),
+              m_lastFrameTime(std::chrono::steady_clock::now()),
+              m_pausedTime(std::chrono::duration<float>::zero()),
+              m_deltaTime(0.0f),
+              m_paused(false),
+              m_stopped(true) {} /**< Constructor */
+
+        ~Timer() {} /**< Destructor */
 
         void start();   /**< Starts the timer */
         void stop();    /**< Stops the timer */
@@ -23,10 +28,11 @@ namespace Brambles
         float getDeltaTime();   /**< Returns time between frames */
 
     private:
-        clock_t m_startTime; /**< Start time */
-        clock_t m_stopTime;  /**< Stop time */
-        clock_t m_pausedTime; /**< Paused time */
-        clock_t m_lastFrameTime; /**< Last frame time */
+        std::chrono::steady_clock::time_point m_startTime; /**< Start time */
+        std::chrono::steady_clock::time_point m_stopTime;  /**< Stop time */
+        std::chrono::steady_clock::time_point m_lastFrameTime; /**< Last frame time */
+        std::chrono::duration<float> m_pausedTime; /**< Paused time */
+        float m_deltaTime; /**< Delta time */
         bool m_paused; /**< Timer paused flag */
         bool m_stopped; /**< Timer stopped flag */
     };

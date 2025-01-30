@@ -147,6 +147,8 @@ namespace Brambles
 
 			glEnable(GL_DEPTH_TEST);
 
+			getTimer()->update();
+
 			// Swap buffers to display the rendered frame
 			SDL_GL_SwapWindow(m_window->m_raw);
 		}
