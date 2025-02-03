@@ -56,7 +56,7 @@ namespace Brambles
          * @brief Sets the scale of the entity.
          * @param scale The new scale factor.
          */
-        void setScale(const glm::vec3& scale) { m_scale = scale; }
+        void scale(const glm::vec3& scale) { m_scale = scale; }
 
         /**
          * @brief Gets the current scale of the entity.

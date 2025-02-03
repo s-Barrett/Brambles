@@ -54,10 +54,6 @@ namespace Brambles
 		return getTransform()->getPosition();
 	}
 
-	void Component::setPosition(glm::vec3 _position)
-	{
-		getTransform()->setPosition(_position);
-	}
 
 	// Rotation functions
 	glm::vec3 Component::getRotation()
@@ -65,10 +61,6 @@ namespace Brambles
 		return getTransform()->getRotation();
 	}
 
-	void Component::setRotation(glm::vec3 rotation)
-	{
-		getTransform()->setRotation(rotation);
-	}
 
 	// Scale functions
 	glm::vec3 Component::getScale()
@@ -76,23 +68,20 @@ namespace Brambles
 		return getTransform()->getScale();
 	}
 
-	void Component::setScale(glm::vec3 scale)
-	{
-		getTransform()->setScale(scale);
-	}
+
 
 	// Transformation operations
-	void Component::move(glm::vec3 move)
+	void Component::setMove(glm::vec3 move)
 	{
 		getTransform()->move(move);
 	}
 
-	void Component::rotate(glm::vec3 rotate)
+	void Component::setRotate(glm::vec3 rotate)
 	{
 		getTransform()->rotate(rotate);
 	}
 
-	void Component::scale(glm::vec3 scale)
+	void Component::setScale(glm::vec3 scale)
 	{
 		getTransform()->scale(scale);
 	}

@@ -44,25 +44,24 @@ namespace Brambles
 
         void setPosition(glm::vec3 position);
         void setRotation(glm::vec3 rotation);
-        void setScale(glm::vec3 scale);
 
         /**
          * @brief Moves the component by the given vector.
          * @param move The vector by which to move the component.
          */
-        void move(glm::vec3 move);
+        void setMove(glm::vec3 move);
 
         /**
          * @brief Rotates the component by the given vector.
          * @param rotate The vector by which to rotate the component.
          */
-        void rotate(glm::vec3 rotate);
+        void setRotate(glm::vec3 rotate);
 
         /**
          * @brief Scales the component by the given vector.
          * @param scale The vector by which to scale the component.
          */
-        void scale(glm::vec3 scale);
+        void setScale(glm::vec3 scale);
 
     private:
         friend struct Brambles::Entity;

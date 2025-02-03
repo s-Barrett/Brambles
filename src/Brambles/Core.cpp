@@ -121,6 +121,8 @@ namespace Brambles
 				}
 			}
 
+			getTimer()->update();
+
 			// Update all entities
 			for (size_t ei = 0; ei < m_entities.size(); ++ei)
 			{
@@ -147,7 +149,7 @@ namespace Brambles
 
 			glEnable(GL_DEPTH_TEST);
 
-			getTimer()->update();
+
 
 			// Swap buffers to display the rendered frame
 			SDL_GL_SwapWindow(m_window->m_raw);
