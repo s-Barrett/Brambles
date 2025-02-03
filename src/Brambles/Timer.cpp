@@ -22,7 +22,7 @@ namespace Brambles
         m_deltaTime = std::chrono::duration<float>(currentTime - m_lastFrameTime).count();
         m_lastFrameTime = currentTime;
 
-        const float fixedTimeStep = 1.0f / 60.0f; // 60 FPS target
+        const float fixedTimeStep = 1.0f / 240.0f; // 60 FPS target
         m_accumulator += m_deltaTime;
 
         while (m_accumulator >= fixedTimeStep)
