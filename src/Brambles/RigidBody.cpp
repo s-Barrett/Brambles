@@ -18,15 +18,19 @@
 
 namespace Brambles
 {
+   
 
-    void RigidBody::collisionResponse(std::shared_ptr<BoxCollider> _collider, std::shared_ptr<BoxCollider>  _other)
+    void RigidBody::collisionResponse(std::shared_ptr<BoxCollider> _collider, std::shared_ptr<BoxCollider> _other)
     {
-		glm::vec3 posA = getTransform()->getPosition(); // Get the position of the collider
-		glm::vec3 posB = _other->getTransform()->getPosition(); // Get the position of the other collider
+        // Get positions of both colliders
+        glm::vec3 posA = getTransform()->getPosition() + _collider->getOffset();
+        glm::vec3 posB = _other->getTransform()->getPosition() + _other->getOffset();
 
+        // Get half-sizes of both colliders
         glm::vec3 sizeA = _collider->getSize() / 2.0f;
         glm::vec3 sizeB = _other->getSize() / 2.0f;
 
+        // Calculate the overlap between the two colliders
         glm::vec3 delta = posA - posB;
         glm::vec3 overlap = glm::vec3(
             sizeA.x + sizeB.x - abs(delta.x),
@@ -34,35 +38,82 @@ namespace Brambles
             sizeA.z + sizeB.z - abs(delta.z)
         );
 
+        // Get the masses of the two objects
+        float massA = getMass();
+        float massB = _other->getEntity()->getComponent<RigidBody>()->getMass();
+
+        // Calculate the ratio of mass distribution
+        float totalMass = massA + massB;
+        float ratioA = massB / totalMass; // How much object A should move
+        float ratioB = massA / totalMass; // How much object B should move
+
+        // Determine the minimum overlap axis (x, y, or z)
         if (overlap.x < overlap.y && overlap.x < overlap.z)
         {
-			posA.x += (delta.x > 0) ? overlap.x : -overlap.x;
-            posB.x += (delta.x > 0) ? -overlap.x : overlap.x;
+            // Resolve collision on the X axis
+            if (!_other->getEntity()->getComponent<RigidBody>()->getIsStatic())
+            {
+                // Move both objects based on their mass ratios
+                posA.x += (delta.x > 0) ? overlap.x * ratioA : -overlap.x * ratioA;
+                posB.x += (delta.x > 0) ? -overlap.x * ratioB : overlap.x * ratioB;
+
+                // Update positions
+                getTransform()->setPosition(posA - _collider->getOffset());
+                _other->getTransform()->setPosition(posB - _other->getOffset());
+            }
         }
         else if (overlap.y < overlap.z)
         {
-            posA.y += (delta.y > 0) ? overlap.y : -overlap.y;
-            posB.y += (delta.y > 0) ? -overlap.y : overlap.y;
-
-
-            if (delta.y < 0)  
+            // Resolve collision on the Y axis
+            if (!_other->getEntity()->getComponent<RigidBody>()->getIsStatic())
             {
-				m_velocity.y = 0.0f; 
+                // Move both objects based on their mass ratios
+                posA.y += (delta.y > 0) ? overlap.y * ratioA : -overlap.y * ratioA;
+                posB.y += (delta.y > 0) ? -overlap.y * ratioB : overlap.y * ratioB;
+
+                // Update positions
+                getTransform()->setPosition(posA - _collider->getOffset());
+                _other->getTransform()->setPosition(posB - _other->getOffset());
+
+                // Stop vertical velocity if colliding from above
+                if (delta.y < 0)
+                {
+                    m_velocity.y = 0.0f;
+                }
             }
         }
         else
         {
-            posA.z += (delta.z > 0) ? overlap.z : -overlap.z;
-			posB.z += (delta.z > 0) ? -overlap.z : overlap.z;// This pushes the rigid body back
+            // Resolve collision on the Z axis
+            if (!_other->getEntity()->getComponent<RigidBody>()->getIsStatic())
+            {
+                // Move both objects based on their mass ratios
+                posA.z += (delta.z > 0) ? overlap.z * ratioA : -overlap.z * ratioA;
+                posB.z += (delta.z > 0) ? -overlap.z * ratioB : overlap.z * ratioB;
+
+                // Update positions
+                getTransform()->setPosition(posA - _collider->getOffset());
+                _other->getTransform()->setPosition(posB - _other->getOffset());
+            }
         }
-        _other->getTransform()->setPosition(posB);
-        getTransform()->setPosition(posA);
     }
 
 
 
     void RigidBody::onTick()
     {
+
+        if (m_isStatic == true)
+        {
+            getTransform()->setPosition(getPosition());
+            m_gravity = glm::vec3(0.0f, 0.0f, 0.0f); // Setting gravity to 0
+			m_velocity = glm::vec3(0.0f, 0.0f, 0.0f); // Setting velocity to 0
+		}
+        else
+        {
+            m_gravity = glm::vec3(0.0f, -9.8f, 0.0f); // Setting gravity to defult
+        }
+
         std::vector<std::shared_ptr<BoxCollider>> boxColliders;
 		getEntity()->getCore()->seekComponents(boxColliders);// Seeking all the box colliders
 
@@ -85,7 +136,7 @@ namespace Brambles
 		
         float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
 
-        m_velocity += m_gravity * timeDelta;// Adding grav but is set to 0 right now
+        m_velocity += m_gravity * timeDelta;// Adding grav
 
         glm::vec3 newPos = getTransform()->getPosition() + m_velocity * timeDelta;
         getTransform()->setPosition(newPos);

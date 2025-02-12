@@ -11,6 +11,8 @@
 #include "../Resources/Texture.h"
 #include "../Resources.h"
 #include "../Input.h"
+#include "../BoxCollider.h"
+#include "../RigidBody.h"
 
 #ifdef _WIN32
   #include <Windows.h>
@@ -65,6 +67,7 @@ namespace Brambles
 	void PlayerController::handleKeyboardInput()
 	{
 		auto transform = getTransform();
+		auto rigidBody = getEntity()->getComponent<RigidBody>();
 
 		float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();//gets the time delta
 
@@ -87,7 +90,8 @@ namespace Brambles
 		}
 		if (getEntity()->getCore()->getInput()->isKey(SDLK_SPACE)) 
 		{
-			getTransform()->setPosition(playerStart);//sets the player back to the start(0, 0, 0)
+			transform->move(transform->getUp() * movementSpeed * timeDelta);//sets the player back to the start(0, 0, 0)
+			rigidBody->setVelocity(glm::vec3(0.0f, -10.0f, 0.0f));
 		}
 	}
 }

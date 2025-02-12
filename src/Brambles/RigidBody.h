@@ -50,9 +50,14 @@ namespace Brambles
          */
         glm::vec3 getVelocity() const { return m_velocity; }
 
+		void setIsStatic(bool _isStatic) { m_isStatic = _isStatic; }
+
+		bool getIsStatic() const { return m_isStatic; }
+
     private:
 
-        const glm::vec3 m_gravity = glm::vec3(0.0f, 0.0f, 0.0f);
+		bool m_isStatic = false;
+        glm::vec3 m_gravity = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 m_velocity = glm::vec3(0.0f);
         float m_mass = 10.0f;
     };

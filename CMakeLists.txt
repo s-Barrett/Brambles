@@ -83,13 +83,14 @@ add_library(Brambles
 	src/Brambles/Resource.h
 	src/Brambles/Resource.cpp
 	src/Brambles/Resources.h
-	src/Brambles/Resources.cpp
 	src/Brambles/Resources/Audio.h
 	src/Brambles/Resources/Audio.cpp
 	src/Brambles/Resources/Texture.h
 	src/Brambles/Resources/Texture.cpp
 	src/Brambles/Resources/Model.h
 	src/Brambles/Resources/Model.cpp
+	src/Brambles/Resources/Shader.cpp
+	src/Brambles/Resources/Shader.h
 )
 target_link_libraries(Brambles rend ${LIBAL})
 

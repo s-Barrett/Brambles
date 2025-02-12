@@ -48,21 +48,66 @@ int main(int argc, char* argv[])
 	
 
 	std::shared_ptr<Entity> map = core->addEntity();
-	map->addComponent<Transform>();
-	std::shared_ptr<Renderer> mapp = map->addComponent<Renderer>();
+	std::shared_ptr<Renderer> mapRenderer = map->addComponent<Renderer>();
 
-	mapp->setTexture(core->getResources()->load<Texture>("../assets/map/map2.png"));
-	mapp->setModel(core->getResources()->load<Model>("../assets/map/map.obj"));
+	mapRenderer->setTexture(core->getResources()->load<Texture>("../assets/map/map2.png"));
+	mapRenderer->setModel(core->getResources()->load<Model>("../assets/map/map.obj"));
 
-	map->getComponent<Transform>()->setPosition(glm::vec3(0, 15, 20.0));
-	map->getComponent<Transform>()->setScale(glm::vec3(10, 10, 10));
+	map->getComponent<Transform>()->setPosition(glm::vec3(0, 15, 20.0)); 
+	map->getComponent<Transform>()->setScale(glm::vec3(10, 10, 10)); 
 
-	std::shared_ptr<BoxCollider> mbc = map->addComponent<BoxCollider>();
-	map->getComponent<BoxCollider>()->setOffset(glm::vec3(0.0, 0.0, 0.0));
-	mbc->setDebugRenderer(true);
-	mbc->setSize(glm::vec3(20.0, 2.0, 20.0));
-	mbc->setOffset(glm::vec3(0.0, -26.0, -40.0));
+
+	std::shared_ptr<BoxCollider> mapBoxCollider = map->addComponent<BoxCollider>();
+	mapBoxCollider->setOffset(glm::vec3(0.0, 0.0, 0.0));
+	mapBoxCollider->setDebugRenderer(true);
+	mapBoxCollider->setSize(glm::vec3(20.0, 2.0, 20.0));
+	mapBoxCollider->setOffset(glm::vec3(0.0, -23.0, -40.0));
+
+	std::shared_ptr<RigidBody> mapRigidBody = map->addComponent<RigidBody>();
+	mapRigidBody->setMass(1000000000.0);
+	mapRigidBody->setIsStatic(true);
+
+
 	
+
+
+	std::shared_ptr<Entity> player = core->addEntity();
+	std::shared_ptr<Renderer> playerRenderer = player->addComponent<Renderer>();
+
+	playerRenderer->setModel(core->getResources()->load<Model>("../assets/objects/walter/walter.obj"));	
+	playerRenderer->setTexture(core->getResources()->load<Texture>("../assets/objects/walter/skycull.png"));
+
+	player->getComponent<Transform>()->setPosition(glm::vec3(0, -8, -20));
+	player->getComponent<Transform>()->setScale(glm::vec3(5.0, 5.0, 5.0));
+	player->addComponent<PlayerController>();
+
+	std::shared_ptr<BoxCollider> playerBoxCollider = player->addComponent<BoxCollider>();
+	playerBoxCollider->setDebugRenderer(true);
+	playerBoxCollider->setSize(glm::vec3(4.0, 7.0, 4.0));
+	playerBoxCollider->setOffset(glm::vec3(0.0, 5.0, 0.0));
+	std::shared_ptr<RigidBody> playerRigidBody = player->addComponent<RigidBody>();
+	playerRigidBody->setMass(10.0);
+
+
+	std::shared_ptr<Entity> entity = core->addEntity();
+	std::shared_ptr<Renderer> entityRenderer = entity->addComponent<Renderer>();
+
+	entityRenderer->setModel(core->getResources()->load<Model>("../assets/objects/walter/walter.obj"));
+	entityRenderer->setTexture(core->getResources()->load<Texture>("../assets/objects/walter/skycull.png"));
+
+	entity->getComponent<Transform>()->setPosition(glm::vec3(-10, -8, -20));
+	entity->getComponent<Transform>()->setScale(glm::vec3(5.0, 5.0, 5.0));
+
+
+	std::shared_ptr<BoxCollider> entityBoxCollider = entity->addComponent<BoxCollider>();
+	entityBoxCollider->setDebugRenderer(true);
+	entityBoxCollider->setSize(glm::vec3(4.0, 7.0, 4.0));
+	entityBoxCollider->setOffset(glm::vec3(0.0, 5.0, 0.0));
+	std::shared_ptr<RigidBody> entityRigidBody = entity->addComponent<RigidBody>();
+	entityRigidBody->setMass(100.0);
+	
+
+
 
 	std::shared_ptr<Entity> camera = core->addEntity();
 	camera->addComponent<Camera>();
@@ -70,46 +115,6 @@ int main(int argc, char* argv[])
 	camera->getComponent<Camera>()->setFov(90.0);
 
 
-	std::shared_ptr<Entity> entity = core->addEntity();
-	entity->addComponent<PlayerController>();
-	entity->addComponent<Transform>();
-	entity->getComponent<Transform>()->setScale(glm::vec3(5, 5, 5));
-	entity->getComponent<Transform>()->setPosition(glm::vec3(2, -9, -25.0));
-
-
-	std::shared_ptr<BoxCollider> ebc = entity->addComponent<BoxCollider>();
-	entity->addComponent<RigidBody>();
-	entity->getComponent<RigidBody>()->setMass(10.0);
-	ebc->setDebugRenderer(true);
-	ebc->setOffset(glm::vec3(0.0, 4.0, 0.0));
-	ebc->setSize(glm::vec3(3.0, 6.5, 3.0));
-
-	std::shared_ptr<Renderer> entityRender = entity->addComponent<Renderer>();
-
-	entityRender->setTexture(core->getResources()->load<Texture>("../assets/objects/walter/skycull.png"));
-	entityRender->setModel(core->getResources()->load<Model>("../assets/objects/walter/walter.obj"));
-
-	std::shared_ptr<AudioSource> sound = entity->addComponent<AudioSource>();
-	sound->setSound(core->getResources()->load<Sound>("../assets/sounds/halflife/hellofreeman"));
-	sound->play();
-
-
-	std::shared_ptr<Entity> entity2 = core->addEntity();
-	entity2->addComponent<Transform>();
-	entity2->getComponent<Transform>()->setScale(glm::vec3(0.1, 0.1, 0.1));
-	entity2->getComponent<Transform>()->setPosition(glm::vec3(10, -9, -20.0));
-
-	std::shared_ptr<BoxCollider> ebc2 = entity2->addComponent<BoxCollider>();
-	entity2->addComponent<RigidBody>();
-	entity2->getComponent<RigidBody>()->setMass(5.0);
-	ebc2->setDebugRenderer(true);
-	ebc2->setOffset(glm::vec3(0.0, 1.0, 0.0));
-	ebc2->setSize(glm::vec3(3.0, 3.0, 3.0));
-
-	std::shared_ptr<Renderer> entityRender2 = entity2->addComponent<Renderer>();
-
-	entityRender2->setTexture(core->getResources()->load<Texture>("../assets/objects/headcrab/headcrab.png"));
-	entityRender2->setModel(core->getResources()->load<Model>("../assets/objects/headcrab/headcrab.obj"));
 	
 
 	core->run();
