@@ -11,6 +11,7 @@ namespace Brambles
     struct Window;
     struct Input;
     struct Camera;
+	struct Shader;
     struct Audio;
     struct Timer;
     struct Screen;
@@ -29,6 +30,8 @@ namespace Brambles
         void run();
         void stop();
 
+
+		std::shared_ptr<Shader> setShader(std::string _path);
         /**
          * @brief Adds a new entity to the core.
          * @return A shared pointer to the newly added entity.
@@ -98,6 +101,7 @@ namespace Brambles
         std::shared_ptr<Input> m_input;
         std::shared_ptr<Camera> m_camera;
         std::shared_ptr<Timer> m_timer;
+        std::shared_ptr<Shader> m_shader;
 
         std::vector<std::shared_ptr<Entity>> m_entities;
 

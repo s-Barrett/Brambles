@@ -55,10 +55,10 @@ namespace Brambles
 		bool getIsStatic() const { return m_isStatic; }
 
     private:
-
+        bool m_isGrounded = false; // Flag to track if the object is grounded
 		bool m_isStatic = false;
-        glm::vec3 m_gravity = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::vec3 m_gravity = glm::vec3(0.0f, 9.8f, 0.0f);
         glm::vec3 m_velocity = glm::vec3(0.0f);
-        float m_mass = 10.0f;
+        float m_mass = 1.0f;
     };
 }

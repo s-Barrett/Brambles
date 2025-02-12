@@ -53,6 +53,7 @@ namespace Brambles
 		return rtn;
 	}
 
+
 	// Retrieves the first Timer component in the scene
 	std::shared_ptr<Timer> Core::getTimer()
 	{

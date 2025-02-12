@@ -78,7 +78,7 @@ namespace Brambles
                 // Stop vertical velocity if colliding from above
                 if (delta.y < 0)
                 {
-                    m_velocity.y = 0.0f;
+                    m_velocity.y = 0.0f; // Reset vertical velocity
                 }
             }
         }
@@ -99,48 +99,54 @@ namespace Brambles
     }
 
 
-
     void RigidBody::onTick()
     {
-
-        if (m_isStatic == true)
+        if (m_isStatic)
         {
             getTransform()->setPosition(getPosition());
             m_gravity = glm::vec3(0.0f, 0.0f, 0.0f); // Setting gravity to 0
-			m_velocity = glm::vec3(0.0f, 0.0f, 0.0f); // Setting velocity to 0
-		}
+            m_velocity = glm::vec3(0.0f, 0.0f, 0.0f); // Setting velocity to 0
+        }
         else
         {
-            m_gravity = glm::vec3(0.0f, -9.8f, 0.0f); // Setting gravity to defult
+            m_gravity = glm::vec3(0.0f, -20.8f, 0.0f); // Setting gravity to default
         }
 
         std::vector<std::shared_ptr<BoxCollider>> boxColliders;
-		getEntity()->getCore()->seekComponents(boxColliders);// Seeking all the box colliders
+        getEntity()->getCore()->seekComponents(boxColliders); // Seeking all the box colliders
+
+        bool isGrounded = false; // Flag to track if the object is grounded
 
         for (auto boxCollider : boxColliders)
         {
-			if (boxCollider->getTransform() == getTransform())// If the box collider is self, skip
+            if (boxCollider->getTransform() == getTransform()) // If the box collider is self, skip
                 continue;
-        
-			auto myCollider = getEntity()->getComponent<BoxCollider>();// If the other box collider is self, skip
+
+            auto myCollider = getEntity()->getComponent<BoxCollider>(); // If the other box collider is self, skip
             if (!myCollider) continue;
 
-			if (boxCollider->isColliding(myCollider))// If the box colliders are colliding
+            if (boxCollider->isColliding(myCollider)) // If the box colliders are colliding
             {
-				collisionResponse(myCollider, boxCollider);// Call the collision response
+                collisionResponse(myCollider, boxCollider); // Call the collision response
+
+                // Check if the collision is on the Y axis (ground collision)
+                glm::vec3 delta = getTransform()->getPosition() - boxCollider->getTransform()->getPosition();
+                if (delta.y < 0)
+                {
+                    isGrounded = true; // Object is grounded
+                }
             }
-
-
         }
 
-		
         float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
 
-        m_velocity += m_gravity * timeDelta;// Adding grav
+        if (!isGrounded)
+        {
+            m_velocity += m_gravity * timeDelta; // Apply gravity only if not grounded
+        }
 
         glm::vec3 newPos = getTransform()->getPosition() + m_velocity * timeDelta;
         getTransform()->setPosition(newPos);
-
     }
 
 }

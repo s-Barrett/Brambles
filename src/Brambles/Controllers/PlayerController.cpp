@@ -4,6 +4,7 @@
 #include "../Gui.h"
 #include "../Transform.h"
 #include "../Entity.h"
+#include "../Resources/Shader.h"
 #include "../Component.h"
 #include "../Window.h"
 #include "../Camera.h"
@@ -33,35 +34,13 @@ namespace Brambles
 
 	void PlayerController::onGui()
 	{
-	
-
-
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_LSHIFT))
-		{
-			getGui()->button(glm::vec2(650, 650), glm::vec2(600, 600), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshStar());//Creates a button this one covers the size of the screen on keypress LSHIFT
-		}
-		else
-		{
-			if (getEntity()->getCore()->getInput()->isKey(SDLK_f))
-			{
-				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/gui/ortho.vert", "../assets/shaders/gui/ortho.frag"); //loading shaders for the buttons
-				getGui()->setGuiShader(orthoShader);
-				getGui()->button(glm::vec2(80, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
-				getGui()->button(glm::vec2(285, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCircle());
-				getGui()->button(glm::vec2(450, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshTriangle());
-				getGui()->button(glm::vec2(650, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshStar()); //displaying all button types
-			}
-			else
-			{
-				std::shared_ptr<rend::Shader> orthoShader = std::make_shared<rend::Shader>("../assets/shaders/gui/fun.vert", "../assets/shaders/gui/fun.frag");// loading another shader for the buttons
-				getGui()->setGuiShader(orthoShader);
-				getGui()->button(glm::vec2(80, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
-				getGui()->button(glm::vec2(285, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCircle());
-				getGui()->button(glm::vec2(450, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshTriangle());
-				getGui()->button(glm::vec2(650, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshStar());
-			}
-		}
-
+		std::shared_ptr<Brambles::Shader> orthoShader = getEntity()->getCore()->getResources()->load<Brambles::Shader>("../assets/shaders/gui/ortho");
+		getGui()->setGuiShader(orthoShader->getShader());
+		getGui()->button(glm::vec2(80, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
+		getGui()->button(glm::vec2(285, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCircle());
+		getGui()->button(glm::vec2(450, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshTriangle());
+		getGui()->button(glm::vec2(650, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshStar()); //displaying all button types
+		
 	}
 
 	void PlayerController::handleKeyboardInput()

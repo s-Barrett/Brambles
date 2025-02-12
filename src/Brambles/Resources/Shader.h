@@ -1,7 +1,7 @@
 
-
-#include <rend/rend.h>
 #include "../Resource.h"
+#include <rend/rend.h>
+#include <memory>
 
 namespace Brambles
 {
@@ -21,11 +21,7 @@ namespace Brambles
          * @brief Gets the loaded shader.
          * @return A shared pointer to the shader.
          */
-        std::shared_ptr<rend::Shader> getShader()
-        {
-            return m_shader;
-        }
-
+        std::shared_ptr<rend::Shader> getShader();
 
     private:
         friend struct Brambles::Renderer;
