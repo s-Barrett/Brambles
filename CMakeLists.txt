@@ -45,58 +45,58 @@ add_library(rend
 )
 target_link_libraries(rend SDL2 SDL2main ${LIBGLEW} ${LIBGL})
 
-add_library(brambles
-	src/brambles/Brambles.h
-	src/brambles/Core.cpp
-	src/brambles/Entity.cpp
-	src/brambles/Window.h
-	src/brambles/Window.cpp
-	src/brambles/Core.h
-	src/brambles/Entity.h
-	src/brambles/Component.h
-	src/brambles/Component.cpp
-	src/brambles/Renderer.cpp
-	src/brambles/Renderer.h
-	src/brambles/Controllers/CameraController.h
-	src/brambles/Controllers/CameraController.cpp
-	src/brambles/Controllers/PlayerController.h
-	src/brambles/Controllers/PlayerController.cpp
-	src/brambles/Transform.h
-	src/brambles/Transform.cpp
-	src/brambles/AudioSource.h
-	src/brambles/AudioSource.cpp
-	src/brambles/BoxCollider.h
-	src/brambles/BoxCollider.cpp
-	src/brambles/RigidBody.h
-	src/brambles/RigidBody.cpp
-	src/brambles/Timer.h 
-	src/brambles/Timer.cpp
-	src/brambles/Gui.h 
-	src/brambles/Gui.cpp
-	src/brambles/DebugRenderer.h
-	src/brambles/DebugRenderer.cpp
-	src/brambles/Sound.h
-	src/brambles/Sound.cpp
-	src/brambles/Camera.h
-	src/brambles/Camera.cpp
-	src/brambles/Input.h
-	src/brambles/Input.cpp
-	src/brambles/Resource.h
-	src/brambles/Resource.cpp
-	src/brambles/Resources.h
-	src/brambles/Resources/Audio.h
-	src/brambles/Resources/Audio.cpp
-	src/brambles/Resources/Texture.h
-	src/brambles/Resources/Texture.cpp
-	src/brambles/Resources/Model.h
-	src/brambles/Resources/Model.cpp
-	src/brambles/Resources/Shader.cpp
-	src/brambles/Resources/Shader.h
+add_library(Brambles
+	src/Brambles/Brambles.h
+	src/Brambles/Core.cpp
+	src/Brambles/Entity.cpp
+	src/Brambles/Window.h
+	src/Brambles/Window.cpp
+	src/Brambles/Core.h
+	src/Brambles/Entity.h
+	src/Brambles/Component.h
+	src/Brambles/Component.cpp
+	src/Brambles/Renderer.cpp
+	src/Brambles/Renderer.h
+	src/Brambles/Controllers/CameraController.h
+	src/Brambles/Controllers/CameraController.cpp
+	src/Brambles/Controllers/PlayerController.h
+	src/Brambles/Controllers/PlayerController.cpp
+	src/Brambles/Transform.h
+	src/Brambles/Transform.cpp
+	src/Brambles/AudioSource.h
+	src/Brambles/AudioSource.cpp
+	src/Brambles/BoxCollider.h
+	src/Brambles/BoxCollider.cpp
+	src/Brambles/RigidBody.h
+	src/Brambles/RigidBody.cpp
+	src/Brambles/Timer.h
+	src/Brambles/Timer.cpp
+	src/Brambles/Gui.h
+	src/Brambles/Gui.cpp
+	src/Brambles/DebugRenderer.h
+	src/Brambles/DebugRenderer.cpp
+	src/Brambles/Sound.h
+	src/Brambles/Sound.cpp
+	src/Brambles/Camera.h
+	src/Brambles/Camera.cpp
+	src/Brambles/Input.h
+	src/Brambles/Input.cpp
+	src/Brambles/Resource.h
+	src/Brambles/Resource.cpp
+	src/Brambles/Resources.h
+	src/Brambles/Resources/Audio.h
+	src/Brambles/Resources/Audio.cpp
+	src/Brambles/Resources/Texture.h
+	src/Brambles/Resources/Texture.cpp
+	src/Brambles/Resources/Model.h
+	src/Brambles/Resources/Model.cpp
+	src/Brambles/Resources/Shader.cpp
+	src/Brambles/Resources/Shader.h
 )
-target_link_libraries(brambles rend ${LIBAL})
+target_link_libraries(Brambles rend ${LIBAL})
 
 add_executable(demo
   src/demo/main.cpp
 )
-target_link_libraries(demo brambles)
+target_link_libraries(demo Brambles)
 
