@@ -31,25 +31,35 @@ namespace Brambles
 		m_model = _modelPath;
 	}
 
+    void Renderer::onRender()
+    {
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_DEPTH_TEST);
 
-	void Renderer::onRender()
-	{
-		glEnable(GL_CULL_FACE);
-		glEnable(GL_DEPTH_TEST);
+        auto camera = getEntity()->getCore()->getCamera();
+        glm::mat4 perspectiveProjection = camera->getProjectionMatrix();
+        glm::mat4 view = camera->getViewMatrix();
 
-		auto camera = getEntity()->getCore()->getCamera();
-		glm::mat4 perspectiveProjection = camera->getProjectionMatrix();
-		glm::mat4 view = camera->getViewMatrix();
+        shader.use();
 
-		shader.use();
-		glBindTexture(GL_TEXTURE_2D, m_texture->m_texture->id());//Binds the texture
-		shader.uniform("u_View", view);
-		shader.uniform("u_Model", getEntity()->getComponent<Transform>()->getModelMatrix());//Gets the model matrix for the shader
-		shader.uniform("u_Projection", perspectiveProjection);
+        // Get materials from model
+        const auto& materials = m_model->getMaterials();
 
-		glBindVertexArray(m_model->m_model->vao_id());
-		glDrawArrays(GL_TRIANGLES, 0, m_model->m_model->vertex_count());//Drawing 
-	}
+        if (!materials.empty()) {
+            // Bind first material's texture (modify if you need multi-texturing)
+            glBindTexture(GL_TEXTURE_2D, materials[0].diffuseTextureID);
+        }
+        else {
+         
+        }
+
+        shader.uniform("u_View", view);
+        shader.uniform("u_Model", getEntity()->getComponent<Transform>()->getModelMatrix());
+        shader.uniform("u_Projection", perspectiveProjection);
+
+        glBindVertexArray(m_model->m_model->vao_id());
+        glDrawArrays(GL_TRIANGLES, 0, m_model->m_model->vertex_count());
+    }
 
 
 }

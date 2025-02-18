@@ -29,7 +29,7 @@ namespace Brambles
          * @brief Sets the model to be rendered.
          * @param _modelPath The model to be used for rendering.
          */
-        void setModel(std::shared_ptr<Model> _modelPath);
+        void setModel(std::shared_ptr<Model> _model);
 
     private:
         /**

@@ -1,12 +1,7 @@
 #include "Model.h"
+#include <rend/rend.h>
 
-
-
-namespace Brambles
-{
-	void Model::onLoad()//load the model
-	{
-		m_model = std::make_shared<rend::Model>(getPath());//Get the path of the model and returns to m_model
-
-	}
+void Brambles::Model::onLoad() {
+    // Initialize the rend::Model here
+    m_model = std::make_shared<rend::Model>(getPath()); 
 }
