@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Entity> map = core->addEntity();
 	std::shared_ptr<Renderer> mapRenderer = map->addComponent<Renderer>();
 
-	mapRenderer->setModel(core->getResources()->load<Model>("../assets/map/170726_mia348_126884_601_100kmesh_OBJ.obj"));
+	mapRenderer->setModel(core->getResources()->load<Model>("../assets/map/curuthers.obj"));
 
 	map->getComponent<Transform>()->setPosition(glm::vec3(0, 15, 20.0)); 
 	map->getComponent<Transform>()->setScale(glm::vec3(10, 10, 10)); 

@@ -21,7 +21,7 @@ namespace Brambles
 
 	}
 
-	void Renderer::setTexture(std::shared_ptr<Texture> _texturePath)//Set the texture
+	void Renderer::setTexture(std::shared_ptr<Texture> _texturePath)//Set the texture  
 	{
 		m_texture = _texturePath;
 	}

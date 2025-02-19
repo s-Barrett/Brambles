@@ -1,8 +1,5 @@
 #include "Model.h"
-
 #include "stb_image.h"
-
-
 
 namespace rend {
 
@@ -48,6 +45,10 @@ namespace rend {
                     std::cerr << "Warning: Material '" << currentMaterialName << "' not found in MTL file." << std::endl;
                     currentMaterialName = ""; // Reset material name if not found
                 }
+                else
+                {
+					std::cout << "Using material: " << currentMaterialName << std::endl;
+                }
             }
             else if (tokens.at(0) == "v" && tokens.size() >= 4) {
                 glm::vec3 p(
@@ -73,27 +74,104 @@ namespace rend {
                 Face f;
                 std::vector<std::string> sub;
 
-                split_string(tokens.at(1), '/', sub);
-                if (sub.size() >= 1) f.a.position = positions.at(atoi(sub.at(0).c_str()) - 1);
-                if (sub.size() >= 2) f.a.texcoord = tcs.at(atoi(sub.at(1).c_str()) - 1);
-                if (sub.size() >= 3) f.a.normal = normals.at(atoi(sub.at(2).c_str()) - 1);
+               
 
+                // Parse the first vertex of the face
+                split_string(tokens.at(1), '/', sub);
+                if (sub.size() >= 1) {
+                    int posIndex = atoi(sub.at(0).c_str()) - 1;
+                    if (posIndex >= 0 && posIndex < positions.size()) {
+                        f.a.position = positions.at(posIndex);
+                    }
+                    else {
+                        std::cerr << "Warning: Invalid position index in face data." << std::endl;
+                    }
+                }
+                if (sub.size() >= 2) {
+                    int tcIndex = atoi(sub.at(1).c_str()) - 1;
+                    if (tcIndex >= 0 && tcIndex < tcs.size()) {
+                        f.a.texcoord = tcs.at(tcIndex);
+                    }
+                    else {
+                        std::cerr << "Warning: Invalid texture coordinate index in face data." << std::endl;
+                    }
+                }
+                if (sub.size() >= 3) {
+                    int normalIndex = atoi(sub.at(2).c_str()) - 1;
+                    if (normalIndex >= 0 && normalIndex < normals.size()) {
+                        f.a.normal = normals.at(normalIndex);
+                    }
+                    else {
+                        std::cerr << "Warning: Invalid normal index in face data." << std::endl;
+                    }
+                }
+
+                // Parse the remaining vertices of the face
                 for (size_t ti = 2; ti + 1 < tokens.size(); ti++) {
                     split_string(tokens.at(ti), '/', sub);
-                    if (sub.size() >= 1) f.b.position = positions.at(atoi(sub.at(0).c_str()) - 1);
-                    if (sub.size() >= 2) f.b.texcoord = tcs.at(atoi(sub.at(1).c_str()) - 1);
-                    if (sub.size() >= 3) f.b.normal = normals.at(atoi(sub.at(2).c_str()) - 1);
+                    if (sub.size() >= 1) {
+                        int posIndex = atoi(sub.at(0).c_str()) - 1;
+                        if (posIndex >= 0 && posIndex < positions.size()) {
+                            f.b.position = positions.at(posIndex);
+                        }
+                        else {
+                            std::cerr << "Warning: Invalid position index in face data." << std::endl;
+                        }
+                    }
+                    if (sub.size() >= 2) {
+                        int tcIndex = atoi(sub.at(1).c_str()) - 1;
+                        if (tcIndex >= 0 && tcIndex < tcs.size()) {
+                            f.b.texcoord = tcs.at(tcIndex);
+                        }
+                        else {
+                            std::cerr << "Warning: Invalid texture coordinate index in face data." << std::endl;
+                        }
+                    }
+                    if (sub.size() >= 3) {
+                        int normalIndex = atoi(sub.at(2).c_str()) - 1;
+                        if (normalIndex >= 0 && normalIndex < normals.size()) {
+                            f.b.normal = normals.at(normalIndex);
+                        }
+                        else {
+                            std::cerr << "Warning: Invalid normal index in face data." << std::endl;
+                        }
+                    }
 
                     split_string(tokens.at(ti + 1), '/', sub);
-                    if (sub.size() >= 1) f.c.position = positions.at(atoi(sub.at(0).c_str()) - 1);
-                    if (sub.size() >= 2) f.c.texcoord = tcs.at(atoi(sub.at(1).c_str()) - 1);
-                    if (sub.size() >= 3) f.c.normal = normals.at(atoi(sub.at(2).c_str()) - 1);
+                    if (sub.size() >= 1) {
+                        int posIndex = atoi(sub.at(0).c_str()) - 1;
+                        if (posIndex >= 0 && posIndex < positions.size()) {
+                            f.c.position = positions.at(posIndex);
+                        }
+                        else {
+                            std::cerr << "Warning: Invalid position index in face data." << std::endl;
+                        }
+                    }
+                    if (sub.size() >= 2) {
+                        int tcIndex = atoi(sub.at(1).c_str()) - 1;
+                        if (tcIndex >= 0 && tcIndex < tcs.size()) {
+                            f.c.texcoord = tcs.at(tcIndex);
+                        }
+                        else {
+                            std::cerr << "Warning: Invalid texture coordinate index in face data." << std::endl;
+                        }
+                    }
+                    if (sub.size() >= 3) {
+                        int normalIndex = atoi(sub.at(2).c_str()) - 1;
+                        if (normalIndex >= 0 && normalIndex < normals.size()) {
+                            f.c.normal = normals.at(normalIndex);
+                        }
+                        else {
+                            std::cerr << "Warning: Invalid normal index in face data." << std::endl;
+                        }
+                    }
 
                     if (materialIndexMap.find(currentMaterialName) != materialIndexMap.end()) {
                         f.materialIndex = materialIndexMap[currentMaterialName];
                     }
-               
-
+                    else {
+                        f.materialIndex = -1; // Assign a default value if material isn't found
+                    }
 
                     m_faces.push_back(f);
                     m_dirty = true;
@@ -101,6 +179,7 @@ namespace rend {
             }
         }
     }
+
 
     rend::Model::Vertex::Vertex()
         : position(0.0f), texcoord(0.0f), normal(0.0f) {}
@@ -124,43 +203,76 @@ namespace rend {
     }
 
     GLuint Model::vao_id() {
-        if (!m_faces.size()) throw std::runtime_error("Model is empty");
+        if (m_faces.empty()) {
+            throw std::runtime_error("Model is empty");
+        }
 
         if (!m_vboid) {
             glGenBuffers(1, &m_vboid);
-            if (!m_vboid) throw std::runtime_error("Failed to generate vertex buffer");
+            if (!m_vboid) {
+                throw std::runtime_error("Failed to generate vertex buffer");
+            }
+            std::cout << "Generated VBO with ID: " << m_vboid << std::endl;
         }
 
         if (!m_vaoid) {
             glGenVertexArrays(1, &m_vaoid);
-            if (!m_vaoid) throw std::runtime_error("Failed to generate vertex array");
+            if (!m_vaoid) {
+                throw std::runtime_error("Failed to generate vertex array");
+            }
+            std::cout << "Generated VAO with ID: " << m_vaoid << std::endl;
         }
 
         if (m_dirty) {
             std::vector<GLfloat> data;
+
+            std::cout << "Number of faces: " << m_faces.size() << std::endl;
+            if (m_faces.empty()) {
+                throw std::runtime_error("No faces found in model.");
+            }
+
+            // Populate data with vertex attributes
             for (const auto& face : m_faces) {
-                // Push vertex data for each face
-                // (Same as your existing implementation)
+                std::vector<Vertex> vertices = { face.a, face.b, face.c };
+                for (const auto& vertex : vertices) {
+                    data.push_back(vertex.position.x);
+                    data.push_back(vertex.position.y);
+                    data.push_back(vertex.position.z);
+                    data.push_back(vertex.texcoord.x);
+                    data.push_back(vertex.texcoord.y);
+                    data.push_back(vertex.normal.x);
+                    data.push_back(vertex.normal.y);
+                    data.push_back(vertex.normal.z);
+                }
+            }
+
+            if (data.empty()) {
+                throw std::runtime_error("Vertex data is empty, cannot create VBO");
             }
 
             glBindBuffer(GL_ARRAY_BUFFER, m_vboid);
-            glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(data.at(0)), &data.at(0), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(GLfloat), data.data(), GL_STATIC_DRAW);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+            std::cout << "Uploaded vertex data to VBO (size: " << data.size() * sizeof(GLfloat) << " bytes)" << std::endl;
 
             glBindVertexArray(m_vaoid);
             glBindBuffer(GL_ARRAY_BUFFER, m_vboid);
 
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(data.at(0)), (void*)0);
+            // Vertex attributes
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
             glEnableVertexAttribArray(0);
 
-            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(data.at(0)), (void*)(3 * sizeof(GLfloat)));
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
             glEnableVertexAttribArray(1);
 
-            glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(data.at(0)), (void*)(5 * sizeof(GLfloat)));
+            glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(5 * sizeof(GLfloat)));
             glEnableVertexAttribArray(2);
 
             glBindVertexArray(0);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+            std::cout << "VAO setup complete." << std::endl;
 
             m_dirty = false;
         }
@@ -168,7 +280,10 @@ namespace rend {
         return m_vaoid;
     }
 
+
     void Model::Draw() {
+
+
         glBindVertexArray(m_vaoid);
 
         for (size_t i = 0; i < m_faces.size(); i++) {
@@ -181,6 +296,11 @@ namespace rend {
 
     void Model::LoadMTL(const std::string& mtlFilePath) {
         std::ifstream file(mtlFilePath);
+        if (!file.is_open()) {
+            std::cerr << "Failed to open MTL file: " << mtlFilePath << std::endl;
+            return;
+        }
+
         std::string line;
         Material* currentMaterial = nullptr;
 
@@ -192,99 +312,73 @@ namespace rend {
             if (prefix == "newmtl") {
                 std::string materialName;
                 iss >> materialName;
+
                 materials.push_back(Material());
                 currentMaterial = &materials.back();
                 currentMaterial->name = materialName;
                 materialIndexMap[materialName] = materials.size() - 1;
 
-
+                std::cout << "Loaded material: " << materialName << std::endl;
             }
-
-            else if (prefix == "Ka" && currentMaterial) {
-                iss >> currentMaterial->ambientColor.x >> currentMaterial->ambientColor.y >> currentMaterial->ambientColor.z;
-            }
-            else if (prefix == "Kd" && currentMaterial) {
-                iss >> currentMaterial->diffuseColor.x >> currentMaterial->diffuseColor.y >> currentMaterial->diffuseColor.z;
-            }
-            else if (prefix == "Ks" && currentMaterial) {
-                iss >> currentMaterial->specularColor.x >> currentMaterial->specularColor.y >> currentMaterial->specularColor.z;
-            }
-            else if (prefix == "Ns" && currentMaterial) {
-                iss >> currentMaterial->specularExponent;
-            }
-            else if (prefix == "map_Kd" && currentMaterial) {
-                iss >> currentMaterial->diffuseTexturePath;
-
-                // Debug output
-                std::cout << "Original texture path from MTL: " << currentMaterial->diffuseTexturePath << std::endl;
-
-                // Ensure path is properly set
-                if (currentMaterial->diffuseTexturePath.find('/') == std::string::npos &&
-                    currentMaterial->diffuseTexturePath.find('\\') == std::string::npos) {
-                    std::string objDirectory = mtlFilePath.substr(0, mtlFilePath.find_last_of("/\\") + 1);
-                    currentMaterial->diffuseTexturePath = objDirectory + currentMaterial->diffuseTexturePath;
+            else if (currentMaterial) {
+                if (prefix == "Ka") {  // Ambient color
+                    iss >> currentMaterial->ambientColor.r >> currentMaterial->ambientColor.g >> currentMaterial->ambientColor.b;
+                    std::cout << "  Ambient color: " << currentMaterial->ambientColor.r << ", "
+                        << currentMaterial->ambientColor.g << ", " << currentMaterial->ambientColor.b << std::endl;
                 }
+                else if (prefix == "Kd") {  // Diffuse color
+                    iss >> currentMaterial->diffuseColor.r >> currentMaterial->diffuseColor.g >> currentMaterial->diffuseColor.b;
+                    std::cout << "  Diffuse color: " << currentMaterial->diffuseColor.r << ", "
+                        << currentMaterial->diffuseColor.g << ", " << currentMaterial->diffuseColor.b << std::endl;
+                }
+                else if (prefix == "Ks") {  // Specular color
+                    iss >> currentMaterial->specularColor.r >> currentMaterial->specularColor.g >> currentMaterial->specularColor.b;
+                    std::cout << "  Specular color: " << currentMaterial->specularColor.r << ", "
+                        << currentMaterial->specularColor.g << ", " << currentMaterial->specularColor.b << std::endl;
+                }
+                else if (prefix == "Ns") {  // Specular exponent
+                    iss >> currentMaterial->specularExponent;
+                    std::cout << "  Specular exponent: " << currentMaterial->specularExponent << std::endl;
+                }
+                else if (prefix == "map_Kd") {  // Diffuse texture file
+                    iss >> currentMaterial->diffuseTexturePath;
+                    std::cout << "  Texture file: " << currentMaterial->diffuseTexturePath << std::endl;
 
-                std::cout << "Final texture path: " << currentMaterial->diffuseTexturePath << std::endl;
+               
+					LoadTexture(currentMaterial->diffuseTexturePath);
 
-                currentMaterial->diffuseTextureID = LoadTexture(currentMaterial->diffuseTexturePath);
+                }
             }
-
         }
     }
 
+
+
     GLuint Model::LoadTexture(const std::string& path) {
+        std::cout << "Attempting to load texture: " << path << std::endl;
+
         GLuint textureID;
         glGenTextures(1, &textureID);
         glBindTexture(GL_TEXTURE_2D, textureID);
 
-        int width, height, nrChannels;
-        unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+        int width, height, channels;
+        unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 4); // Force 4 channels (RGBA)
 
-        if (data) {
-            GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
-            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-            glGenerateMipmap(GL_TEXTURE_2D);
-            stbi_image_free(data);
-        }
-        else {
-            std::cerr << "Failed to load texture: " << path << ". Using default texture.\n";
-
-            // Load default texture if not already loaded
-            if (defaultTextureID == 0) {
-                defaultTextureID = generateDefaultTexture("assets/map/1.png"); // Change this to your default PNG path
-            }
-            textureID = defaultTextureID;
+        if (!data) {
+            std::cerr << "Failed to load texture: " << path << std::endl;
+            return 0; // Return 0 to indicate failure
         }
 
+        std::cout << "Successfully loaded texture: " << path << " (Size: " << width << "x" << height << ")" << std::endl;
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+
+        stbi_image_free(data);
         return textureID;
     }
 
-    GLuint Model::generateDefaultTexture(const std::string& defaultTexturePath) {
-        GLuint texID;
-        glGenTextures(1, &texID);
-        glBindTexture(GL_TEXTURE_2D, texID);
-
-        int width, height, nrChannels;
-        unsigned char* data = stbi_load(defaultTexturePath.c_str(), &width, &height, &nrChannels, 0);
-
-        if (data) {
-            GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
-            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-            glGenerateMipmap(GL_TEXTURE_2D);
-            stbi_image_free(data);
-        }
-        else {
-            std::cerr << "Critical Error: Default texture missing (" << defaultTexturePath << "). Using white fallback.\n";
-            unsigned char whitePixel[4] = { 255, 255, 255, 255 }; // White RGBA pixel
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, whitePixel);
-        }
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        return texID;
-    }
 
 
     void Model::split_string_whitespace(const std::string& _input, std::vector<std::string>& _output) {
