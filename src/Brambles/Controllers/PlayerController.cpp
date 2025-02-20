@@ -36,10 +36,7 @@ namespace Brambles
 	{
 		std::shared_ptr<Brambles::Shader> orthoShader = getEntity()->getCore()->getResources()->load<Brambles::Shader>("../assets/shaders/gui/ortho");
 		getGui()->setGuiShader(orthoShader->getShader());
-		getGui()->button(glm::vec2(80, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCube());
-		getGui()->button(glm::vec2(285, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshCircle());
-		getGui()->button(glm::vec2(450, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshTriangle());
-		getGui()->button(glm::vec2(650, 130), glm::vec2(60, 60), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/walter/face.png"), getGui()->meshStar()); //displaying all button types
+		getGui()->button(glm::vec2(80, 100), glm::vec2(100, 100), getEntity()->getCore()->getResources()->load<Texture>("../assets/objects/gui/health.png"), getGui()->meshCube());
 		
 	}
 

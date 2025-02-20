@@ -42,24 +42,23 @@ namespace Brambles
 
         shader.use();
 
-        // Get materials from model
-        const auto& materials = m_model->getMaterials();
-
-        if (!materials.empty()) {
-            // Bind first material's texture (modify if you need multi-texturing)
-            glBindTexture(GL_TEXTURE_2D, materials[0].diffuseTextureID);
-        }
-        else {
-         
-        }
-
         shader.uniform("u_View", view);
         shader.uniform("u_Model", getEntity()->getComponent<Transform>()->getModelMatrix());
         shader.uniform("u_Projection", perspectiveProjection);
 
         glBindVertexArray(m_model->m_model->vao_id());
-        glDrawArrays(GL_TRIANGLES, 0, m_model->m_model->vertex_count());
+
+        for (const auto& face : m_model->getFaces()) {
+            const auto& material = m_model->getMaterials()[face.materialIndex];
+
+            glBindTexture(GL_TEXTURE_2D, material.diffuseTextureID);
+
+            glDrawArrays(GL_TRIANGLES, face.startIndex, 3); 
+        }
+
+
     }
+
 
 
 }

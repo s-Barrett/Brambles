@@ -5,20 +5,26 @@
 #include <vector>
 #include "../../rend/Model.h" // Include the correct path
 
+
 namespace Brambles {
     struct Renderer; // Forward declaration
 
     struct Model : Resource {
         void onLoad();
 
-        // Expose materials from rend::Model
+       
         const std::vector<rend::Model::Material>& getMaterials() const {
             return m_model->materials;
         }
 
+        const std::vector<rend::Model::Face>& getFaces() const {
+            return m_model->m_faces;
+        }
+
+
     private:
-        friend struct Renderer; // Give Renderer access to m_model
-        std::shared_ptr<rend::Model> m_model; // Now using rend::Model
+        friend struct Renderer; 
+        std::shared_ptr<rend::Model> m_model;
     };
 }
 

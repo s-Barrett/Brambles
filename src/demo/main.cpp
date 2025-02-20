@@ -19,10 +19,10 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Entity> map = core->addEntity();
 	std::shared_ptr<Renderer> mapRenderer = map->addComponent<Renderer>();
 
-	mapRenderer->setModel(core->getResources()->load<Model>("../assets/map/curuthers.obj"));
+	mapRenderer->setModel(core->getResources()->load<Model>("../assets/map/c1a0.obj"));
 
-	map->getComponent<Transform>()->setPosition(glm::vec3(0, 15, 20.0)); 
-	map->getComponent<Transform>()->setScale(glm::vec3(10, 10, 10)); 
+	map->getComponent<Transform>()->setPosition(glm::vec3(0, 0, 0.0)); 
+	map->getComponent<Transform>()->setScale(glm::vec3(1.0, 1.0, 1.0)); 
 
 
 	std::shared_ptr<BoxCollider> mapBoxCollider = map->addComponent<BoxCollider>();
@@ -32,10 +32,30 @@ int main(int argc, char* argv[])
 	mapBoxCollider->setOffset(glm::vec3(0.0, -23.0, -40.0));
 
 	std::shared_ptr<RigidBody> mapRigidBody = map->addComponent<RigidBody>();
-	mapRigidBody->setMass(1000000000.0);
+	mapRigidBody->setMass(0.0);
 	mapRigidBody->setIsStatic(true);
 
 
+	std::shared_ptr<Entity> player = core->addEntity();
+
+	std::shared_ptr<Renderer> playerRenderer = player->addComponent<Renderer>();
+
+	player->addComponent<PlayerController>();
+
+	playerRenderer->setModel(core->getResources()->load<Model>("../assets/objects/walter/walter.obj"));
+
+	player->getComponent<Transform>()->setPosition(glm::vec3(0, 0, -15.0));
+	player->getComponent<Transform>()->setScale(glm::vec3(10.0, 10.0, 10.0));
+
+
+
+	std::shared_ptr<BoxCollider> playerBoxCollider = player->addComponent<BoxCollider>();
+	playerBoxCollider->setSize(glm::vec3(2.0, 3.0, 2.0));
+	playerBoxCollider->setOffset(glm::vec3(0.0, 0.0, 0.0));
+	playerBoxCollider->setDebugRenderer(true);
+
+	std::shared_ptr<RigidBody> playerRigidBody = player->addComponent<RigidBody>();
+	playerRigidBody->setMass(1.0);
 
 
 
