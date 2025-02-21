@@ -29,10 +29,10 @@ int main(int argc, char* argv[])
 	mapBoxCollider->setOffset(glm::vec3(0.0, 0.0, 0.0));
 	mapBoxCollider->setDebugRenderer(true);
 	mapBoxCollider->setSize(glm::vec3(20.0, 2.0, 20.0));
-	mapBoxCollider->setOffset(glm::vec3(0.0, -23.0, -40.0));
+	mapBoxCollider->setOffset(glm::vec3(0.0, -13.0, -20.0));
 
 	std::shared_ptr<RigidBody> mapRigidBody = map->addComponent<RigidBody>();
-	mapRigidBody->setMass(0.0);
+	mapRigidBody->setMass(1000000.0);
 	mapRigidBody->setIsStatic(true);
 
 
@@ -45,13 +45,13 @@ int main(int argc, char* argv[])
 	playerRenderer->setModel(core->getResources()->load<Model>("../assets/objects/walter/walter.obj"));
 
 	player->getComponent<Transform>()->setPosition(glm::vec3(0, 0, -15.0));
-	player->getComponent<Transform>()->setScale(glm::vec3(10.0, 10.0, 10.0));
+	player->getComponent<Transform>()->setScale(glm::vec3(2.0, 2.0, 2.0));
 
 
 
 	std::shared_ptr<BoxCollider> playerBoxCollider = player->addComponent<BoxCollider>();
-	playerBoxCollider->setSize(glm::vec3(2.0, 3.0, 2.0));
-	playerBoxCollider->setOffset(glm::vec3(0.0, 0.0, 0.0));
+	playerBoxCollider->setSize(glm::vec3(2.5, 4.0, 2.5));
+	playerBoxCollider->setOffset(glm::vec3(0.0, 1.75, 0.0));
 	playerBoxCollider->setDebugRenderer(true);
 
 	std::shared_ptr<RigidBody> playerRigidBody = player->addComponent<RigidBody>();

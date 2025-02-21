@@ -19,6 +19,8 @@ namespace rend {
             throw std::runtime_error("Failed to open model [" + _path + "]");
         }
 
+        std::cout << "Loading model: " << _path << std::endl;
+
         while (std::getline(file, currentline)) {
             if (currentline.empty()) continue;
 
@@ -51,15 +53,15 @@ namespace rend {
                 normals.emplace_back(std::stof(tokens[1]), std::stof(tokens[2]), std::stof(tokens[3]));
             }
             else if (tokens[0] == "f" && tokens.size() >= 4) {
-                static size_t currentVertexIndex = 0; // Track vertex positions in VBO
+                size_t currentVertexIndex = 0; // Removed static
 
                 for (size_t i = 1; i < tokens.size() - 2; ++i) {
                     Face f;
                     f.materialIndex = materialIndexMap[currentMaterialName];
-                    f.startIndex = currentVertexIndex; 
+                    f.startIndex = m_faces.size() * 3;  // Each face has 3 vertices
 
                     std::vector<std::string> sub;
-                    for (int j = 0; j < 3; ++j) { 
+                    for (int j = 0; j < 3; ++j) {
                         split_string(tokens[i + j], '/', sub);
                         Vertex v;
                         if (!sub[0].empty()) v.position = positions[std::stoi(sub[0]) - 1];
@@ -69,15 +71,13 @@ namespace rend {
                         if (j == 0) f.a = v;
                         else if (j == 1) f.b = v;
                         else f.c = v;
-
-                        currentVertexIndex++; 
                     }
 
                     m_faces.push_back(f);
                 }
+
                 m_dirty = true;
             }
-
         }
     }
 
@@ -149,6 +149,8 @@ namespace rend {
                 currentMaterial = &materials.back();
                 currentMaterial->name = materialName;
                 materialIndexMap[materialName] = materials.size() - 1;
+
+                std::cout << "Loaded material: " << materialName << std::endl;
             }
             else if (currentMaterial) {
                 if (prefix == "map_Kd") {
@@ -173,8 +175,6 @@ namespace rend {
             }
         }
     }
-
-
 
     void Model::split_string_whitespace(const std::string& _input, std::vector<std::string>& _output) {
         std::istringstream stream(_input);
