@@ -55,7 +55,24 @@ int main(int argc, char* argv[])
 	playerBoxCollider->setDebugRenderer(true);
 
 	std::shared_ptr<RigidBody> playerRigidBody = player->addComponent<RigidBody>();
-	playerRigidBody->setMass(1.0);
+	playerRigidBody->setMass(10.0);
+
+
+	std::shared_ptr<Entity> entity = core->addEntity();
+	std::shared_ptr<Renderer> entityRenderer = entity->addComponent<Renderer>();
+
+	entityRenderer->setModel(core->getResources()->load<Model>("../assets/objects/medkit/Medkit.obj"));
+
+	entity->getComponent<Transform>()->setPosition(glm::vec3(0, -10, -10.0));
+	entity->getComponent<Transform>()->setScale(glm::vec3(0.1, 0.1, 0.1));
+
+	std::shared_ptr<BoxCollider> entityBoxCollider = entity->addComponent<BoxCollider>();
+	entityBoxCollider->setSize(glm::vec3(1.0, 1.0, 1.0));
+	entityBoxCollider->setOffset(glm::vec3(0.0, 0.5, 0.0));
+	entityBoxCollider->setDebugRenderer(true);
+
+	std::shared_ptr<RigidBody> entityRigidBody = entity->addComponent<RigidBody>();
+	entityRigidBody->setMass(10.0);
 
 
 
