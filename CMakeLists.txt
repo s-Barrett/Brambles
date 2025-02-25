@@ -67,6 +67,8 @@ add_library(Brambles
 	src/Brambles/AudioSource.cpp
 	src/Brambles/BoxCollider.h
 	src/Brambles/BoxCollider.cpp
+	src/Brambles/MeshCollider.h
+	src/Brambles/MeshCollider.cpp
 	src/Brambles/RigidBody.h
 	src/Brambles/RigidBody.cpp
 	src/Brambles/Timer.h
