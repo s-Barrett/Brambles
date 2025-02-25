@@ -20,7 +20,7 @@ namespace Brambles
 			auto collider = getEntity()->getComponent<BoxCollider>();
 			if (collider)
 			{
-				getEntity()->getComponent<DebugRenderer>()->drawBoxCollider(collider, glm::vec3(1.0f, 0.0f, 0.0f)); // Red color
+				getEntity()->getComponent<DebugRenderer>()->drawBoxCollider(collider, glm::vec3(0.0f, 1.0f, 0.0f)); 
 			}
 		}
 	}

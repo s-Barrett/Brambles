@@ -14,7 +14,7 @@ namespace Brambles
     std::shared_ptr<rend::Mesh> DebugRenderer::generateBoxMesh(const glm::vec3& size)
     {
         auto mesh = std::make_shared<rend::Mesh>();
-        glm::vec3 halfSize = size * 1.1f; 
+        glm::vec3 halfSize = size / 2.0f; 
 
         glm::vec3 corners[8] = {
             {-halfSize.x, -halfSize.y, -halfSize.z}, { halfSize.x, -halfSize.y, -halfSize.z},
@@ -49,7 +49,7 @@ namespace Brambles
 
         glm::vec3 boxOffset = getEntity()->getComponent<BoxCollider>()->getOffset();
         glm::vec3 boxSize = getEntity()->getComponent<BoxCollider>()->getSize();
-        glm::vec3 genBoxSize = glm::vec3(boxSize.x / 5, boxSize.y / 5, boxSize.z / 5);
+        glm::vec3 genBoxSize = boxSize; // Use the actual size
 
         auto mesh = generateBoxMesh(genBoxSize);
         GLuint vao = mesh->getVAOId();
@@ -57,7 +57,6 @@ namespace Brambles
 
         glm::mat4 m_modelMatrix = glm::mat4(1.0f);
         m_modelMatrix = glm::translate(m_modelMatrix, getTransform()->getPosition() + boxOffset);
-        m_modelMatrix = glm::scale(m_modelMatrix, glm::vec3(boxSize.x / 2, boxSize.y / 2, boxSize.z / 2));
 
         auto camera = getEntity()->getCore()->getCamera();
         if (camera)
@@ -68,8 +67,8 @@ namespace Brambles
             debugShader->uniform("debugview", view);
             debugShader->uniform("debugprojection", perspectiveProjection);
             debugShader->uniform("debugmodel", m_modelMatrix);
-            debugShader->uniform("debuglineColor", glm::vec3(0, 0, 1));
-            debugShader->uniform("debuglinewidth", 1.5f);
+            debugShader->uniform("debuglineColor", glm::vec3(0, 1, 0));
+            debugShader->uniform("debuglinewidth", 2.0f);
         }
         else
         {
@@ -81,7 +80,7 @@ namespace Brambles
 
     void DebugRenderer::drawBoxCollider(std::shared_ptr<BoxCollider> collider, const glm::vec3& color)
     {
-        glm::vec3 position = collider->getTransform()->getPosition() + collider->getOffset();
+        glm::vec3 position = collider->getPosition() + collider->getOffset();
         glm::vec3 size = collider->getSize();
         drawWireframeBox(position, size, color);
     }
