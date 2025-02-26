@@ -14,7 +14,7 @@ namespace Brambles
      */
     struct Window
     {
-        Window();  /**< Constructor to initialize window */
+        Window(int width, int height);  /**< Constructor to initialize window */
         ~Window();  /**< Destructor to clean up resources */
 
         /**
@@ -22,7 +22,7 @@ namespace Brambles
          * @param _width Output width.
          * @param _height Output height.
          */
-        void getWindowSize(int& _width, int& _height) { _width = WINDOW_WIDTH; _height = WINDOW_HEIGHT; }
+        void getWindowSize(int& _width, int& _height) { _width; _height; }
 
         /**
          * @brief Returns window size as glm::ivec2.
@@ -30,8 +30,6 @@ namespace Brambles
          */
         glm::ivec2 size();
 
-        int WINDOW_WIDTH = 700;  /**< Default width */
-        int WINDOW_HEIGHT = 700;  /**< Default height */
 
     private:
         friend struct Brambles::Core;

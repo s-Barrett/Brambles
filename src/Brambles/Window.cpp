@@ -4,14 +4,13 @@
 
 namespace Brambles
 {
-	Window::Window()
+	Window::Window(int width, int height) 
 	{
-
-
-
-		m_raw = SDL_CreateWindow("Brambles Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-
-
+		int m_width = width;
+		int m_height = height;
+	
+		m_raw = SDL_CreateWindow("Brambles Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_width, m_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	
 		if (!m_raw)
 		{
 			std::cerr << "Window creation failed" << std::endl;

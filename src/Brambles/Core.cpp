@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Gui.h"
 #include "Timer.h"
+#include "LightManager.h"
 #include "Resources/Audio.h"
 #include "rend/rend.h"
 #include "Resources.h"
@@ -16,10 +17,13 @@
 namespace Brambles
 {
 	// Initializes the core systems and returns a shared pointer to Core
-	std::shared_ptr<Core> Core::initialize()
+	std::shared_ptr<Core> Core::initialize(int winsizeX, int winsizeY)
 	{
+		// Create the window with the given size
+	
 		std::shared_ptr<Core> rtn = std::make_shared<Core>();
-		rtn->m_window = std::make_shared<Window>();
+		rtn->m_window = std::make_shared<Window>(winsizeX, winsizeY);
+		rtn->m_lightManager = std::make_shared<LightManager>();
 		rtn->m_audio = std::make_shared<Audio>();
 		rtn->m_camera = std::make_shared<Camera>();
 		rtn->m_resources = std::make_shared<Resources>();

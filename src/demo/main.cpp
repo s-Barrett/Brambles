@@ -13,8 +13,16 @@ using namespace Brambles;
 
 int main(int argc, char* argv[])
 {
-	std::shared_ptr<Core> core = Core::initialize();
+
+	int winsizeX = 1920;
+	int winsizeY = 1080;
+
+
+	std::shared_ptr<Core> core = Core::initialize(winsizeX, winsizeY);
 	
+	core->getLightManager()->setAmbient(glm::vec3(0.05, 0.05, 0.05));
+	core->getLightManager()->addLight("light1", glm::vec3(8.0, 5.0, -10.0), glm::vec3(1.0, 1.0, 0.9), 0.7);
+	core->getLightManager()->addLight("light2", glm::vec3(-14.0, 5.0, -10.0), glm::vec3(1.0, 1.0, 0.9), 0.7);
 
 	std::shared_ptr<Entity> map = core->addEntity();
 	std::shared_ptr<Renderer> mapRenderer = map->addComponent<Renderer>();
@@ -79,7 +87,9 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Entity> camera = core->addEntity();
 	camera->addComponent<Camera>();
 	camera->addComponent<CameraController>();
-	camera->getComponent<Camera>()->setFov(90.0);
+	camera->getComponent<Camera>()->setFov(80.0);
+
+	camera->getComponent<Transform>()->setPosition(glm::vec3(0, -3, -3));
 
 
 	

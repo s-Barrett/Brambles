@@ -31,6 +31,8 @@ namespace Brambles
          */
         void setModel(std::shared_ptr<Model> _model);
 
+        void setSpecularStrength(float _strength) { m_specularStrength = _strength; }
+
     private:
         /**
          * @brief Renders the model and applies the texture using shaders.
@@ -48,5 +50,7 @@ namespace Brambles
 
         std::shared_ptr<Texture> m_texture; ///< Shared pointer to the texture applied to the model.
         std::shared_ptr<Model> m_model; ///< Shared pointer to the model being rendered.
+
+        float m_specularStrength = 1.f;
     };
 }

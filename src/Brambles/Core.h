@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "LightManager.h"
 
 #include <iostream>
 #include <memory>
@@ -11,6 +12,7 @@ namespace Brambles
     struct Window;
     struct Input;
     struct Camera;
+
 	struct Shader;
     struct Audio;
     struct Timer;
@@ -25,7 +27,7 @@ namespace Brambles
     struct Core
     {
     public:
-        static std::shared_ptr<Core> initialize();
+        static std::shared_ptr<Core> initialize(int winsizeX, int winsizeY);
 
         void run();
         void stop();
@@ -74,6 +76,9 @@ namespace Brambles
          */
         std::shared_ptr<Timer> getTimer();
 
+
+
+        std::shared_ptr<LightManager> getLightManager()  { return m_lightManager; }
         /**
          * @brief Seeks for components of a specific type in all entities.
          * @param _out The output vector to store found components.
@@ -102,7 +107,7 @@ namespace Brambles
         std::shared_ptr<Camera> m_camera;
         std::shared_ptr<Timer> m_timer;
         std::shared_ptr<Shader> m_shader;
-
+        std::shared_ptr<LightManager> m_lightManager;
         std::vector<std::shared_ptr<Entity>> m_entities;
 
         std::weak_ptr<Core> m_self;

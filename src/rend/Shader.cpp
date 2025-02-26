@@ -101,6 +101,50 @@ namespace rend
 		glUniform1f(loc, value);
 	}
 
+	void Shader::uniform(const std::string& name, const std::vector<glm::vec3>& values)
+	{
+		GLint loc = glGetUniformLocation(m_id, name.c_str());
+		glUniform3fv(loc, values.size(), glm::value_ptr(values[0]));
+	}
+
+	void Shader::uniform(const std::string& name, const glm::vec4& value)
+	{
+		GLint loc = glGetUniformLocation(m_id, name.c_str());
+		glUniform4f(loc, value.x, value.y, value.z, value.w);
+	}
+
+	void Shader::uniform(const std::string& name, const std::vector<glm::vec4>& values)
+	{
+		GLint loc = glGetUniformLocation(m_id, name.c_str());
+		glUniform4fv(loc, values.size(), glm::value_ptr(values[0]));
+	}
+
+	void Shader::uniform(const std::string& name, const glm::vec2& value)
+	{
+		GLint loc = glGetUniformLocation(m_id, name.c_str());
+		glUniform2f(loc, value.x, value.y);
+	}
+
+    void Shader::uniform(const std::string& name, int value)
+    {
+		GLint loc = glGetUniformLocation(m_id, name.c_str());
+		glUniform1i(loc, value);
+    }
+
+	void Shader::uniform(const std::string& name, const glm::mat3& value)
+	{
+		GLint loc = glGetUniformLocation(m_id, name.c_str());
+		glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void Shader::uniform(const std::string& name, const std::vector<float>& values)
+	{
+		GLint loc = glGetUniformLocation(m_id, name.c_str());
+		glUniform1fv(loc, values.size(), &values[0]);
+	}
+
+
+
     void Shader::drawOutline(GLuint _vao, GLsizei _vertexCount)
     {
 

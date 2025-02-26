@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Core.h"
 #include "Transform.h"
+#include "LightManager.h"
 #include "Entity.h"
 
 #include "Resources/Texture.h"
@@ -37,6 +38,22 @@ namespace Brambles
         // Bind the shader program
         shader.use();
 
+        std::shared_ptr<Core> core = getEntity()->getCore();
+
+
+        std::vector<std::shared_ptr<Light>> lights = core->getLightManager()->getLights();
+
+        std::vector<glm::vec3> positions;
+        std::vector<glm::vec3> colors;
+        std::vector<float> strengths;
+
+        for (const auto& light : lights)
+        {
+            positions.push_back(light->position);
+            colors.push_back(light->colour);
+            strengths.push_back(light->strength);
+        }
+
         // Set up camera matrices
         auto camera = getEntity()->getCore()->getCamera();
         glm::mat4 perspectiveProjection = camera->getProjectionMatrix();
@@ -45,6 +62,14 @@ namespace Brambles
         shader.uniform("u_View", view);
         shader.uniform("u_Model", getEntity()->getComponent<Transform>()->getModelMatrix());
         shader.uniform("u_Projection", perspectiveProjection);
+
+        shader.uniform("u_LightPositions", positions);
+        shader.uniform("u_LightColors", colors);
+        shader.uniform("u_LightStrengths", strengths);
+
+        shader.uniform("u_Ambient", core->getLightManager()->getAmbient());
+        shader.uniform("u_SpecStrength", m_specularStrength);
+
 
         // Bind the model's VAO
         glBindVertexArray(m_model->m_model->vao_id());

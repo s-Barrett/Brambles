@@ -63,6 +63,7 @@ add_library(Brambles
 	src/Brambles/Controllers/PlayerController.cpp
 	src/Brambles/Transform.h
 	src/Brambles/Transform.cpp
+	src/Brambles/LightManager.h
 	src/Brambles/AudioSource.h
 	src/Brambles/AudioSource.cpp
 	src/Brambles/BoxCollider.h
