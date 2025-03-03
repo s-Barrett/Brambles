@@ -20,9 +20,14 @@ int main(int argc, char* argv[])
 
 	std::shared_ptr<Core> core = Core::initialize(winsizeX, winsizeY);
 	
-	core->getLightManager()->setAmbient(glm::vec3(0.05, 0.05, 0.05));
-	core->getLightManager()->addLight("light1", glm::vec3(8.0, 5.0, -10.0), glm::vec3(1.0, 1.0, 0.9), 0.7);
-	core->getLightManager()->addLight("light2", glm::vec3(-14.0, 5.0, -10.0), glm::vec3(1.0, 1.0, 0.9), 0.7);
+	core->getLightManager()->setAmbient(glm::vec3(0.1, 0.1, 0.1));
+	core->getLightManager()->addLight("light1", glm::vec3(8.0, 5.0, -10.0), glm::vec3(1.0, 1.0, 0.9), 0.9);
+	core->getLightManager()->addLight("light2", glm::vec3(-14.0, 5.0, -10.0), glm::vec3(1.0, 1.0, 0.9), 0.9);
+
+	core->getLightManager()->addLight("light3", glm::vec3(10.0, -180.0, 0.0), glm::vec3(1.0, 1.0, 1.0), 0.3);
+
+	core->getLightManager()->addLight("light3", glm::vec3(0.0, -10.0, -10.0), glm::vec3(0.1, 0.1, 1.0), 0.3);
+
 
 	std::shared_ptr<Entity> map = core->addEntity();
 	std::shared_ptr<Renderer> mapRenderer = map->addComponent<Renderer>();
@@ -34,7 +39,7 @@ int main(int argc, char* argv[])
 
 
 	std::shared_ptr<BoxCollider> mapBoxCollider = map->addComponent<BoxCollider>();
-	mapBoxCollider->setDebugRenderer(true);
+	mapBoxCollider->setDebugRenderer(false);
 	mapBoxCollider->setSize(glm::vec3(30.0, 1.0, 30.0));
 	mapBoxCollider->setOffset(glm::vec3(0.0, -12.5, -20.0));
 
@@ -59,7 +64,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<BoxCollider> playerBoxCollider = player->addComponent<BoxCollider>();
 	playerBoxCollider->setSize(glm::vec3(1.0, 3.7, 1.0));
 	playerBoxCollider->setOffset(glm::vec3(0.0, 1.75, 0.0));
-	playerBoxCollider->setDebugRenderer(true);
+	playerBoxCollider->setDebugRenderer(false);
 
 	std::shared_ptr<RigidBody> playerRigidBody = player->addComponent<RigidBody>();
 	playerRigidBody->setMass(10.0);
@@ -76,7 +81,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<BoxCollider> entityBoxCollider = entity->addComponent<BoxCollider>();
 	entityBoxCollider->setSize(glm::vec3(0.5, 0.5, 0.5));
 	entityBoxCollider->setOffset(glm::vec3(0.0, 0.2, 0.0));
-	entityBoxCollider->setDebugRenderer(true);
+	entityBoxCollider->setDebugRenderer(false);
 
 	std::shared_ptr<RigidBody> entityRigidBody = entity->addComponent<RigidBody>();
 	entityRigidBody->setMass(10.0);
