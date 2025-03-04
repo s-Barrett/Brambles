@@ -66,9 +66,9 @@ namespace Brambles
         glm::vec3 targetVelocity(0.0f);
 
         // Further enhanced movement settings for freedom and speed
-        float acceleration = isGrounded ? 120.0f : 40.0f; // Faster acceleration, especially in the air
-        float airControl = isGrounded ? 1.0f : 10.0f; // More air control for freedom
-        float friction = isGrounded ? 10.0f : 0.15f; // Low friction for sliding and control
+        float acceleration = isGrounded ? 100.0f : 40.0f; // Faster acceleration, especially in the air
+        float airControl = isGrounded ? 1.0f : 6.0f; // More air control for freedom
+        float friction = isGrounded ? 1.0f : 0.10f; // Low friction for sliding and control
         float maxSpeed = isGrounded ? movementSpeed * 1.5f : movementSpeed * 1.2f; // Faster overall speed
 
         static int airJumps = 1; // Allows one extra jump in the air
