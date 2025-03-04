@@ -55,7 +55,13 @@ namespace Brambles
         }
 
         // Set up camera matrices
-        auto camera = getEntity()->getCore()->getCamera();
+		std::shared_ptr<Camera> camera = getEntity()->getCore()->getCamera();
+        if (!camera)
+        {
+            std::cerr << "Error: Camera is null in Renderer::onRender()" << std::endl;
+            return;
+        }
+
         glm::mat4 perspectiveProjection = camera->getProjectionMatrix();
         glm::mat4 view = camera->getViewMatrix();
 

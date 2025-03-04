@@ -15,11 +15,41 @@ namespace Brambles
     {
     }
 
+	glm::vec3 Camera::getCameraPosition()
+	{
+		return getTransform()->getPosition();
+	}
+
+    void Camera::setCameraPosition(glm::vec3 pos)
+    {
+		m_position = pos;
+    }
+
+    glm::vec3 Camera::getCameraRotation()
+    {
+		return m_rotation;
+    }
+
+    void Camera::setCameraRotation(glm::vec3 rot)
+    {
+		m_rotation = rot;
+    }
+
     glm::mat4 Camera::getViewMatrix()
     {
-        glm::vec3 position = getTransform()->getPosition();
-        glm::vec3 forward = getTransform()->getForward();
-        glm::vec3 up = getTransform()->getUp();
+        // Get the camera's position
+        glm::vec3 position = getTransform()->getPosition() + m_position;
+
+        // Calculate the forward direction based on the camera's rotation (pitch and yaw)
+        glm::vec3 forward;
+        forward.x = cos(glm::radians(m_rotation.y)) * cos(glm::radians(m_rotation.x));
+        forward.y = sin(glm::radians(m_rotation.x));
+        forward.z = sin(glm::radians(m_rotation.y)) * cos(glm::radians(m_rotation.x));
+        forward = glm::normalize(forward);
+
+        // Calculate the right and up vectors
+        glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
+        glm::vec3 up = glm::normalize(glm::cross(right, forward));
 
         // Calculate the target position the camera is looking at
         glm::vec3 target = position + forward;

@@ -34,9 +34,10 @@ namespace Brambles
 
     glm::vec3 Transform::getRight() const
     {
+        // Calculate right vector as the cross product of forward and world up
         glm::vec3 forward = getForward();
-        glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-        return glm::normalize(glm::cross(forward, up));
+        glm::vec3 right = glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f));
+        return glm::normalize(right);
     }
 
     glm::vec3 Transform::getUp() const

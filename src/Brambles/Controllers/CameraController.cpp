@@ -3,6 +3,11 @@
 #include "../Timer.h"
 #include "../Transform.h"
 #include "../Entity.h"
+#include "../Resources/Shader.h"
+#include "../Component.h"
+#include "../RigidBody.h"
+#include "../Window.h"
+#include "../Camera.h"
 #include "../Input.h"
 
 #ifdef _WIN32
@@ -27,62 +32,53 @@ namespace Brambles
         float sensitivity = 0.1f;
         float dx, dy;
 
-        // Get mouse movement delta
         getEntity()->getCore()->getInput()->getMousePosition(dx, dy);
 
-        yaw += dx * sensitivity;
+        yaw += dx * sensitivity; // Ensure yaw rotates in the correct direction
         pitch -= dy * sensitivity;
+        pitch = glm::clamp(pitch, -89.0f, 89.0f);
 
-        // Clamp pitch to prevent flipping
-        if (pitch > 89.0f) pitch = 89.0f;
-        if (pitch < -89.0f) pitch = -89.0f;
+        auto camera = getEntity()->getComponent<Camera>();
+        if (camera)
+        {
+            camera->setCameraRotation(glm::vec3(pitch, yaw, 0.0f));
+        }
 
-        // Update camera rotation
-        glm::vec3 rotation(pitch, yaw, 0.0f);
-        getTransform()->setRotation(rotation);
+        // Ensure the model follows the camera's yaw
+        getTransform()->setRotation(glm::vec3(0.0f, -yaw, 0.0f));
     }
 
     void CameraController::handleKeyboardInput()
     {
         auto transform = getTransform();
+        auto rigidBody = getEntity()->getComponent<RigidBody>();
         float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
-        std::cout << "Delta time: " << timeDelta << std::endl;
+        auto camera = getEntity()->getComponent<Camera>();
 
-
-        // Unlock mouse when Escape is pressed
         if (getEntity()->getCore()->getInput()->isKey(SDLK_ESCAPE))
         {
             SDL_SetRelativeMouseMode(SDL_FALSE);
         }
 
-        // Movement controls
-        if (getEntity()->getCore()->getInput()->isKey(SDLK_w)) {
-            transform->move(transform->getForward() * movementSpeed * timeDelta);
-        }
-        if (getEntity()->getCore()->getInput()->isKey(SDLK_s)) {
-            transform->move(-transform->getForward() * movementSpeed * timeDelta);
-        }
-        if (getEntity()->getCore()->getInput()->isKey(SDLK_a)) {
-            transform->move(-transform->getRight() * movementSpeed * timeDelta);
-        }
-        if (getEntity()->getCore()->getInput()->isKey(SDLK_d)) {
-            transform->move(transform->getRight() * movementSpeed * timeDelta);
-        }
-        if (getEntity()->getCore()->getInput()->isKey(SDLK_q)) {
-            transform->move(-transform->getUp() * movementSpeed * timeDelta);
-        }
-        if (getEntity()->getCore()->getInput()->isKey(SDLK_e)) {
-            transform->move(transform->getUp() * movementSpeed * timeDelta);
-        }
+        glm::vec3 forward = glm::normalize(glm::vec3(
+            cos(glm::radians(yaw)),
+            0.0f,
+            sin(glm::radians(yaw))
+        ));
+        glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
 
-        // Sprinting when holding Shift
-        if (getEntity()->getCore()->getInput()->isKey(SDLK_LSHIFT))
+        glm::vec3 movement(0.0f);
+
+        if (getEntity()->getCore()->getInput()->isKey(SDLK_UP)) movement += forward;
+        if (getEntity()->getCore()->getInput()->isKey(SDLK_DOWN)) movement -= forward;
+        if (getEntity()->getCore()->getInput()->isKey(SDLK_LEFT)) movement -= right;
+        if (getEntity()->getCore()->getInput()->isKey(SDLK_RIGHT)) movement += right;
+
+        if (glm::length(movement) > 0.0f)
         {
-            movementSpeed = 70.0f; // Increase speed
+            movement = glm::normalize(movement) * movementSpeed * timeDelta;
+            transform->move(movement);
         }
-        else
-        {
-            movementSpeed = 40.0f; // Normal speed
-        }
+  
     }
 }

@@ -98,55 +98,87 @@ namespace Brambles
         }
     }
 
-
     void RigidBody::onTick()
+{
+    if (m_isStatic)
     {
-        if (m_isStatic)
+        getTransform()->setPosition(getPosition());
+        m_gravity = glm::vec3(0.0f, 0.0f, 0.0f);
+        m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+        return;
+    }
+
+    m_gravity = glm::vec3(0.0f, -300.0f, 0.0f); // Gravity force
+
+    std::vector<std::shared_ptr<BoxCollider>> boxColliders;
+    getEntity()->getCore()->seekComponents(boxColliders);
+
+    bool wasGrounded = m_isGrounded; // Store previous grounded state
+    m_isGrounded = false; // Reset ground detection
+
+    for (auto boxCollider : boxColliders)
+    {
+        if (boxCollider->getTransform() == getTransform())
+            continue;
+
+        auto myCollider = getEntity()->getComponent<BoxCollider>();
+        if (!myCollider) continue;
+
+        if (boxCollider->isColliding(myCollider))
         {
-            getTransform()->setPosition(getPosition());
-            m_gravity = glm::vec3(0.0f, 0.0f, 0.0f); // Setting gravity to 0
-            m_velocity = glm::vec3(0.0f, 0.0f, 0.0f); // Setting velocity to 0
-        }
-        else
-        {
-            m_gravity = glm::vec3(0.0f, -20.8f, 0.0f); // Setting gravity to default
-        }
+            collisionResponse(myCollider, boxCollider);
 
-        std::vector<std::shared_ptr<BoxCollider>> boxColliders;
-        getEntity()->getCore()->seekComponents(boxColliders); // Seeking all the box colliders
-
-        bool isGrounded = false; // Flag to track if the object is grounded
-
-        for (auto boxCollider : boxColliders)
-        {
-            if (boxCollider->getTransform() == getTransform()) // If the box collider is self, skip
-                continue;
-
-            auto myCollider = getEntity()->getComponent<BoxCollider>(); // If the other box collider is self, skip
-            if (!myCollider) continue;
-
-            if (boxCollider->isColliding(myCollider)) // If the box colliders are colliding
+            glm::vec3 delta = getTransform()->getPosition() - boxCollider->getTransform()->getPosition();
+            if (delta.y < 0)
             {
-                collisionResponse(myCollider, boxCollider); // Call the collision response
-
-                // Check if the collision is on the Y axis (ground collision)
-                glm::vec3 delta = getTransform()->getPosition() - boxCollider->getTransform()->getPosition();
-                if (delta.y < 0)
-                {
-                    isGrounded = true; // Object is grounded
-                }
+                m_isGrounded = true; // Object is on the ground
+                if (m_velocity.y < 0) m_velocity.y = 0; // Stop downward movement  
             }
         }
-
-        float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
-
-        if (!isGrounded)
-        {
-            m_velocity += m_gravity * timeDelta; // Apply gravity only if not grounded
-        }
-
-        glm::vec3 newPos = getTransform()->getPosition() + m_velocity * timeDelta;
-        getTransform()->setPosition(newPos);
     }
+
+    if (!m_isGrounded && wasGrounded)
+    {
+        std::cout << "Lost Ground Contact\n"; // Debugging
+    }
+    else if (m_isGrounded && !wasGrounded)
+    {
+        std::cout << "Landed\n"; // Debugging
+    }
+
+    float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
+
+    // Apply gravity if not grounded
+    if (!m_isGrounded)
+    {
+        m_velocity += m_gravity * timeDelta;
+    }
+    else
+    {
+        if (fabs(m_velocity.y) < 1.0f)
+        {
+            m_velocity.y = 0; // Prevent jittering
+        }
+    }
+
+    if (m_isGrounded)
+    {
+        // Apply ground friction to slow down horizontal velocity
+        m_velocity.x *= 0.8f;
+        m_velocity.z *= 0.8f;
+    }
+
+    // Allow more freedom in air movement by not applying friction to horizontal velocity
+    if (!m_isGrounded)
+    {
+        // Optional: More damping to smooth out airborne movement
+        m_velocity.x *= 0.98f;
+        m_velocity.z *= 0.98f;
+    }
+
+    // Apply the velocity change to the position
+    glm::vec3 newPos = getTransform()->getPosition() + m_velocity * timeDelta;
+    getTransform()->setPosition(newPos);
+}
 
 }

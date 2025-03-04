@@ -73,20 +73,30 @@ namespace Brambles
 		return timers[0];
 	}
 
-	// Retrieves the first Camera component in the scene
 	std::shared_ptr<Camera> Core::getCamera()
 	{
 		std::vector<std::shared_ptr<Camera>> cameras;
 		seekComponents(cameras);
 
-		if (cameras.empty())
+		if (cameras.size() == 0)
 		{
 			std::cout << "No entity with a camera component found" << std::endl;
 			throw std::exception();
+			return nullptr;
 		}
 
-		return cameras[0];
+		std::shared_ptr<Camera> rtn = cameras[0];
+		for (size_t i = 1; i < cameras.size(); ++i)
+		{
+			if (cameras[i]->getPriority() > rtn->getPriority())
+			{
+				rtn = cameras[i];
+			}
+		}
+
+		return rtn;
 	}
+
 
 	// Main game loop
 	void Core::run()

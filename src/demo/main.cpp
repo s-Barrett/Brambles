@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 
 	core->getLightManager()->addLight("light3", glm::vec3(10.0, -180.0, 0.0), glm::vec3(1.0, 1.0, 1.0), 0.3);
 
-	core->getLightManager()->addLight("light3", glm::vec3(0.0, -10.0, -10.0), glm::vec3(0.1, 0.1, 1.0), 0.3);
+	core->getLightManager()->addLight("light4", glm::vec3(0.0, -10.0, -10.0), glm::vec3(0.1, 0.1, 1.0), 0.3);
 
 
 	std::shared_ptr<Entity> map = core->addEntity();
@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
 
 	std::shared_ptr<BoxCollider> mapBoxCollider = map->addComponent<BoxCollider>();
-	mapBoxCollider->setDebugRenderer(false);
+	mapBoxCollider->setDebugRenderer(true);
 	mapBoxCollider->setSize(glm::vec3(30.0, 1.0, 30.0));
 	mapBoxCollider->setOffset(glm::vec3(0.0, -12.5, -20.0));
 
@@ -56,18 +56,26 @@ int main(int argc, char* argv[])
 
 	playerRenderer->setModel(core->getResources()->load<Model>("../assets/objects/walter/walter.obj"));
 
-	player->getComponent<Transform>()->setPosition(glm::vec3(0, 0, -15.0));
+	player->getComponent<Transform>()->setPosition(glm::vec3(0, -10, -15.0));
 	player->getComponent<Transform>()->setScale(glm::vec3(2.0, 2.0, 2.0));
+	player->getComponent<Transform>()->setRotation(glm::vec3(0.0, 180.0, 0.0));
+
+	std::shared_ptr<Camera> playerCamera = player->addComponent<Camera>();
+	playerCamera->setFov(80.0);
+	playerCamera->setCameraPosition(glm::vec3(0, 4.0, 0));
+	playerCamera->setPriority(1.0);
+
+	std::shared_ptr<AudioSource> audioSource = player->addComponent<AudioSource>();
 
 
 
 	std::shared_ptr<BoxCollider> playerBoxCollider = player->addComponent<BoxCollider>();
 	playerBoxCollider->setSize(glm::vec3(1.0, 3.7, 1.0));
 	playerBoxCollider->setOffset(glm::vec3(0.0, 1.75, 0.0));
-	playerBoxCollider->setDebugRenderer(false);
+	playerBoxCollider->setDebugRenderer(true);
 
 	std::shared_ptr<RigidBody> playerRigidBody = player->addComponent<RigidBody>();
-	playerRigidBody->setMass(10.0);
+	playerRigidBody->setMass(200.0);
 
 
 	std::shared_ptr<Entity> entity = core->addEntity();
@@ -78,10 +86,11 @@ int main(int argc, char* argv[])
 	entity->getComponent<Transform>()->setPosition(glm::vec3(0, -10, -10.0));
 	entity->getComponent<Transform>()->setScale(glm::vec3(0.1, 0.1, 0.1));
 
+
 	std::shared_ptr<BoxCollider> entityBoxCollider = entity->addComponent<BoxCollider>();
 	entityBoxCollider->setSize(glm::vec3(0.5, 0.5, 0.5));
 	entityBoxCollider->setOffset(glm::vec3(0.0, 0.2, 0.0));
-	entityBoxCollider->setDebugRenderer(false);
+	entityBoxCollider->setDebugRenderer(true);
 
 	std::shared_ptr<RigidBody> entityRigidBody = entity->addComponent<RigidBody>();
 	entityRigidBody->setMass(10.0);
@@ -89,16 +98,23 @@ int main(int argc, char* argv[])
 
 
 
-	std::shared_ptr<Entity> camera = core->addEntity();
-	camera->addComponent<Camera>();
-	camera->addComponent<CameraController>();
-	camera->getComponent<Camera>()->setFov(80.0);
+	std::shared_ptr<Entity> freeCam = core->addEntity();
+	std::shared_ptr<Renderer> freeCamRenderer = freeCam->addComponent<Renderer>();
 
-	camera->getComponent<Transform>()->setPosition(glm::vec3(0, -3, -3));
+	freeCamRenderer->setModel(core->getResources()->load<Model>("../assets/objects/walter/walter.obj"));
+
+	freeCam->getComponent<Transform>()->setPosition(glm::vec3(-4, -12, -13.0));
+	freeCam->getComponent<Transform>()->setScale(glm::vec3(2.0, 2.0, 2.0));
+
+	freeCam->addComponent<CameraController>();
+
+	std::shared_ptr<Camera> freeCamCamera = freeCam->addComponent<Camera>();
+	freeCamCamera->setFov(100.0);
+	freeCamCamera->setPriority(0.0);
+	freeCamCamera->setCameraPosition(glm::vec3(0, 3.8, 0));
 
 
-	
-
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	core->run();
 
 
