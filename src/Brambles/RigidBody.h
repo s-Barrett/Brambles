@@ -1,67 +1,44 @@
+#pragma once
 
-#include "Component.h"
 #include <glm/glm.hpp>
+#include <memory>
+#include "component.h"
 
-namespace Brambles
-{
-    struct BoxCollider;
+namespace Brambles {
 
-    /**
-     * @brief Represents a RigidBody.
-     */
-    struct RigidBody : public Component
-    {
-        RigidBody() {}
-        ~RigidBody() {}
+    class RigidBody : public Component {
+    public:
+        RigidBody();
 
-        /**
-         * @brief Updates physics each frame.
-         */
-        void onTick();
+        // Update the rigidbody based on physics
+        void update(float deltaTime);
 
-        /**
-         * @brief Handles collision response between colliders.
-         * @param _collider First collider.
-         * @param _other Second collider.
-         */
-        void collisionResponse(std::shared_ptr<BoxCollider> _collider, std::shared_ptr<BoxCollider> _other);
+		// Set the static flag
+        bool isStatic() const { return m_isStatic; }
 
-        /**
-         * @brief Sets the rigid body's mass.
-         * @param _mass Mass to set.
-         */
-        void setMass(float _mass) { m_mass = _mass; }
+        void setStatic(bool isStatic) { m_isStatic = isStatic; }
 
-        /**
-         * @brief Gets the rigid body's mass.
-         * @return The mass.
-         */
-        float getMass() const { return m_mass; }
 
-        /**
-         * @brief Sets the rigid body's velocity.
-         * @param _velocity Velocity to set.
-         */
-        void setVelocity(const glm::vec3& _velocity) { m_velocity = _velocity; }
+        void setMass(float mass);
 
-        /**
-         * @brief Gets the rigid body's velocity.
-         * @return The velocity.
-         */
-        glm::vec3 getVelocity() const { return m_velocity; }
+        float getMass() const;
 
-		void setIsStatic(bool _isStatic) { m_isStatic = _isStatic; }
+        void setVelocity(const glm::vec3& velocity);
 
-		bool getIsStatic() const { return m_isStatic; }
+        const glm::vec3& getVelocity() const;
 
-        bool isGrounded() { return m_isGrounded; } // Public getter
+		void setGravity(const glm::vec3& gravity) { m_gravity = gravity; }
 
+		glm::vec3 getGravity() const { return m_gravity; }
+
+        void applyForce(const glm::vec3& force);
+
+		bool isGrounded();
 
     private:
-        bool m_isGrounded = false; // Flag to track if the object is grounded
-		bool m_isStatic = false;
-        glm::vec3 m_gravity = glm::vec3(0.0f, -9.8f, 0.0f);
-        glm::vec3 m_velocity = glm::vec3(0.0f);
-        float m_mass = 1.0f;
+        float m_mass;
+        glm::vec3 m_velocity;
+        glm::vec3 m_gravity;
+		bool m_isStatic;
     };
 }

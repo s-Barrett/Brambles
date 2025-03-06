@@ -72,6 +72,8 @@ add_library(Brambles
 	src/Brambles/MeshCollider.cpp
 	src/Brambles/RigidBody.h
 	src/Brambles/RigidBody.cpp
+	src/Brambles/Physics.h
+	src/Brambles/Physics.cpp
 	src/Brambles/Timer.h
 	src/Brambles/Timer.cpp
 	src/Brambles/Gui.h

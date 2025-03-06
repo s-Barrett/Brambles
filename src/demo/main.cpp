@@ -28,6 +28,8 @@ int main(int argc, char* argv[])
 
 	core->getLightManager()->addLight("light4", glm::vec3(0.0, -10.0, -10.0), glm::vec3(0.1, 0.1, 1.0), 0.3);
 
+	core->getPhysics()->setGravity(glm::vec3(0.0, -9.8, 0.0));
+
 
 	std::shared_ptr<Entity> map = core->addEntity();
 	std::shared_ptr<Renderer> mapRenderer = map->addComponent<Renderer>();
@@ -38,14 +40,21 @@ int main(int argc, char* argv[])
 	map->getComponent<Transform>()->setScale(glm::vec3(1.0, 1.0, 1.0)); 
 
 
+
 	std::shared_ptr<BoxCollider> mapBoxCollider = map->addComponent<BoxCollider>();
-	mapBoxCollider->setDebugRenderer(true);
 	mapBoxCollider->setSize(glm::vec3(30.0, 1.0, 30.0));
 	mapBoxCollider->setOffset(glm::vec3(0.0, -12.5, -20.0));
 
+	mapBoxCollider->setDebugRenderer(true);
+
+	core->getPhysics()->registerCollider(mapBoxCollider);	
+
 	std::shared_ptr<RigidBody> mapRigidBody = map->addComponent<RigidBody>();
-	mapRigidBody->setMass(1000000.0);
-	mapRigidBody->setIsStatic(true);
+	mapRigidBody->setMass(100.0);
+	mapRigidBody->setStatic(true);
+
+	core->getPhysics()->registerRigidBody(mapRigidBody);
+
 
 
 	std::shared_ptr<Entity> player = core->addEntity();
@@ -72,10 +81,15 @@ int main(int argc, char* argv[])
 	std::shared_ptr<BoxCollider> playerBoxCollider = player->addComponent<BoxCollider>();
 	playerBoxCollider->setSize(glm::vec3(1.0, 3.7, 1.0));
 	playerBoxCollider->setOffset(glm::vec3(0.0, 1.75, 0.0));
+
 	playerBoxCollider->setDebugRenderer(true);
+
+	core->getPhysics()->registerCollider(playerBoxCollider);
 
 	std::shared_ptr<RigidBody> playerRigidBody = player->addComponent<RigidBody>();
 	playerRigidBody->setMass(200.0);
+
+	core->getPhysics()->registerRigidBody(playerRigidBody);
 
 
 	std::shared_ptr<Entity> entity = core->addEntity();
@@ -92,8 +106,12 @@ int main(int argc, char* argv[])
 	entityBoxCollider->setOffset(glm::vec3(0.0, 0.2, 0.0));
 	entityBoxCollider->setDebugRenderer(true);
 
+	core->getPhysics()->registerCollider(entityBoxCollider);
+
 	std::shared_ptr<RigidBody> entityRigidBody = entity->addComponent<RigidBody>();
-	entityRigidBody->setMass(10.0);
+	entityRigidBody->setMass(50.0);
+
+	core->getPhysics()->registerRigidBody(entityRigidBody);
 
 
 

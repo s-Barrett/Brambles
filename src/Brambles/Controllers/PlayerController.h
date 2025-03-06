@@ -32,11 +32,11 @@ namespace Brambles
 
     private:
         glm::vec3 playerStart; ///< Starting position of the player.
-        float movementSpeed = 40.0f; ///< Speed at which the player moves.
+        float movementSpeed = 30.0f; ///< Speed at which the player moves.
 
         float yaw, pitch; ///< Yaw and pitch angles for the camera's orientation.
         float sensitivity; ///< Sensitivity for mouse input.
-        float jumpForce = 30.0f; ///< Force applied to the player when jumping.
+        float jumpForce = 5.0f; ///< Force applied to the player when jumping.
 
 		bool isGrounded = true; ///< Flag indicating if the player is jumping.
     };

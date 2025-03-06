@@ -12,7 +12,7 @@ namespace Brambles
     struct Window;
     struct Input;
     struct Camera;
-
+    struct Physics;
 	struct Shader;
     struct Audio;
     struct Timer;
@@ -78,6 +78,10 @@ namespace Brambles
 
 
 
+		std::shared_ptr<Physics> getPhysics() { return m_physics; }
+
+
+
         std::shared_ptr<LightManager> getLightManager()  { return m_lightManager; }
         /**
          * @brief Seeks for components of a specific type in all entities.
@@ -108,6 +112,7 @@ namespace Brambles
         std::shared_ptr<Timer> m_timer;
         std::shared_ptr<Shader> m_shader;
         std::shared_ptr<LightManager> m_lightManager;
+		std::shared_ptr<Physics> m_physics;
         std::vector<std::shared_ptr<Entity>> m_entities;
 
         std::weak_ptr<Core> m_self;

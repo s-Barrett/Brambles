@@ -7,6 +7,7 @@
 #include "Timer.h"
 #include "LightManager.h"
 #include "Resources/Audio.h"
+#include "Physics.h"
 #include "rend/rend.h"
 #include "Resources.h"
 #include <stb_image.h>
@@ -27,6 +28,7 @@ namespace Brambles
 		rtn->m_audio = std::make_shared<Audio>();
 		rtn->m_camera = std::make_shared<Camera>();
 		rtn->m_resources = std::make_shared<Resources>();
+		rtn->m_physics = std::make_shared<Physics>();
 		rtn->m_timer = std::make_shared<Timer>();
 		rtn->m_input = std::make_shared<Input>();
 		rtn->m_gui = std::make_shared<Gui>();
@@ -137,6 +139,8 @@ namespace Brambles
 			}
 
 			getTimer()->update();
+
+			getPhysics()->update(getTimer()->getDeltaTime());
 
 			// Update all entities
 			for (size_t ei = 0; ei < m_entities.size(); ++ei)
