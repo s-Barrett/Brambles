@@ -27,7 +27,8 @@ CMake
 Contact
 For more information, feel free to contact me via sambrianbarrett@gmail.com.
 
+Compneet Structure Breakdown (10/03/25) 
+![struct_brambles_1_1_brambles_1_1_component](https://github.com/user-attachments/assets/f0a18cde-e628-4dd5-b81c-ff76a6072cf7)
 
-![struct_brambles_1_1_brambles_1_1_component](https://github.com/user-attachments/assets/eaa66a28-e3b8-4096-97b2-6b4de8f5822d)
-![_window_8h__incl](https://github.com/user-attachments/assets/1335d5c6-9339-4ee1-80fe-840bc132b98d)
-![struct_brambles_1_1_core__coll__graph](https://github.com/user-attachments/assets/3d17fc1b-5d51-4da0-8fb7-3d3bb05f233d)
+Core Structure Breakdown (10/03/25)
+![struct_brambles_1_1_core__coll__graph](https://github.com/user-attachments/assets/16fee741-5fcf-4af4-a056-e5197d50cf75)
