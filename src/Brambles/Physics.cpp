@@ -33,6 +33,10 @@ namespace Brambles {
         m_boxColliders.push_back(boxCollider);
     }
 
+	void Physics::registerMeshCollider(std::shared_ptr<MeshCollider> meshCollider) {
+		m_meshColliders.push_back(meshCollider);
+	}
+
     void Physics::setGravity(const glm::vec3& gravity) {
         for (auto& rigidBody : m_rigidBodies) {
             rigidBody->setGravity(gravity);

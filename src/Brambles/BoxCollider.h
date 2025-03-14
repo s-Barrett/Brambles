@@ -3,7 +3,7 @@
 
 #include <glm/glm.hpp>
 #include <memory>
-#include "component.h"
+#include "Component.h"
 
 namespace Brambles {
 

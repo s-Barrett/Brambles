@@ -1,14 +1,18 @@
 
-
-#include "rend/Mesh.h"
-#include "rend/Shader.h"
-#include "Component.h"
-#include <glm/glm.hpp>
+#include "rend/Mesh.h" // Include the rend::Mesh class
+#include "rend/Shader.h" // Include the rend::Shader class
+#include "Resources/Model.h"
+#include "Transform.h"
+#include "Entity.h"
+#include "Core.h"
 #include <memory>
+#include <glm/glm.hpp>
 
 namespace Brambles
 {
     struct BoxCollider;
+	struct RigidBody;
+    struct MeshCollider;
 
 	/**
 	 * @brief Debug renderer for drawing wireframe boxes and box colliders.
@@ -30,6 +34,7 @@ namespace Brambles
          * @param color Color of the collider.
          */
         void drawBoxCollider(std::shared_ptr<BoxCollider> collider, const glm::vec3& color);
+        void drawMeshCollider(std::shared_ptr<MeshCollider> collider, const glm::vec3& color);
 
     private:
         GLuint programId; ///< Shader program ID.

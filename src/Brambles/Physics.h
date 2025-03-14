@@ -18,6 +18,8 @@ namespace Brambles
         // Add/remove colliders
         void registerCollider(std::shared_ptr<BoxCollider> boxCollider);
 		void registerRigidBody(std::shared_ptr<RigidBody> rigidBody);
+		void registerMeshCollider(std::shared_ptr<MeshCollider> meshCollider);
+
 
 		// Set gravity for all rigidbodies
 		void setGravity(const glm::vec3& gravity);
@@ -32,6 +34,7 @@ namespace Brambles
 
         // Collections of all colliders and rigidbodies
         std::vector<std::shared_ptr<BoxCollider>> m_boxColliders;
+		std::vector<std::shared_ptr<MeshCollider>> m_meshColliders;
         std::vector<std::shared_ptr<RigidBody>> m_rigidBodies;
     };
 }

@@ -49,6 +49,11 @@ int main(int argc, char* argv[])
 
 	core->getPhysics()->registerCollider(mapBoxCollider);	
 
+	std::shared_ptr<MeshCollider> mapMeshCollider = map->addComponent<MeshCollider>(core->getResources()->load<Model>("../assets/map/c1a0.obj"));
+	mapMeshCollider->setDebugRenderer(true);
+
+	core->getPhysics()->registerMeshCollider(mapMeshCollider);
+
 	std::shared_ptr<RigidBody> mapRigidBody = map->addComponent<RigidBody>();
 	mapRigidBody->setMass(100.0);
 	mapRigidBody->setStatic(true);

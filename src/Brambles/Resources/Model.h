@@ -24,6 +24,7 @@ namespace Brambles {
 
     private:
         friend struct Renderer; 
+		friend struct MeshCollider; 
         std::shared_ptr<rend::Model> m_model;
     };
 }
