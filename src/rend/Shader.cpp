@@ -143,7 +143,15 @@ namespace rend
 		glUniform1fv(loc, values.size(), &values[0]);
 	}
 
-
+    void Shader::drawMeshOutline(GLuint _vao, GLuint _vbo,  GLsizei _lineVertices)
+    {
+        // Draw as GL_LINES instead of triangles
+        glBindVertexArray(_vao);
+        glDrawArrays(GL_LINES, 0, _lineVertices);
+        // Cleanup
+        glDeleteBuffers(1, &_vbo);
+        glDeleteVertexArrays(1, &_vao);
+    }
 
     void Shader::drawOutline(GLuint _vao, GLsizei _vertexCount)
     {

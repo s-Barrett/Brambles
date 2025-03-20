@@ -11,10 +11,12 @@ namespace Brambles {
 
     MeshCollider::MeshCollider(std::shared_ptr<Model> model)
         : m_model(model), m_offset(0.0f) {
-        m_transform = getEntity()->getComponent<Transform>();
-        if (!m_transform) {
-            std::cerr << "MeshCollider: Missing Transform component!" << std::endl;
-        }
+        
+    }
+
+    void MeshCollider::onRender()
+    {
+        renderDebug();
     }
 
     MeshCollider::~MeshCollider() {

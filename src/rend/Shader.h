@@ -34,6 +34,7 @@ namespace rend
 		void uniform(const std::string& name, const std::vector<float>& values);
 		void uniform(const std::string& name, const std::vector<glm::mat4>& values);
         void drawOutline(GLuint _vao, GLsizei _vertexCount);
+		void drawMeshOutline(GLuint _vao, GLuint _vbo, GLsizei _lineVertices);
 		void draw(GLuint vaoId, GLsizei vertexCount);
     
 

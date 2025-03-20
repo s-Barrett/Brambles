@@ -12,7 +12,7 @@ namespace Brambles
 	{
 		auto entity = m_entity.lock();
 		if (!entity) {
-			std::cerr << "Entity is null in getEntity()" << std::endl;
+			std::cerr << "Entity is null in getEntity(), m_entity expired!" << std::endl;
 			throw std::runtime_error("Entity is null in getEntity()");
 		}
 		return entity;

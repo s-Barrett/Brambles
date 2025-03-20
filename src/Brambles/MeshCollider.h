@@ -27,6 +27,8 @@ namespace Brambles {
         void renderDebug();
         void setDebugRenderer(bool _debugRenderer) { debugRenderer = _debugRenderer; }
 
+        void onRender();
+
 
     private:
         std::shared_ptr<Model> m_model; // Reference to the model

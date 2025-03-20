@@ -93,48 +93,44 @@ namespace Brambles
 
         debugShader->use();
 
-        // Get the mesh data from the collider's model
         auto model = collider->getModel();
         if (!model) {
             std::cerr << "MeshCollider: No model found!" << std::endl;
             return;
         }
 
-        // Generate a wireframe mesh from the model's faces
-        auto mesh = std::make_shared<rend::Mesh>();
+        // Get the mesh data
         const auto& faces = model->getFaces();
 
+        std::vector<glm::vec3> lineVertices;
+
         for (const auto& face : faces) {
-            rend::Face wireframeFace;
+            // Store each triangle's edges as line segments
+            lineVertices.push_back(face.a.position);
+            lineVertices.push_back(face.b.position);
 
-            // First line (v0 to v1)
-            wireframeFace.a.position = face.a.position;
-            wireframeFace.b.position = face.b.position;
-            wireframeFace.c.position = face.b.position; // Duplicate for wireframe effect
-            mesh->addFace(wireframeFace);
+            lineVertices.push_back(face.b.position);
+            lineVertices.push_back(face.c.position);
 
-            // Second line (v1 to v2)
-            wireframeFace.a.position = face.b.position;
-            wireframeFace.b.position = face.c.position;
-            wireframeFace.c.position = face.c.position; // Duplicate for wireframe effect
-            mesh->addFace(wireframeFace);
-
-            // Third line (v2 to v0)
-            wireframeFace.a.position = face.c.position;
-            wireframeFace.b.position = face.a.position;
-            wireframeFace.c.position = face.a.position; // Duplicate for wireframe effect
-            mesh->addFace(wireframeFace);
+            lineVertices.push_back(face.c.position);
+            lineVertices.push_back(face.a.position);
         }
 
+        GLuint vao, vbo;
+        glGenVertexArrays(1, &vao);
+        glGenBuffers(1, &vbo);
 
-        GLuint vao = mesh->getVAOId();
-        GLsizei vertexCount = mesh->vertexCount();
+        glBindVertexArray(vao);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, lineVertices.size() * sizeof(glm::vec3), lineVertices.data(), GL_STATIC_DRAW);
 
-        // Calculate the model matrix
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+
+        // Apply transformation
         glm::mat4 m_modelMatrix = glm::mat4(1.0f);
         m_modelMatrix = glm::translate(m_modelMatrix, collider->getTransform()->getPosition() + collider->getOffset());
 
-        // Get the camera for view and projection matrices
         auto camera = getEntity()->getCore()->getCamera();
         if (camera) {
             glm::mat4 perspectiveProjection = camera->getProjectionMatrix();
@@ -144,14 +140,13 @@ namespace Brambles
             debugShader->uniform("debugprojection", perspectiveProjection);
             debugShader->uniform("debugmodel", m_modelMatrix);
             debugShader->uniform("debuglineColor", color);
-            debugShader->uniform("debuglinewidth", 2.0f);
         }
         else {
             std::cerr << "No camera found" << std::endl;
         }
 
-        // Draw the wireframe
-        debugShader->drawOutline(vao, vertexCount);
+		debugShader->drawMeshOutline(vao, vbo, lineVertices.size());
+       
     }
 
     
