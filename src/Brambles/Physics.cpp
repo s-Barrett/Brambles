@@ -52,8 +52,6 @@ namespace Brambles {
                 if (boxCollider1->getEntity() == boxCollider2->getEntity()) continue;
 
                 if (boxCollider1->checkCollision(boxCollider2)) {
-                   
-					std::cout << "Collision detected!" << std::endl;
 
                     handleCollision(boxCollider1, boxCollider2);
                 }

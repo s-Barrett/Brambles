@@ -78,9 +78,6 @@ int main(int argc, char* argv[])
 	playerCamera->setCameraPosition(glm::vec3(0, 4.0, 0));
 	playerCamera->setPriority(1.0);
 
-	std::shared_ptr<AudioSource> audioSource = player->addComponent<AudioSource>();
-
-
 
 	std::shared_ptr<BoxCollider> playerBoxCollider = player->addComponent<BoxCollider>();
 	playerBoxCollider->setSize(glm::vec3(1.0, 3.7, 1.0));
