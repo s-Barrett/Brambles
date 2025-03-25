@@ -45,16 +45,11 @@ namespace Brambles {
         glm::vec3 otherMax = otherMin + other->m_size;
 
 
-        std::cout << "Collider 1: Min(" << thisMin.x << ", " << thisMin.y << ", " << thisMin.z
-            << ") Max(" << thisMax.x << ", " << thisMax.y << ", " << thisMax.z << ")\n";
-        std::cout << "Collider 2: Min(" << otherMin.x << ", " << otherMin.y << ", " << otherMin.z
-            << ") Max(" << otherMax.x << ", " << otherMax.y << ", " << otherMax.z << ")\n";
-
         bool colliding = (thisMin.x <= otherMax.x && thisMax.x >= otherMin.x) &&
             (thisMin.y <= otherMax.y && thisMax.y >= otherMin.y) &&
             (thisMin.z <= otherMax.z && thisMax.z >= otherMin.z);
 
-        std::cout << "Collision detected: " << (colliding ? "true" : "false") << std::endl;
+        
         return colliding;
     }
 

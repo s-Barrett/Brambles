@@ -8,7 +8,7 @@
 namespace Brambles {
 
     RigidBody::RigidBody()
-        : m_mass(1.0f), m_velocity(0.0f), m_gravity(0.0f, -9.81f, 0.0f), m_isStatic(false) {}
+        : m_mass(1.0f), m_velocity(0.0f), m_gravity(0.0f, -20.0f, 0.0f), m_isStatic(false) {}
 
     void RigidBody::update(float deltaTime) {
         if (m_isStatic)

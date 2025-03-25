@@ -28,7 +28,6 @@ int main(int argc, char* argv[])
 
 	core->getLightManager()->addLight("light4", glm::vec3(0.0, -10.0, -10.0), glm::vec3(0.1, 0.1, 1.0), 0.3);
 
-	core->getPhysics()->setGravity(glm::vec3(0.0, -9.8, 0.0));
 
 
 	std::shared_ptr<Entity> map = core->addEntity();
@@ -118,6 +117,27 @@ int main(int argc, char* argv[])
 
 	core->getPhysics()->registerRigidBody(entityRigidBody);
 
+
+	std::shared_ptr<Entity> entity2 = core->addEntity();
+	std::shared_ptr<Renderer> entityRenderer2 = entity2->addComponent<Renderer>();
+
+	entityRenderer2->setModel(core->getResources()->load<Model>("../assets/objects/medkit/Medkit.obj"));
+
+	entity2->getComponent<Transform>()->setPosition(glm::vec3(0, -11, -10.0));
+	entity2->getComponent<Transform>()->setScale(glm::vec3(0.1, 0.1, 0.1));
+
+
+	std::shared_ptr<BoxCollider> entityBoxCollider2 = entity2->addComponent<BoxCollider>();
+	entityBoxCollider2->setSize(glm::vec3(0.5, 0.5, 0.5));
+	entityBoxCollider2->setOffset(glm::vec3(0.0, 0.2, 0.0));
+	entityBoxCollider2->setDebugRenderer(true);
+
+	core->getPhysics()->registerCollider(entityBoxCollider2);
+		
+	std::shared_ptr<RigidBody> entityRigidBody2 = entity2->addComponent<RigidBody>();
+	entityRigidBody2->setMass(50.0);
+
+	core->getPhysics()->registerRigidBody(entityRigidBody2);
 
 
 

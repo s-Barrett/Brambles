@@ -46,18 +46,15 @@ namespace Brambles
         auto rigidBody = getEntity()->getComponent<RigidBody>();
         float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
         auto camera = getEntity()->getComponent<Camera>();
-
         bool isGrounded = rigidBody->isGrounded();  
-
-        std::cout << "Grounded: " << (isGrounded ? "Yes" : "No") << std::endl;  // Debugging if grounded
 
         glm::vec3 forward = glm::normalize(glm::vec3(
             cos(glm::radians(yaw)),
             0.0f,
             sin(glm::radians(yaw))
         ));
-        glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
 
+        glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
         glm::vec3 input(0.0f);
         glm::vec3 targetVelocity(0.0f);
 
@@ -69,23 +66,23 @@ namespace Brambles
 
         if (glm::length(input) > 0.0f)
         {
-            input = glm::normalize(input);  
-            targetVelocity = input * movementSpeed; 
+			if (isGrounded)
+			{
+				targetVelocity = glm::normalize(input) * movementSpeed;
+			}
+			else
+			{
+				targetVelocity = glm::normalize(input) * movementSpeed * 0.6f;  // Half speed in the air
+			}
         }
 
         glm::vec3 currentVelocity = rigidBody->getVelocity();
         glm::vec3 horizontalVelocity = glm::vec3(currentVelocity.x, 0.0f, currentVelocity.z);
 
     
-        horizontalVelocity = glm::mix(horizontalVelocity, targetVelocity, 10.0f * timeDelta);  // Smooth transition
-
-        horizontalVelocity.y = currentVelocity.y;  // Keep y velocity for gravity
-
-     
+        horizontalVelocity = glm::mix(horizontalVelocity, targetVelocity, 6.0f * timeDelta);  // Smooth transition
+        horizontalVelocity.y = currentVelocity.y;  // Keep y velocity for gravity     
         rigidBody->setVelocity(horizontalVelocity);
-
-      
-        std::cout << "Velocity: " << rigidBody->getVelocity().x << ", " << rigidBody->getVelocity().y << ", " << rigidBody->getVelocity().z << std::endl;
 
         // Jumping logic
         if (getEntity()->getCore()->getInput()->isKey(SDLK_SPACE))  // Press space to jump

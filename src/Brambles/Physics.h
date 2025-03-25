@@ -6,10 +6,8 @@
 #include "MeshCollider.h"
 #include "RigidBody.h"
 
-
-namespace Brambles 
+namespace Brambles
 {
-
     struct Physics {
     public:
         Physics();
@@ -17,24 +15,23 @@ namespace Brambles
 
         // Add/remove colliders
         void registerCollider(std::shared_ptr<BoxCollider> boxCollider);
-		void registerRigidBody(std::shared_ptr<RigidBody> rigidBody);
-		void registerMeshCollider(std::shared_ptr<MeshCollider> meshCollider);
+        void registerRigidBody(std::shared_ptr<RigidBody> rigidBody);
+        void registerMeshCollider(std::shared_ptr<MeshCollider> meshCollider);
 
+        // Set gravity for all rigidbodies
+        void setGravity(const glm::vec3& gravity);
 
-		// Set gravity for all rigidbodies
-		void setGravity(const glm::vec3& gravity);
+        void handleCollision(std::shared_ptr<BoxCollider> collider1, std::shared_ptr<BoxCollider> collider2);
+        void handleCollision(std::shared_ptr<BoxCollider> boxCollider, std::shared_ptr<MeshCollider> meshCollider);
 
-		void handleCollision(std::shared_ptr<BoxCollider> collider1, std::shared_ptr<BoxCollider> collider2);
-
-		std::vector<std::shared_ptr<BoxCollider>>& getBoxColliders() { return m_boxColliders; }
+        std::vector<std::shared_ptr<BoxCollider>>& getBoxColliders() { return m_boxColliders; }
+        std::vector<std::shared_ptr<MeshCollider>>& getMeshColliders() { return m_meshColliders; }
     private:
-        // Collision detection functions
         void checkCollisions();
         void resolveCollisions();
 
-        // Collections of all colliders and rigidbodies
         std::vector<std::shared_ptr<BoxCollider>> m_boxColliders;
-		std::vector<std::shared_ptr<MeshCollider>> m_meshColliders;
+        std::vector<std::shared_ptr<MeshCollider>> m_meshColliders;
         std::vector<std::shared_ptr<RigidBody>> m_rigidBodies;
     };
 }
