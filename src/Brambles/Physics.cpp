@@ -1,7 +1,13 @@
 ﻿#include "Physics.h"
 #include "BoxCollider.h"
 #include "MeshCollider.h"
+#include "Component.h"
+#include "Transform.h"
 #include "RigidBody.h"
+#include "DebugRenderer.h"
+#include "Physics.h"
+#include "BoxCollider.h"
+#include "Entity.h"
 #include "Transform.h"
 #include "Entity.h"
 #include <iostream>
@@ -75,17 +81,17 @@ namespace Brambles {
     }
 
     bool Physics::checkBoxMeshCollision(std::shared_ptr<BoxCollider> box, std::shared_ptr<MeshCollider> mesh) {
-        // Get box bounds
+
         glm::vec3 boxPos = box->getEntity()->getComponent<Transform>()->getPosition() + box->getOffset();
         glm::vec3 boxSize = box->getSize();
         glm::vec3 boxMin = boxPos - boxSize * 0.5f;
         glm::vec3 boxMax = boxPos + boxSize * 0.5f;
 
-        // Get mesh faces
+
         const auto& faces = mesh->getModel()->getFaces();
         glm::vec3 meshPos = mesh->getTransform()->getPosition() + mesh->getOffset();
 
-        // Check each triangle in mesh
+       
         for (const auto& face : faces) {
             glm::vec3 v0 = face.a.position + meshPos;
             glm::vec3 v1 = face.b.position + meshPos;
@@ -101,14 +107,14 @@ namespace Brambles {
 
     bool Physics::triangleAABBOverlap(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2,
                                      const glm::vec3& boxMin, const glm::vec3& boxMax) {
-        // Simple test: check if any triangle vertex is inside the box
+       
         if (pointInAABB(v0, boxMin, boxMax) ||
             pointInAABB(v1, boxMin, boxMax) ||
             pointInAABB(v2, boxMin, boxMax)) {
             return true;
         }
 
-        // Implement proper triangle-AABB intersection test
+        // botched needs fix
         return false;
     }
 
@@ -129,7 +135,7 @@ namespace Brambles {
 
         // Calculate push direction (away from mesh)
         glm::vec3 pushDir = glm::normalize(boxPos - meshPos);
-        if (glm::length(pushDir) < 0.001f) pushDir = glm::vec3(0, 1, 0); // Fallback
+        if (glm::length(pushDir) < 0.001f) pushDir = glm::vec3(0, 1, 0); // this is not working rn
 
         // Apply simple collision response
         boxEntity->getComponent<Transform>()->setPosition(boxPos + pushDir * 0.1f);
