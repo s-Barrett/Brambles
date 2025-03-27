@@ -64,6 +64,9 @@ namespace Brambles
          */
         std::shared_ptr<Gui> getGui() { return m_gui; }
 
+        std::vector<std::shared_ptr<Entity>> getEntities() { return m_entities; }
+
+
         /**
          * @brief Gets the camera.
          * @return A shared pointer to the camera.

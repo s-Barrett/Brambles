@@ -37,7 +37,7 @@ namespace Brambles {
         glm::vec3 thisPos = transformThis->getPosition();
         glm::vec3 otherPos = transformOther->getPosition();
 
-   
+
         glm::vec3 thisMin = thisPos + m_offset - m_size * 0.5f;
         glm::vec3 thisMax = thisMin + m_size;
 
@@ -49,7 +49,7 @@ namespace Brambles {
             (thisMin.y <= otherMax.y && thisMax.y >= otherMin.y) &&
             (thisMin.z <= otherMax.z && thisMax.z >= otherMin.z);
 
-        
+
         return colliding;
     }
 
