@@ -9,14 +9,14 @@
 #include "Resources/Model.h"
 
 #include <iostream>
-#include <GL/gl.h> 
+#include <GL/gl.h>
 
 namespace Brambles
 {
     std::shared_ptr<rend::Mesh> DebugRenderer::generateBoxMesh(const glm::vec3& size)
     {
         auto mesh = std::make_shared<rend::Mesh>();
-        glm::vec3 halfSize = size / 2.0f; 
+        glm::vec3 halfSize = size / 2.0f;
 
         glm::vec3 corners[8] = {
             {-halfSize.x, -halfSize.y, -halfSize.z}, { halfSize.x, -halfSize.y, -halfSize.z},
@@ -27,7 +27,7 @@ namespace Brambles
 
         int edges[12][2] = {
             {0, 1}, {1, 2}, {2, 3}, {3, 0}, {4, 5}, {5, 6}, {6, 7}, {7, 4},
-            {0, 4}, {1, 5}, {2, 6}, {3, 7} //creating edges 
+            {0, 4}, {1, 5}, {2, 6}, {3, 7} //creating edges
         };
 
         for (const auto& edge : edges)
@@ -146,8 +146,8 @@ namespace Brambles
         }
 
 		debugShader->drawMeshOutline(vao, vbo, lineVertices.size());
-       
+
     }
 
-    
+
 }
