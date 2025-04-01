@@ -21,6 +21,8 @@ namespace Brambles {
                 glm::vec3 velocity = rigidBody->getVelocity();
                 velocity.y -= rigidBody->getGravity().y * deltaTime;
                 rigidBody->setVelocity(velocity);
+                rigidBody->update(deltaTime);
+
             }
         }
 

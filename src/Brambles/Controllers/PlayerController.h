@@ -36,9 +36,9 @@ namespace Brambles
 
         float yaw, pitch; ///< Yaw and pitch angles for the camera's orientation.
         float sensitivity; ///< Sensitivity for mouse input.
-        float jumpForce = 6.0f; ///< Force applied to the player when jumping.
-		float airResistance = 0.1f; ///< Air resistance applied to the player.
-		float floorFriction = 0.5f; ///< Friction applied to the player when on the ground.
+        float jumpForce = 3.0f; ///< Force applied to the player when jumping.
+		float airResistance = 0.3f; ///< Air resistance applied to the player.
+		float floorFriction = 0.3f; ///< Friction applied to the player when on the ground.
 
 		bool isGrounded = true; ///< Flag indicating if the player is jumping.
     };

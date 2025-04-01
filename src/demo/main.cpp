@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 
 	entityRenderer->setModel(core->getResources()->load<Model>("../assets/objects/medkit/Medkit.obj"));
 
-	entity->getComponent<Transform>()->setPosition(glm::vec3(0, -10, -10.0));
+	entity->getComponent<Transform>()->setPosition(glm::vec3(5, -10, -10.0));
 	entity->getComponent<Transform>()->setScale(glm::vec3(0.1, 0.1, 0.1));
 
 

@@ -72,7 +72,7 @@ namespace Brambles
 			}
 			else
 			{
-				targetVelocity = glm::normalize(input) * movementSpeed * 0.6f;  // Half speed in the air
+				targetVelocity = glm::normalize(input) * movementSpeed * airResistance;  // Half speed in the air
 			}
         }
 
