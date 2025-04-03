@@ -98,8 +98,7 @@ namespace Brambles {
         return false;
     }
 
-    void Physics::handleBoxMeshCollision(std::shared_ptr<BoxCollider> box,
-                                       std::shared_ptr<MeshCollider> mesh) {
+    void Physics::handleBoxMeshCollision(std::shared_ptr<BoxCollider> box, std::shared_ptr<MeshCollider> mesh) {
         auto boxEntity = box->getEntity();
         auto boxRb = boxEntity->getComponent<RigidBody>();
         if (!boxRb) return;
@@ -108,29 +107,98 @@ namespace Brambles {
         if (!checkBoxMeshCollision(box, mesh, collisionNormal)) return;
 
         glm::vec3 velocity = boxRb->getVelocity();
-        float velocityIntoWall = glm::dot(velocity, collisionNormal);
+        float velocityIntoSurface = glm::dot(velocity, collisionNormal);
 
-        if (velocityIntoWall < 0) {
-            glm::vec3 bounceVelocity = velocity - (1.8f * velocityIntoWall) * collisionNormal;
-            boxRb->setVelocity(bounceVelocity);
+        // Only process if moving toward the surface
+        if (velocityIntoSurface < 0) {
+            // Determine collision type based on normal
+            bool isFloor = collisionNormal.y > 0.7f;    // Mostly upward normal
+            bool isWall = fabs(collisionNormal.y) < 0.3f; // Mostly vertical normal
+            bool isCeiling = collisionNormal.y < -0.7f;  // Mostly downward normal
 
+            if (isFloor) {
+                // Floor collision - stop downward movement
+                velocity.y = std::max(velocity.y, 0.0f);
+
+                // Apply friction
+                velocity.x *= floorFriction;
+                velocity.z *= floorFriction;
+            }
+            else if (isWall) {
+                // Wall collision - preserve vertical velocity, cancel horizontal
+                velocity -= (1.0f + wallBounce) * velocityIntoSurface * collisionNormal;
+                velocity.y *= 0.95f; // Slight vertical dampening
+            }
+            else if (isCeiling) {
+                // Ceiling collision - stop upward movement
+                velocity.y = std::min(velocity.y, 0.0f);
+            }
+
+            boxRb->setVelocity(velocity);
+
+            // Small position correction to prevent sinking
             glm::vec3 position = boxEntity->getComponent<Transform>()->getPosition();
-            boxEntity->getComponent<Transform>()->setPosition(position + collisionNormal * 0.05f);
+            boxEntity->getComponent<Transform>()->setPosition(position + collisionNormal * 0.01f);
         }
     }
 
     bool Physics::triangleAABBOverlap(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2,
-                                    const glm::vec3& boxMin, const glm::vec3& boxMax) {
-        if (pointInAABB(v0, boxMin, boxMax) || pointInAABB(v1, boxMin, boxMax) || pointInAABB(v2, boxMin, boxMax)) {
-            return true;
+        const glm::vec3& boxMin, const glm::vec3& boxMax) {
+        if (pointInAABB(v0, boxMin, boxMax)) return true;
+        if (pointInAABB(v1, boxMin, boxMax)) return true;
+        if (pointInAABB(v2, boxMin, boxMax)) return true;
+
+        glm::vec3 boxCenter = (boxMin + boxMax) * 0.5f;
+        glm::vec3 boxHalfSize = boxMax - boxCenter;
+
+        glm::vec3 triangleEdges[] = { v1 - v0, v2 - v1, v0 - v2 };
+        glm::vec3 triangleNormal = glm::cross(triangleEdges[0], triangleEdges[1]);
+
+        float triangleMin, triangleMax;
+        float boxMinProj, boxMaxProj;
+
+        auto project = [](const glm::vec3& axis, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, float& min, float& max) {
+            min = max = glm::dot(axis, v0);
+            float p1 = glm::dot(axis, v1);
+            float p2 = glm::dot(axis, v2);
+            min = std::min(min, std::min(p1, p2));
+            max = std::max(max, std::max(p1, p2));
+            };
+
+        glm::vec3 axes[] = {
+            {1,0,0}, {0,1,0}, {0,0,1},
+            glm::cross({1,0,0}, triangleEdges[0]),
+            glm::cross({1,0,0}, triangleEdges[1]),
+            glm::cross({1,0,0}, triangleEdges[2]),
+            glm::cross({0,1,0}, triangleEdges[0]),
+            glm::cross({0,1,0}, triangleEdges[1]),
+            glm::cross({0,1,0}, triangleEdges[2]),
+            glm::cross({0,0,1}, triangleEdges[0]),
+            glm::cross({0,0,1}, triangleEdges[1]),
+            glm::cross({0,0,1}, triangleEdges[2]),
+            triangleNormal
+        };
+
+        for (const auto& axis : axes) {
+            if (glm::length(axis) < 1e-6f) continue;
+            glm::vec3 n = glm::normalize(axis);
+
+            project(n, v0, v1, v2, triangleMin, triangleMax);
+            float boxProj = glm::dot(n, boxCenter);
+            float boxRadius = boxHalfSize.x * fabs(n.x) + boxHalfSize.y * fabs(n.y) + boxHalfSize.z * fabs(n.z);
+            boxMinProj = boxProj - boxRadius;
+            boxMaxProj = boxProj + boxRadius;
+
+            if (triangleMax < boxMinProj || triangleMin > boxMaxProj) return false;
         }
-        return false;
+
+        return true;
     }
 
     bool Physics::pointInAABB(const glm::vec3& point, const glm::vec3& min, const glm::vec3& max) {
-        return (point.x >= min.x && point.x <= max.x) &&
-               (point.y >= min.y && point.y <= max.y) &&
-               (point.z >= min.z && point.z <= max.z);
+        return point.x >= min.x && point.x <= max.x &&
+            point.y >= min.y && point.y <= max.y &&
+            point.z >= min.z && point.z <= max.z;
     }
 
     void Physics::handleCollision(std::shared_ptr<BoxCollider> collider1,

@@ -5,7 +5,7 @@
 #include "Component.h"
 
 namespace Brambles {
-	class RigidBody : public Component {
+	struct RigidBody : public Component {
 	public:
 		RigidBody();
 		void update(float deltaTime);

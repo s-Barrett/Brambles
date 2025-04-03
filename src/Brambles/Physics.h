@@ -6,12 +6,12 @@
 #include <glm/glm.hpp>
 
 namespace Brambles {
-    class RigidBody;
-    class BoxCollider;
-    class MeshCollider;
-    class Transform;
+    struct RigidBody;
+    struct BoxCollider;
+    struct MeshCollider;
+    struct Transform;
 
-    class Physics {
+    struct Physics {
     public:
         Physics();
         void update(float deltaTime);
@@ -24,6 +24,9 @@ namespace Brambles {
         std::vector<std::shared_ptr<RigidBody>> m_rigidBodies;
         std::vector<std::shared_ptr<BoxCollider>> m_boxColliders;
         std::vector<std::shared_ptr<MeshCollider>> m_meshColliders;
+
+        float floorFriction = 0.9f; // More slippery
+        float wallBounce = 0.9f;    // Less bouncy
 
         void checkCollisions();
         void checkBoxMeshCollisions();

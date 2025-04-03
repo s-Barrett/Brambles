@@ -40,16 +40,9 @@ int main(int argc, char* argv[])
 
 
 
-	std::shared_ptr<BoxCollider> mapBoxCollider = map->addComponent<BoxCollider>();
-	mapBoxCollider->setSize(glm::vec3(30.0, 1.0, 30.0));
-	mapBoxCollider->setOffset(glm::vec3(0.0, -12.5, -20.0));
-
-	mapBoxCollider->setDebugRenderer(true);
-
-	core->getPhysics()->registerCollider(mapBoxCollider);	
 
 	std::shared_ptr<MeshCollider> mapMeshCollider = map->addComponent<MeshCollider>(core->getResources()->load<Model>("../assets/map/c1a0.obj"));
-	mapMeshCollider->setDebugRenderer(true);
+	mapMeshCollider->setDebugRenderer(false);
 
 	core->getPhysics()->registerMeshCollider(mapMeshCollider);
 

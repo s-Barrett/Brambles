@@ -35,7 +35,7 @@ namespace Brambles
             rend::Face face;
             face.a.position = corners[edge[0]];
             face.b.position = corners[edge[1]];
-            face.c.position = corners[edge[0]]; // Duplicate point to maintain structure
+            face.c.position = corners[edge[0]]; 
             mesh->addFace(face);
         }
 
@@ -46,50 +46,48 @@ namespace Brambles
     {
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
+        glEnable(GL_LINE_SMOOTH);
 
         debugShader->use();
-
-        glm::vec3 boxOffset = getEntity()->getComponent<BoxCollider>()->getOffset();
-        glm::vec3 boxSize = getEntity()->getComponent<BoxCollider>()->getSize();
-        glm::vec3 genBoxSize = boxSize; // Use the actual size
-
-        auto mesh = generateBoxMesh(genBoxSize);
+        auto mesh = generateBoxMesh(size);
         GLuint vao = mesh->getVAOId();
         GLsizei vertexCount = mesh->vertexCount();
 
-        glm::mat4 m_modelMatrix = glm::mat4(1.0f);
-        m_modelMatrix = glm::translate(m_modelMatrix, getTransform()->getPosition() + boxOffset);
 
-        auto camera = getEntity()->getCore()->getCamera();
-        if (camera)
+        glm::mat4 modelMatrix = glm::mat4(1.0f);
+        modelMatrix = glm::translate(modelMatrix, position);
+
+        if (auto camera = getEntity()->getCore()->getCamera())
         {
-            glm::mat4 perspectiveProjection = camera->getProjectionMatrix();
-            glm::mat4 view = camera->getViewMatrix();
-
-            debugShader->uniform("debugview", view);
-            debugShader->uniform("debugprojection", perspectiveProjection);
-            debugShader->uniform("debugmodel", m_modelMatrix);
-            debugShader->uniform("debuglineColor", glm::vec3(0, 1, 0));
+            debugShader->uniform("debugview", camera->getViewMatrix());
+            debugShader->uniform("debugprojection", camera->getProjectionMatrix());
+            debugShader->uniform("debugmodel", modelMatrix);
+            debugShader->uniform("debuglineColor", color);
             debugShader->uniform("debuglinewidth", 2.0f);
         }
-        else
-        {
-            std::cerr << "No camera found" << std::endl;
-        }
 
-		debugShader->drawOutline(vao, vertexCount);// Draw function to bind this is in rend shader.cpp
+        glLineWidth(2.0f);
+        glBindVertexArray(vao);
+        glDrawArrays(GL_LINES, 0, vertexCount);
+        glBindVertexArray(0);
+
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
     }
 
     void DebugRenderer::drawBoxCollider(std::shared_ptr<BoxCollider> collider, const glm::vec3& color)
     {
-        glm::vec3 position = collider->getPosition() + collider->getOffset();
+
+        glm::vec3 position = collider->getTransform()->getPosition() + collider->getOffset();
         glm::vec3 size = collider->getSize();
+ 
         drawWireframeBox(position, size, color);
     }
 
     void DebugRenderer::drawMeshCollider(std::shared_ptr<MeshCollider> collider, const glm::vec3& color) {
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
+        glEnable(GL_LINE_SMOOTH); // Add for better line rendering on Linux
 
         debugShader->use();
 
@@ -99,23 +97,34 @@ namespace Brambles
             return;
         }
 
+        // Get all transforms
+        auto transform = collider->getTransform();
+        glm::vec3 position = transform->getPosition();
+        glm::vec3 scale = transform->getScale();
+        glm::vec3 offset = collider->getOffset();
+
         // Get the mesh data
         const auto& faces = model->getFaces();
-
         std::vector<glm::vec3> lineVertices;
 
         for (const auto& face : faces) {
-            // Store each triangle's edges as line segments
-            lineVertices.push_back(face.a.position);
-            lineVertices.push_back(face.b.position);
+            // Apply scale and transform to each vertex
+            glm::vec3 a = (face.a.position * scale) + position + offset;
+            glm::vec3 b = (face.b.position * scale) + position + offset;
+            glm::vec3 c = (face.c.position * scale) + position + offset;
 
-            lineVertices.push_back(face.b.position);
-            lineVertices.push_back(face.c.position);
+            // Store triangle edges
+            lineVertices.push_back(a);
+            lineVertices.push_back(b);
 
-            lineVertices.push_back(face.c.position);
-            lineVertices.push_back(face.a.position);
+            lineVertices.push_back(b);
+            lineVertices.push_back(c);
+
+            lineVertices.push_back(c);
+            lineVertices.push_back(a);
         }
 
+        // Setup VAO/VBO
         GLuint vao, vbo;
         glGenVertexArrays(1, &vao);
         glGenBuffers(1, &vbo);
@@ -127,26 +136,27 @@ namespace Brambles
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
 
-        // Apply transformation
-        glm::mat4 m_modelMatrix = glm::mat4(1.0f);
-        m_modelMatrix = glm::translate(m_modelMatrix, collider->getTransform()->getPosition() + collider->getOffset());
-
-        auto camera = getEntity()->getCore()->getCamera();
-        if (camera) {
-            glm::mat4 perspectiveProjection = camera->getProjectionMatrix();
-            glm::mat4 view = camera->getViewMatrix();
-
-            debugShader->uniform("debugview", view);
-            debugShader->uniform("debugprojection", perspectiveProjection);
-            debugShader->uniform("debugmodel", m_modelMatrix);
+        // Set up shader uniforms
+        glm::mat4 modelMatrix = glm::mat4(1.0f); // Identity matrix since we've already transformed vertices
+        if (auto camera = getEntity()->getCore()->getCamera()) {
+            debugShader->uniform("debugview", camera->getViewMatrix());
+            debugShader->uniform("debugprojection", camera->getProjectionMatrix());
+            debugShader->uniform("debugmodel", modelMatrix);
             debugShader->uniform("debuglineColor", color);
-        }
-        else {
-            std::cerr << "No camera found" << std::endl;
+            debugShader->uniform("debuglinewidth", 2.0f); // Explicit width for Linux
         }
 
-		debugShader->drawMeshOutline(vao, vbo, lineVertices.size());
+        // Draw with line width (important for Linux)
+        glLineWidth(2.0f);
+        glDrawArrays(GL_LINES, 0, lineVertices.size());
 
+        // Cleanup
+        glDeleteVertexArrays(1, &vao);
+        glDeleteBuffers(1, &vbo);
+
+        // Restore GL state
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
     }
 
 

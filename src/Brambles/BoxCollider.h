@@ -8,7 +8,7 @@
 namespace Brambles {
 
     // Forward declaration of RigidBody since we may need it in collision response
-    class RigidBody;
+    struct RigidBody;
 
 	struct BoxCollider : public Component
     {
