@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 	player->getComponent<Transform>()->setRotation(glm::vec3(0.0, 180.0, 0.0));
 
 	std::shared_ptr<Camera> playerCamera = player->addComponent<Camera>();
-	playerCamera->setFov(80.0);
+	playerCamera->setFov(70.0);
 	playerCamera->setCameraPosition(glm::vec3(0, 4.0, 0));
 	playerCamera->setPriority(1.0);
 
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 	playerBoxCollider->setSize(glm::vec3(1.0, 3.7, 1.0));
 	playerBoxCollider->setOffset(glm::vec3(0.0, 1.75, 0.0));
 
-	playerBoxCollider->setDebugRenderer(true);
+	playerBoxCollider->setDebugRenderer(false);
 
 	core->getPhysics()->registerCollider(playerBoxCollider);
 
@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<BoxCollider> entityBoxCollider = entity->addComponent<BoxCollider>();
 	entityBoxCollider->setSize(glm::vec3(0.5, 0.5, 0.5));
 	entityBoxCollider->setOffset(glm::vec3(0.0, 0.2, 0.0));
-	entityBoxCollider->setDebugRenderer(true);
+	entityBoxCollider->setDebugRenderer(false);
 
 	core->getPhysics()->registerCollider(entityBoxCollider);
 
@@ -117,10 +117,11 @@ int main(int argc, char* argv[])
 	entity2->getComponent<Transform>()->setScale(glm::vec3(0.1, 0.1, 0.1));
 
 
+
 	std::shared_ptr<BoxCollider> entityBoxCollider2 = entity2->addComponent<BoxCollider>();
 	entityBoxCollider2->setSize(glm::vec3(0.5, 0.5, 0.5));
 	entityBoxCollider2->setOffset(glm::vec3(0.0, 0.2, 0.0));
-	entityBoxCollider2->setDebugRenderer(true);
+	entityBoxCollider2->setDebugRenderer(false);
 
 	core->getPhysics()->registerCollider(entityBoxCollider2);
 		

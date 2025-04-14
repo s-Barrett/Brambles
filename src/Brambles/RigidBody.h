@@ -17,7 +17,9 @@ namespace Brambles {
 		const glm::vec3& getVelocity() const;
 
 		void applyForce(const glm::vec3& force);
-		bool isGrounded();
+	
+		void setIsGrounded(bool grounded) { isGrounded = grounded; }
+		bool isGrounded = false;
 
 		void setGravity(const glm::vec3& gravity);
 		const glm::vec3& getGravity() const;
@@ -25,10 +27,19 @@ namespace Brambles {
 		void setStatic(bool isStatic);
 		bool isStatic() const;
 
+		void resetFallTime() { m_timeFalling = 0.0f; }
+		void addFallTime(float dt) { m_timeFalling += dt; }
+		float getFallTime() const { return m_timeFalling; }
+
 	private:
+
+		float m_timeFalling = 0.0f;
 		float m_mass;
 		glm::vec3 m_velocity;
 		glm::vec3 m_gravity;
+
+
+
 		bool m_isStatic;
 	};
 }

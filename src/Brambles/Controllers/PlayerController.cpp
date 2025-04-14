@@ -46,7 +46,7 @@ namespace Brambles
         auto rigidBody = getEntity()->getComponent<RigidBody>();
         float timeDelta = getEntity()->getCore()->getTimer()->getDeltaTime();
         auto camera = getEntity()->getComponent<Camera>();
-        bool isGrounded = rigidBody->isGrounded();  
+        bool isGrounded = rigidBody->isGrounded;  
 
         glm::vec3 forward = glm::normalize(glm::vec3(
             cos(glm::radians(yaw)),
@@ -66,14 +66,7 @@ namespace Brambles
 
         if (glm::length(input) > 0.0f)
         {
-			if (isGrounded)
-			{
-				targetVelocity = glm::normalize(input) * movementSpeed;
-			}
-			else
-			{
-				targetVelocity = glm::normalize(input) * movementSpeed * airResistance;  // Half speed in the air
-			}
+			targetVelocity = glm::normalize(input) * movementSpeed;
         }
 
         glm::vec3 currentVelocity = rigidBody->getVelocity();
@@ -87,6 +80,7 @@ namespace Brambles
         // Jumping logic
         if (getEntity()->getCore()->getInput()->isKey(SDLK_SPACE))  // Press space to jump
         {
+            std::cout << "space is pressed\n";
             if (isGrounded)
             {
                 rigidBody->setVelocity(glm::vec3(currentVelocity.x, jumpForce, currentVelocity.z));  // Apply jump force

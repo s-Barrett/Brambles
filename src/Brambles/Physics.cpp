@@ -5,6 +5,10 @@
 #include "Transform.h"
 #include "Entity.h"
 #include <iostream>
+#include "Timer.h"
+#include "Core.h"
+#include "Component.h"
+#include "Entity.h"
 #include "Resources/Model.h"
 
 namespace Brambles {
@@ -17,7 +21,7 @@ namespace Brambles {
 
             rigidBody->update(deltaTime);
 
-            if (!rigidBody->isGrounded()) {
+            if (rigidBody->isGrounded = false) {
                 glm::vec3 velocity = rigidBody->getVelocity();
                 velocity.y -= rigidBody->getGravity().y * deltaTime;
                 rigidBody->setVelocity(velocity);
@@ -28,6 +32,7 @@ namespace Brambles {
 
         checkCollisions();
         checkBoxMeshCollisions();
+        checkFloorCollisions(deltaTime);
     }
 
     void Physics::registerRigidBody(std::shared_ptr<RigidBody> rigidBody) {
@@ -62,6 +67,39 @@ namespace Brambles {
             }
         }
     }
+
+    void Physics::checkFloorCollisions(float deltaTime)
+    {
+        const float groundVelocityThreshold = 1.0f; // How slow you must be to "stick" to ground
+        const float groundTimeThreshold = 0.74f;      // Time you must be still to be grounded
+
+        for (auto& rigidBody : m_rigidBodies)
+        {
+            float verticalVelocity = rigidBody->getVelocity().y;
+
+            // Falling or jumping: increase fall timer
+            if (verticalVelocity < -groundVelocityThreshold)
+            {
+                rigidBody->addFallTime(deltaTime);
+            }
+            // Not moving vertically: maybe grounded
+            else if (std::abs(verticalVelocity) < groundVelocityThreshold)
+            {
+                rigidBody->addFallTime(deltaTime);
+            }
+            else
+            {
+                // Moving up (e.g., jumping)
+                rigidBody->resetFallTime();
+            }
+
+            // Only grounded if slow & falling timer is short
+            bool isGrounded = rigidBody->getFallTime() > groundTimeThreshold;
+            rigidBody->setIsGrounded(isGrounded);
+        }
+    }
+
+
 
     void Physics::checkBoxMeshCollisions() {
         for (auto& boxCollider : m_boxColliders) {

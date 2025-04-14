@@ -30,6 +30,7 @@ namespace Brambles {
 
         void checkCollisions();
         void checkBoxMeshCollisions();
+		void checkFloorCollisions(float deltaTime);
         void handleCollision(std::shared_ptr<BoxCollider> collider1, std::shared_ptr<BoxCollider> collider2);
         void handleBoxMeshCollision(std::shared_ptr<BoxCollider> box, std::shared_ptr<MeshCollider> mesh);
         bool checkBoxMeshCollision(std::shared_ptr<BoxCollider> box, std::shared_ptr<MeshCollider> mesh, glm::vec3& collisionNormal);
