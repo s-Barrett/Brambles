@@ -47,9 +47,19 @@ namespace Brambles
         forward.z = sin(glm::radians(m_rotation.y)) * cos(glm::radians(m_rotation.x));
         forward = glm::normalize(forward);
 
-        // Calculate the right and up vectors
-        glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
+        // Calculate the right vector (considering roll)
+        glm::vec3 worldUp(0.0f, 1.0f, 0.0f);
+        glm::vec3 right = glm::normalize(glm::cross(forward, worldUp));
+
+        // Recalculate up vector to include roll
         glm::vec3 up = glm::normalize(glm::cross(right, forward));
+
+        // Apply roll rotation to the up vector
+        if (m_rotation.z != 0.0f) {
+            float rollRad = glm::radians(m_rotation.z);
+            glm::mat4 rollMatrix = glm::rotate(glm::mat4(1.0f), rollRad, forward);
+            up = glm::vec3(rollMatrix * glm::vec4(up, 0.0f));
+        }
 
         // Calculate the target position the camera is looking at
         glm::vec3 target = position + forward;

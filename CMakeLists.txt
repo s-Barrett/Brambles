@@ -13,6 +13,7 @@ link_directories(
 set(LIBGLEW glew32)
 set(LIBGL opengl32)
 set(LIBAL openal32)
+set(LIBFREETYPE freetype)
 else()
 include_directories(
  /usr/include
@@ -25,6 +26,7 @@ include_directories(
 set(LIBGLEW GLEW)
 set(LIBGL GL)
 set(LIBAL openal)
+set(LIBFREETYPE freetype)
 endif()
 
 
@@ -38,12 +40,21 @@ add_library(rend
  src/rend/Mesh.h
  src/rend/Model.h
  src/rend/Model.cpp
+ src/rend/Font.h
+ src/rend/Font.cpp
  src/rend/Shader.h
  src/rend/Shader.cpp
  src/rend/Texture.h
  src/rend/Texture.cpp
 )
-target_link_libraries(rend SDL2 SDL2main ${LIBGLEW} ${LIBGL})
+target_link_libraries(rend 
+    SDL2 
+    SDL2main 
+    ${LIBGLEW} 
+    ${LIBGL}
+    ${LIBFREETYPE}  
+    ${FREETYPE_LIBRARIES}
+)
 
 add_library(Brambles
 	src/Brambles/Brambles.h
@@ -84,6 +95,7 @@ add_library(Brambles
 	src/Brambles/Sound.cpp
 	src/Brambles/Camera.h
 	src/Brambles/Camera.cpp
+	src/Brambles/Font.h
 	src/Brambles/Input.h
 	src/Brambles/Input.cpp
 	src/Brambles/Resource.h

@@ -33,9 +33,8 @@ namespace Brambles
         auto camera = getEntity()->getComponent<Camera>();
         if (camera)
         {
-            camera->setCameraRotation(glm::vec3(pitch, yaw, 0.0f));
+            camera->setCameraRotation(glm::vec3(pitch, yaw, tiltAngle));
         }
-
 
         getTransform()->setRotation(glm::vec3(0.0f, -yaw, 0.0f));
     }
@@ -64,6 +63,26 @@ namespace Brambles
         if (getEntity()->getCore()->getInput()->isKey(SDLK_a)) input -= right;
         if (getEntity()->getCore()->getInput()->isKey(SDLK_d)) input += right;
 
+        // Camera tilt based on movement
+        float targetTilt = 0.0f;
+        if (getEntity()->getCore()->getInput()->isKey(SDLK_a)) targetTilt = -maxTiltAngle;
+        if (getEntity()->getCore()->getInput()->isKey(SDLK_d)) targetTilt = maxTiltAngle;
+
+        // Smoothly interpolate the tilt
+        tiltAngle = glm::mix(tiltAngle, targetTilt, tiltSpeed * timeDelta);
+
+        // If no movement input, smoothly return to center
+        if (!getEntity()->getCore()->getInput()->isKey(SDLK_a) &&
+            !getEntity()->getCore()->getInput()->isKey(SDLK_d))
+        {
+            tiltAngle = glm::mix(tiltAngle, 0.0f, tiltReturnSpeed * timeDelta);
+        }
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_LSHIFT) && isGrounded == true) movementSpeed = 60.0f;
+        else
+        {
+			movementSpeed = 30.0f;  // Reset to normal speed when not sprinting
+        }
+
         if (glm::length(input) > 0.0f)
         {
 			targetVelocity = glm::normalize(input) * movementSpeed;
@@ -80,16 +99,19 @@ namespace Brambles
         // Jumping logic
         if (getEntity()->getCore()->getInput()->isKey(SDLK_SPACE))  // Press space to jump
         {
-            std::cout << "space is pressed\n";
             if (isGrounded)
             {
                 rigidBody->setVelocity(glm::vec3(currentVelocity.x, jumpForce, currentVelocity.z));  // Apply jump force
-                std::cout << "Jumping!\n";
+           
             }
         }
 
         if (getEntity()->getCore()->getInput()->isKey(SDLK_p)) camera->setPriority(+1.0);
         if (getEntity()->getCore()->getInput()->isKey(SDLK_o)) camera->setPriority(-1.0);
+
+     
+       
+        
     }
 
 }

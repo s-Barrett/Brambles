@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 
 
 	std::shared_ptr<MeshCollider> mapMeshCollider = map->addComponent<MeshCollider>(core->getResources()->load<Model>("../assets/map/c1a0.obj"));
-	mapMeshCollider->setDebugRenderer(false);
+	mapMeshCollider->setDebugRenderer(true);
 
 	core->getPhysics()->registerMeshCollider(mapMeshCollider);
 
@@ -59,6 +59,9 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Renderer> playerRenderer = player->addComponent<Renderer>();
 
 	player->addComponent<PlayerController>();
+	player->addComponent<Gui>();
+
+
 
 	playerRenderer->setModel(core->getResources()->load<Model>("../assets/objects/walter/walter.obj"));
 
@@ -76,7 +79,7 @@ int main(int argc, char* argv[])
 	playerBoxCollider->setSize(glm::vec3(1.0, 3.7, 1.0));
 	playerBoxCollider->setOffset(glm::vec3(0.0, 1.75, 0.0));
 
-	playerBoxCollider->setDebugRenderer(false);
+	playerBoxCollider->setDebugRenderer(true);
 
 	core->getPhysics()->registerCollider(playerBoxCollider);
 
@@ -98,7 +101,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<BoxCollider> entityBoxCollider = entity->addComponent<BoxCollider>();
 	entityBoxCollider->setSize(glm::vec3(0.5, 0.5, 0.5));
 	entityBoxCollider->setOffset(glm::vec3(0.0, 0.2, 0.0));
-	entityBoxCollider->setDebugRenderer(false);
+	entityBoxCollider->setDebugRenderer(true);
 
 	core->getPhysics()->registerCollider(entityBoxCollider);
 
@@ -121,7 +124,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<BoxCollider> entityBoxCollider2 = entity2->addComponent<BoxCollider>();
 	entityBoxCollider2->setSize(glm::vec3(0.5, 0.5, 0.5));
 	entityBoxCollider2->setOffset(glm::vec3(0.0, 0.2, 0.0));
-	entityBoxCollider2->setDebugRenderer(false);
+	entityBoxCollider2->setDebugRenderer(true);
 
 	core->getPhysics()->registerCollider(entityBoxCollider2);
 		

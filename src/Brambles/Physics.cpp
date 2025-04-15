@@ -25,8 +25,6 @@ namespace Brambles {
                 glm::vec3 velocity = rigidBody->getVelocity();
                 velocity.y -= rigidBody->getGravity().y * deltaTime;
                 rigidBody->setVelocity(velocity);
-                rigidBody->update(deltaTime);
-
             }
         }
 
@@ -71,7 +69,7 @@ namespace Brambles {
     void Physics::checkFloorCollisions(float deltaTime)
     {
         const float groundVelocityThreshold = 1.0f; // How slow you must be to "stick" to ground
-        const float groundTimeThreshold = 0.74f;      // Time you must be still to be grounded
+        const float groundTimeThreshold = 1.0f;      // Time you must be still to be grounded
 
         for (auto& rigidBody : m_rigidBodies)
         {
@@ -110,9 +108,7 @@ namespace Brambles {
         }
     }
 
-    bool Physics::checkBoxMeshCollision(std::shared_ptr<BoxCollider> box,
-                                      std::shared_ptr<MeshCollider> mesh,
-                                      glm::vec3& collisionNormal) {
+    bool Physics::checkBoxMeshCollision(std::shared_ptr<BoxCollider> box, std::shared_ptr<MeshCollider> mesh, glm::vec3& collisionNormal) {
         glm::vec3 boxPos = box->getEntity()->getComponent<Transform>()->getPosition() + box->getOffset();
         glm::vec3 boxSize = box->getSize();
         glm::vec3 boxMin = boxPos - boxSize * 0.5f;
