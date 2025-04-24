@@ -22,6 +22,10 @@ namespace Brambles
         double  m_fixedTimeStep = 1.0f / 240.0f; // Fixed step at 120 FPS
         double  m_accumulator = 0.0f;
 
+        std::deque<float> m_frameTimes;
+        const size_t m_frameCount = 60; // Average over 60 frames
+
+
         bool m_stopped = true;
     };
 }

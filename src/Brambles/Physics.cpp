@@ -19,15 +19,18 @@ namespace Brambles {
         for (auto& rigidBody : m_rigidBodies) {
             if (rigidBody->isStatic()) continue;
 
-            rigidBody->update(deltaTime);
+           
 
             if (rigidBody->isGrounded = false) {
                 glm::vec3 velocity = rigidBody->getVelocity();
                 velocity.y -= rigidBody->getGravity().y * deltaTime;
                 rigidBody->setVelocity(velocity);
             }
-        }
 
+
+            rigidBody->update(deltaTime);
+
+        }
         checkCollisions();
         checkBoxMeshCollisions();
         checkFloorCollisions(deltaTime);

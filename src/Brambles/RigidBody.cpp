@@ -9,26 +9,24 @@
 namespace Brambles {
 
     RigidBody::RigidBody()
-        : m_mass(1.0f), m_velocity(0.0f), m_gravity(0.0f, -20.8f, 0.0f), m_isStatic(false) {}
+        : m_mass(1.0f), m_velocity(0.0f), m_gravity(0.0f, -9.8f, 0.0f), m_isStatic(false) {}
 
     void RigidBody::update(float deltaTime) {
         if (m_isStatic)
             return;
 
         bool grounded = isGrounded;
-        if (m_velocity.y > 0)
-            grounded = false;
+
 
         if (!grounded) {
             m_velocity += m_gravity * deltaTime;
 
-            float airResistance = 3.0f;
+            float airResistance = 0.11f;
             m_velocity.x *= (1.0f - airResistance * deltaTime);
             m_velocity.z *= (1.0f - airResistance * deltaTime);
         }
         else {
-            if (m_velocity.y < 0)
-                m_velocity.y = 0.0f;
+       
 
             float floorFriction = 0.96f;
             m_velocity.x *= floorFriction;

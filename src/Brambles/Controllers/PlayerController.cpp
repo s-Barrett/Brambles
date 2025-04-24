@@ -77,10 +77,10 @@ namespace Brambles
         {
             tiltAngle = glm::mix(tiltAngle, 0.0f, tiltReturnSpeed * timeDelta);
         }
-		if (getEntity()->getCore()->getInput()->isKey(SDLK_LSHIFT) && isGrounded == true) movementSpeed = 60.0f;
+		if (getEntity()->getCore()->getInput()->isKey(SDLK_LSHIFT) && isGrounded == true) movementSpeed = 20.0f;
         else
         {
-			movementSpeed = 30.0f;  // Reset to normal speed when not sprinting
+			movementSpeed = 10.0f;  // Reset to normal speed when not sprinting
         }
 
         if (glm::length(input) > 0.0f)
@@ -101,7 +101,7 @@ namespace Brambles
         {
             if (isGrounded)
             {
-                rigidBody->setVelocity(glm::vec3(currentVelocity.x, jumpForce, currentVelocity.z));  // Apply jump force
+                rigidBody->setVelocity(glm::vec3(currentVelocity.x * 1.2, jumpForce, currentVelocity.z * 1.2));  // Apply jump force
            
             }
         }
