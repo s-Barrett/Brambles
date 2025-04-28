@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Entity> map = core->addEntity();
 	std::shared_ptr<Renderer> mapRenderer = map->addComponent<Renderer>();
 
-	mapRenderer->setModel(core->getResources()->load<Model>("../assets/map/c1a0.obj"));
+	mapRenderer->setModel(core->getResources()->load<Model>("../assets/map/hl1/c1a0.obj"));
 
 	map->getComponent<Transform>()->setPosition(glm::vec3(0, 0, 0.0)); 
 	map->getComponent<Transform>()->setScale(glm::vec3(1.0, 1.0, 1.0)); 
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 
 
 
-	std::shared_ptr<MeshCollider> mapMeshCollider = map->addComponent<MeshCollider>(core->getResources()->load<Model>("../assets/map/c1a0.obj"));
+	std::shared_ptr<MeshCollider> mapMeshCollider = map->addComponent<MeshCollider>(core->getResources()->load<Model>("../assets/map/hl1/c1a0.obj"));
 	mapMeshCollider->setDebugRenderer(false);
 
 	core->getPhysics()->registerMeshCollider(mapMeshCollider);

@@ -3,6 +3,41 @@
 
 namespace rend {
 
+
+    GLuint CreateCheckerboardTexture(int width, int height) {
+        // Create a checkerboard pattern (purple and black)
+        unsigned char* data = new unsigned char[width * height * 3];
+
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                int index = (y * width + x) * 3;
+                // Alternating colors for checkerboard (purple and black)
+                if ((x / 32 + y / 32) % 2 == 0) {
+                    data[index] = 128;   // Purple (Red)
+                    data[index + 1] = 0; // Purple (Green)
+                    data[index + 2] = 128; // Purple (Blue)
+                }
+                else {
+                    data[index] = 0;   // Black (Red)
+                    data[index + 1] = 0; // Black (Green)
+                    data[index + 2] = 0; // Black (Blue)
+                }
+            }
+        }
+
+        GLuint texID;
+        glGenTextures(1, &texID);
+        glBindTexture(GL_TEXTURE_2D, texID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        // Clean up
+        delete[] data;
+
+        return texID;
+    }
+
+
     Model::Model()
         : m_vaoid(0), m_vboid(0), m_dirty(false) {}
 
@@ -35,14 +70,26 @@ namespace rend {
             }
             else if (tokens[0] == "usemtl") {
                 currentMaterialName = tokens[1];
+
                 if (materialIndexMap.find(currentMaterialName) == materialIndexMap.end()) {
-                    std::cerr << "Warning: Material '" << currentMaterialName << "' not found in MTL file." << std::endl;
-                    currentMaterialName = "";
+                    std::cerr << "Warning: Material '" << currentMaterialName << "' not found in MTL file. Using default material." << std::endl;
+
+                    // Switch to default material
+                    currentMaterialName = "default";
+
+                    // Make sure default material exists
+                    if (materialIndexMap.find("default") == materialIndexMap.end()) {
+                        Material defaultMat;
+                        defaultMat.name = "default";
+                        materials.push_back(defaultMat);
+                        materialIndexMap["default"] = materials.size() - 1;
+                    }
                 }
                 else {
                     std::cout << "Using material: " << currentMaterialName << std::endl;
                 }
             }
+
             else if (tokens[0] == "v" && tokens.size() >= 4) {
                 positions.emplace_back(std::stof(tokens[1]), std::stof(tokens[2]), std::stof(tokens[3]));
             }
@@ -52,21 +99,53 @@ namespace rend {
             else if (tokens[0] == "vn" && tokens.size() >= 4) {
                 normals.emplace_back(std::stof(tokens[1]), std::stof(tokens[2]), std::stof(tokens[3]));
             }
-            else if (tokens[0] == "f" && tokens.size() >= 4) {
-                size_t currentVertexIndex = 0; // Removed static
-
-                for (size_t i = 1; i < tokens.size() - 2; ++i) {
+            else if (tokens[0] == "f")
+            {
+                if (tokens.size() == 4) // "f" + 3 vertices
+                {
                     Face f;
-                    f.materialIndex = materialIndexMap[currentMaterialName];
+                    if (materialIndexMap.find(currentMaterialName) != materialIndexMap.end())
+                        f.materialIndex = materialIndexMap[currentMaterialName];
+                    else
+                        f.materialIndex = 0; // fallback if material missing
+
                     f.startIndex = m_faces.size() * 3;  // Each face has 3 vertices
 
-                    std::vector<std::string> sub;
                     for (int j = 0; j < 3; ++j) {
-                        split_string(tokens[i + j], '/', sub);
+                        std::vector<std::string> sub;
+                        split_string(tokens[j + 1], '/', sub); // tokens[1], tokens[2], tokens[3]
                         Vertex v;
-                        if (!sub[0].empty()) v.position = positions[std::stoi(sub[0]) - 1];
-                        if (sub.size() > 1 && !sub[1].empty()) v.texcoord = tcs[std::stoi(sub[1]) - 1];
-                        if (sub.size() > 2 && !sub[2].empty()) v.normal = normals[std::stoi(sub[2]) - 1];
+
+                        if (!sub[0].empty()) {
+                            int posIndex = std::stoi(sub[0]) - 1;
+                            if (posIndex >= 0 && posIndex < positions.size()) {
+                                v.position = positions[posIndex];
+                            }
+                            else {
+                                std::cerr << "Warning: Position index out of range: " << posIndex << std::endl;
+                                v.position = glm::vec3(0.0f);
+                            }
+                        }
+                        if (sub.size() > 1 && !sub[1].empty()) {
+                            int texIndex = std::stoi(sub[1]) - 1;
+                            if (texIndex >= 0 && texIndex < tcs.size()) {
+                                v.texcoord = tcs[texIndex];
+                            }
+                            else {
+                                std::cerr << "Warning: Texcoord index out of range: " << texIndex << std::endl;
+                                v.texcoord = glm::vec2(0.0f);
+                            }
+                        }
+                        if (sub.size() > 2 && !sub[2].empty()) {
+                            int normIndex = std::stoi(sub[2]) - 1;
+                            if (normIndex >= 0 && normIndex < normals.size()) {
+                                v.normal = normals[normIndex];
+                            }
+                            else {
+                                std::cerr << "Warning: Normal index out of range: " << normIndex << std::endl;
+                                v.normal = glm::vec3(0.0f);
+                            }
+                        }
 
                         if (j == 0) f.a = v;
                         else if (j == 1) f.b = v;
@@ -74,10 +153,14 @@ namespace rend {
                     }
 
                     m_faces.push_back(f);
+                    m_dirty = true;
                 }
-
-                m_dirty = true;
+                else
+                {
+                    std::cerr << "Warning: Non-triangle face encountered, skipping line: " << currentline << std::endl;
+                }
             }
+
         }
     }
 
@@ -127,6 +210,8 @@ namespace rend {
         return m_vaoid;
     }
 
+
+
     void Model::LoadMTL(const std::string& mtlFilePath) {
         std::ifstream file(mtlFilePath);
         if (!file.is_open()) {
@@ -170,6 +255,7 @@ namespace rend {
                     }
                     else {
                         std::cerr << "Failed to load texture: " << fullTexturePath << std::endl;
+                        currentMaterial->diffuseTextureID = CreateCheckerboardTexture(128, 128); // 128x128 is a good size
                     }
                 }
             }
