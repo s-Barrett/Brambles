@@ -143,6 +143,15 @@ int main(int argc, char* argv[])
 	freeCam->getComponent<Transform>()->setPosition(glm::vec3(-4, -12, -13.0));
 	freeCam->getComponent<Transform>()->setScale(glm::vec3(2.0, 2.0, 2.0));
 
+	std::shared_ptr<AudioSource> freeAudio = freeCam->addComponent<AudioSource>();
+	freeAudio->setSound(core->getResources()->load<Sound>("../assets/sounds/halflife/hellofreeman"));
+
+	freeAudio->play();
+	freeAudio->setGain(0.6);
+	freeAudio->setPitch(1.0);
+
+
+
 	freeCam->addComponent<CameraController>();
 
 	std::shared_ptr<Camera> freeCamCamera = freeCam->addComponent<Camera>();

@@ -28,13 +28,21 @@ namespace Brambles
          */
         void setSound(std::shared_ptr<Sound> _sound);
 
+
+
+        bool isPlaying() const;
         /**
          * @brief Checks if the audio source is currently playing.
          * @return True if playing, false otherwise.
          */
-        bool isPlaying();
 
         void play();
+
+		void stop();
+
+        void setLooping(bool loop);
+        void setGain(float gain);
+        void setPitch(float pitch);
 
     private:
         std::shared_ptr<Sound> m_sound = nullptr; ///< The sound associated with the audio source.

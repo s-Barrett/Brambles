@@ -35,6 +35,23 @@ namespace Brambles
 		m_rotation = rot;
     }
 
+    glm::vec3 Camera::getForward() const
+    {
+        glm::vec3 rot = m_rotation; // rotation in degrees
+        glm::vec3 forward;
+        forward.x = cos(glm::radians(rot.y)) * cos(glm::radians(rot.x));
+        forward.y = sin(glm::radians(rot.x));
+        forward.z = sin(glm::radians(rot.y)) * cos(glm::radians(rot.x));
+        return glm::normalize(forward);
+    }
+
+    glm::vec3 Camera::getUp() const
+    {
+        // In most cases world up is just (0, 1, 0)
+        return glm::vec3(0.0f, 1.0f, 0.0f);
+    }
+
+
     glm::mat4 Camera::getViewMatrix()
     {
         // Get the camera's position

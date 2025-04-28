@@ -29,43 +29,99 @@ namespace Brambles
 	void AudioSource::onTick()
 	{
 		std::shared_ptr<Core> core = getEntity()->getCore();
-		glm::vec3 cameraPos = core->getCamera()->getPosition();
+		std::shared_ptr<Camera> camera = core->getCamera();
+		glm::vec3 cameraPos = camera->getPosition();
+		glm::vec3 cameraForward = camera->getForward(); // Needs to be implemented if not already
+		glm::vec3 cameraUp = camera->getUp(); // Same as above
 
-		// Update listener position based on camera
+		// Update listener position
 		alListener3f(AL_POSITION, cameraPos.x, cameraPos.y, cameraPos.z);
 
-		// Update source position
-		alSource3f(m_sourceId, AL_POSITION, getPosition().x, getPosition().y, getPosition().z);
+		// Update listener orientation (forward + up vectors)
+		float orientation[] = {
+			cameraForward.x, cameraForward.y, cameraForward.z,  // "At" vector (where listener is looking)
+			cameraUp.x, cameraUp.y, cameraUp.z                  // "Up" vector (what is 'up' for the listener)
+		};
+		alListenerfv(AL_ORIENTATION, orientation);
 
-		// Adjust volume based on distance from camera
-		if (glm::distance(getPosition(), cameraPos) > m_distance)
+		// Update source position
+		glm::vec3 sourcePos = getPosition();
+		alSource3f(m_sourceId, AL_POSITION, sourcePos.x, sourcePos.y, sourcePos.z);
+
+		// Adjust volume based on distance
+		if (glm::distance(sourcePos, cameraPos) > m_distance)
 		{
 			alSourcef(m_sourceId, AL_GAIN, 0.0f); // Mute if too far
 		}
 		else
 		{
-			alSourcef(m_sourceId, AL_GAIN, m_gain); // Set normal volume
+			alSourcef(m_sourceId, AL_GAIN, m_gain);
 		}
 
-		// Play sound if it's not looping and not already playing
-		if (!m_looping && !isPlaying())
-		{
-			play();
-		}
 	}
 
+
+	// In AudioSource.cpp
 	void AudioSource::play()
 	{
-		std::cout << "playing sound" << std::endl;
+		if (!m_sourceId || !m_sound)
+		{
+			std::cerr << "AudioSource not properly initialized!" << std::endl;
+			return;
+		}
+
+		alSourcei(m_sourceId, AL_BUFFER, m_sound->getBufferId());
+		ALenum error = alGetError();
+		if (error != AL_NO_ERROR)
+		{
+			std::cerr << "OpenAL error when binding buffer: " << error << std::endl;
+			return;
+		}
+
 		alSourcePlay(m_sourceId);
+		error = alGetError();
+		if (error != AL_NO_ERROR)
+		{
+			std::cerr << "OpenAL error when playing sound: " << error << std::endl;
+		}
 	}
 
-	bool AudioSource::isPlaying()
+	void AudioSource::stop()
 	{
-		int state = 0;
-		alGetSourcei(m_sourceId, AL_SOURCE_STATE, &state);
+		if (!m_sourceId)
+		{
+			std::cerr << "AudioSource not properly initialized!" << std::endl;
+			return;
+		}
 
+		alSourceStop(m_sourceId);
+	}
+
+	bool AudioSource::isPlaying() const
+	{
+		if (!m_sourceId) return false;
+
+		ALint state;
+		alGetSourcei(m_sourceId, AL_SOURCE_STATE, &state);
 		return (state == AL_PLAYING);
+	}
+
+	void AudioSource::setLooping(bool loop)
+	{
+		m_looping = loop;
+		alSourcei(m_sourceId, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+	}
+
+	void AudioSource::setGain(float gain)
+	{
+		m_gain = gain;
+		alSourcef(m_sourceId, AL_GAIN, gain);
+	}
+
+	void AudioSource::setPitch(float pitch)
+	{
+		m_pitch = pitch;
+		alSourcef(m_sourceId, AL_PITCH, pitch);
 	}
 
 }

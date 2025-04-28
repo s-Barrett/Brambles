@@ -7,18 +7,15 @@ namespace Brambles
 	/**
 	 * @brief Controls the player movement and interactions.
 	 */
+	struct AudioSource;
+
     struct PlayerController : public Component
     {
-        /** Initializes the player controller. */
-        void onInitialize()
-        {
-            yaw = 0.0f; // Default yaw to face along the negative Z axis
-            pitch = 0.0f; // Default pitch
-            sensitivity = 0.1f;
-        };
+
 
         /** Updates the player's state each frame. */
-        void onTick();
+        void onInitialize() override;
+        void onTick() override;
 
         /** Handles the player's GUI interactions. */
         //void onGui();
@@ -27,6 +24,8 @@ namespace Brambles
         void handleKeyboardInput();
 
 		void handleMouseInput();
+
+		void handleFootsteps();
 
 
 
@@ -45,5 +44,9 @@ namespace Brambles
         float maxTiltAngle = 5.0f;     // Maximum tilt angle in degrees
         float tiltSpeed = 10.0f;       // How fast the camera tilts
         float tiltReturnSpeed = 5.0f;   // How fast it returns to center
+
+        std::shared_ptr<AudioSource> footstepAudio;
+        float footstepTimer;
+        bool isMoving;
     };
 }

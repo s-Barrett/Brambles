@@ -43,6 +43,8 @@ namespace Brambles
 		void setCameraRotation(glm::vec3 rot);
 
 		glm::vec3 getCameraRotation();
+        glm::vec3 getForward() const;
+        glm::vec3 getUp() const;
 
         /**
          * @brief Sets the near clipping plane distance for the camera.
