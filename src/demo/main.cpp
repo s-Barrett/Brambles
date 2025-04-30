@@ -33,15 +33,15 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Entity> map = core->addEntity();
 	std::shared_ptr<Renderer> mapRenderer = map->addComponent<Renderer>();
 
-	mapRenderer->setModel(core->getResources()->load<Model>("../assets/map/cs/1.obj"));
+	mapRenderer->setModel(core->getResources()->load<Model>("../assets/map/hl1/1.obj"));
 
-	map->getComponent<Transform>()->setPosition(glm::vec3(0, -10, 0.0)); 
+	map->getComponent<Transform>()->setPosition(glm::vec3(0, 0, 0.0)); 
 	map->getComponent<Transform>()->setScale(glm::vec3(1.0, 1.0, 1.0)); 
 
 
 
 
-	std::shared_ptr<MeshCollider> mapMeshCollider = map->addComponent<MeshCollider>(core->getResources()->load<Model>("../assets/map/cs/1.obj"));
+	std::shared_ptr<MeshCollider> mapMeshCollider = map->addComponent<MeshCollider>(core->getResources()->load<Model>("../assets/map/hl1/1.obj"));
 	mapMeshCollider->setDebugRenderer(false);
 
 	core->getPhysics()->registerMeshCollider(mapMeshCollider);
@@ -161,9 +161,16 @@ int main(int argc, char* argv[])
 
 
 	SDL_SetRelativeMouseMode(SDL_TRUE);
-	core->run();
 
+	#ifdef __EMSCRIPTEN__
+		emscripten_set_main_loop([]() {
+			core->runSingleFrame();  // You'll need to implement this method
+			}, 0, 1);
+	#else
+		core->run();
+	#endif
 
-	return 0;
+		return 0;
+
 }
 

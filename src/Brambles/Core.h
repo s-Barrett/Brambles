@@ -30,6 +30,7 @@ namespace Brambles
         static std::shared_ptr<Core> initialize(int winsizeX, int winsizeY);
 
         void run();
+		void runSingleFrame();
         void stop();
 
 
