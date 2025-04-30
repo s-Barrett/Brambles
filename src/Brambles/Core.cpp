@@ -179,67 +179,6 @@ namespace Brambles
 		stop();
 	}
 
-	void Core::runSingleFrame()
-	{
-		SDL_Event e;
-
-		while (SDL_PollEvent(&e))
-		{
-			if (e.type == SDL_MOUSEMOTION)
-			{
-				m_input->mouseX += e.motion.xrel;
-				m_input->mouseY += e.motion.yrel;
-			}
-			else if (e.type == SDL_QUIT)
-			{
-				stop(); // optionally set a flag here if you want to stop Emscripten's loop
-				return;
-			}
-			else if (e.type == SDL_KEYDOWN)
-			{
-				m_input->keys.push_back(e.key.keysym.sym);
-			}
-			else if (e.type == SDL_KEYUP)
-			{
-				for (size_t i = 0; i < m_input->keys.size(); i++)
-				{
-					if (m_input->keys[i] == e.key.keysym.sym)
-					{
-						m_input->keys.erase(m_input->keys.begin() + i);
-						--i;
-					}
-				}
-			}
-		}
-
-		getTimer()->update();
-		getPhysics()->update(getTimer()->getDeltaTime());
-
-		for (size_t ei = 0; ei < m_entities.size(); ++ei)
-		{
-			m_entities[ei]->onTick();
-		}
-
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		for (size_t ei = 0; ei < m_entities.size(); ++ei)
-		{
-			m_entities[ei]->onRender();
-		}
-
-		glEnable(GL_DEPTH_TEST);
-
-		for (size_t ei = 0; ei < m_entities.size(); ++ei)
-		{
-			m_entities[ei]->onGui();
-		}
-
-		glEnable(GL_DEPTH_TEST);
-
-		SDL_GL_SwapWindow(m_window->m_raw);
-	}
-
 	// Stops the engine (currently does nothing)
 	void Core::stop()
 	{
