@@ -6,6 +6,10 @@ project(BRAMBLES)
 if (EMSCRIPTEN)
     message(STATUS "Configuring for Emscripten")
 
+    add_executable(demo
+            src/demo/main.cpp
+    )
+
     # Include directories
     include_directories(${PROJECT_SOURCE_DIR}/src)
     include_directories(${PROJECT_SOURCE_DIR}/contrib/include)

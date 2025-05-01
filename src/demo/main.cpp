@@ -49,7 +49,16 @@ bool getDebugChoice()
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Enter map path (e.g., hl1/1.obj): ";
+
+    std::cout << "Available Maps:" <<std::endl;
+    std::cout << "hl1/1.obj" <<std::endl;
+    std::cout << "cs/1.obj" <<std::endl;
+    std::cout << "wallmart/1.obj" <<std::endl;
+    std::cout << "compound/1.obj" <<std::endl;
+    std::cout << " " <<std::endl;
+
+    std::cout << "Enter map path (e.g., hl1/1.obj):" <<std::endl;
+
     std::string mapName = getUserInput();
     std::string mapPath = "../assets/map/" + mapName;
 
