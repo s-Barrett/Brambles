@@ -37,9 +37,9 @@ namespace Brambles
         void drawMeshCollider(std::shared_ptr<MeshCollider> collider, const glm::vec3& color);
 
     private:
-        GLuint programId; ///< Shader program ID.
-        GLuint vboId; ///< Vertex buffer object ID.
-        GLuint vaoId; ///< Vertex array object ID.
+        GLuint programId = 0; ///< Shader program ID.
+        GLuint vboId = 0; ///< Vertex buffer object ID.
+        GLuint vaoId = 0; ///< Vertex array object ID.
 
         /**
          * @brief Generates a box mesh.

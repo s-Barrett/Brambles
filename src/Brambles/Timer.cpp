@@ -27,28 +27,35 @@ namespace Brambles
         // Clamp delta time to avoid large jumps
         if (m_deltaTime > 0.1f) m_deltaTime = 0.1f;
 
-        // Add current frame time to the deque
         m_frameTimes.push_back(m_deltaTime);
-
-        // Keep only the last m_frameCount frames
         if (m_frameTimes.size() > m_frameCount)
             m_frameTimes.pop_front();
 
-        // Calculate average frame time and FPS
-        float avgFrameTime = std::accumulate(m_frameTimes.begin(), m_frameTimes.end(), 0.0f) / m_frameTimes.size();
-        float fps = 1.0f / (avgFrameTime + std::numeric_limits<float>::epsilon());
-        std::cout << "FPS: " << fps << std::endl;
+        // Only log FPS every ~0.5s instead of every frame
+        static float timeSinceLastPrint = 0.0f;
+        timeSinceLastPrint += m_deltaTime;
+        if (timeSinceLastPrint >= 0.5f)
+        {
+            float avgFrameTime = std::accumulate(m_frameTimes.begin(), m_frameTimes.end(), 0.0f) / m_frameTimes.size();
+            float fps = 1.0f / (avgFrameTime + std::numeric_limits<float>::epsilon());
+            std::cout << "FPS: " << fps << std::endl;
+            timeSinceLastPrint = 0.0f;
+        }
 
-        // Fixed timestep logic
-        const float fixedTimeStep = 1.0f / 240.0f;
+        // Fixed timestep logic (reduced rate to 60Hz)
+        const float fixedTimeStep = 1.0f / 60.0f;
         m_accumulator += m_deltaTime;
 
-        while (m_accumulator >= fixedTimeStep)
+        int maxSteps = 3;  // Limit physics steps per frame
+        int steps = 0;
+        while (m_accumulator >= fixedTimeStep && steps < maxSteps)
         {
-            // Call game update logic here
+            // Call game update logic here (move to actual update if needed)
             m_accumulator -= fixedTimeStep;
+            ++steps;
         }
     }
+
 
     float Timer::getDeltaTime() const
     {

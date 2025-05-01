@@ -1,4 +1,3 @@
-
 #include "Renderer.h"
 #include "glm/glm.hpp"
 #include "Resources/Model.h"
@@ -10,27 +9,22 @@
 
 #include "Resources/Texture.h"
 
-
 namespace Brambles
 {
 
-	Renderer::Renderer()
-		: shader("../assets/shaders/light/light.vert"
-			, "../assets/shaders/light/light.frag")
-	{
+    Renderer::Renderer()
+        : shader("../assets/shaders/light/light.vert"
+            , "../assets/shaders/light/light.frag")
+    {
+    }
 
+    void Renderer::setTexture(std::shared_ptr<Texture> _texturePath) {
+        m_texture = _texturePath;
+    }
 
-	}
-
-	void Renderer::setTexture(std::shared_ptr<Texture> _texturePath)//Set the texture  
-	{
-		m_texture = _texturePath;
-	}
-
-	void Renderer::setModel(std::shared_ptr<Model> _modelPath)//Set the model
-	{
-		m_model = _modelPath;
-	}
+    void Renderer::setModel(std::shared_ptr<Model> _modelPath) {
+        m_model = _modelPath;
+    }
 
     void Renderer::onRender() {
         glEnable(GL_DEPTH_TEST);
@@ -39,7 +33,6 @@ namespace Brambles
         shader.use();
 
         std::shared_ptr<Core> core = getEntity()->getCore();
-
 
         std::vector<std::shared_ptr<Light>> lights = core->getLightManager()->getLights();
 
@@ -55,7 +48,7 @@ namespace Brambles
         }
 
         // Set up camera matrices
-		std::shared_ptr<Camera> camera = getEntity()->getCore()->getCamera();
+        std::shared_ptr<Camera> camera = getEntity()->getCore()->getCamera();
         if (!camera)
         {
             std::cerr << "Error: Camera is null in Renderer::onRender()" << std::endl;
@@ -76,7 +69,6 @@ namespace Brambles
         shader.uniform("u_Ambient", core->getLightManager()->getAmbient());
         shader.uniform("u_SpecStrength", m_specularStrength);
 
-
         // Bind the model's VAO
         glBindVertexArray(m_model->m_model->vao_id());
 
@@ -84,10 +76,13 @@ namespace Brambles
             const auto& material = m_model->getMaterials()[i];
 
             if (material.diffuseTextureID != 0) {
+                // Bind the texture if it exists
+                glActiveTexture(GL_TEXTURE0);  // Ensure we're binding the texture to the correct texture unit
                 glBindTexture(GL_TEXTURE_2D, material.diffuseTextureID);
+                shader.uniform("u_Texture", 0);  // Assuming u_Texture is the uniform for your diffuse texture
             }
             else {
-                glBindTexture(GL_TEXTURE_2D, 0);
+                glBindTexture(GL_TEXTURE_2D, 0);  // No texture, bind default
             }
 
             size_t vertexCount = 0;
@@ -104,18 +99,13 @@ namespace Brambles
                 }
             }
 
-
-
             if (vertexCount > 0) {
                 glDrawArrays(GL_TRIANGLES, startIndex, vertexCount);
             }
         }
 
-
         // Unbind the VAO
         glBindVertexArray(0);
     }
-
-
 
 }

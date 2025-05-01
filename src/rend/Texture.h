@@ -16,9 +16,9 @@ namespace rend
 		GLuint m_id;
 
 
-		int m_width;
-		int m_hight;
-		bool m_dirty;
+		int m_width = 0;
+		int m_hight = 0;
+		bool m_dirty = true;
 
 		std::vector<unsigned char> m_data;
 

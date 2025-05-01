@@ -4,24 +4,24 @@
 
 namespace Brambles
 {
-	Window::Window(int width, int height) 
+	Window::Window(int width, int height)
 	{
 		int m_width = width;
 		int m_height = height;
-	
+
 		m_raw = SDL_CreateWindow("Brambles Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_width, m_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-	
+
 		if (!m_raw)
 		{
 			std::cerr << "Window creation failed" << std::endl;
 			return;
 		}
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
 
 		m_context = SDL_GL_CreateContext(m_raw);
 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 		glewInit();
 	}
 

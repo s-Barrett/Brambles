@@ -68,12 +68,16 @@ namespace Brambles
         ));
         glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
 
+        glm::vec3 up = glm::cross(right, forward);
+
         glm::vec3 movement(0.0f);
 
         if (getEntity()->getCore()->getInput()->isKey(SDLK_UP)) movement += forward;
         if (getEntity()->getCore()->getInput()->isKey(SDLK_DOWN)) movement -= forward;
         if (getEntity()->getCore()->getInput()->isKey(SDLK_LEFT)) movement -= right;
         if (getEntity()->getCore()->getInput()->isKey(SDLK_RIGHT)) movement += right;
+        if (getEntity()->getCore()->getInput()->isKey(SDLK_RSHIFT)) movement += up;
+        if (getEntity()->getCore()->getInput()->isKey(SDLK_RCTRL)) movement -= up;
 
         if (glm::length(movement) > 0.0f)
         {
