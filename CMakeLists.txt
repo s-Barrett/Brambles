@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(BRAMBLES)
 
-# Define the demo executable
-add_executable(demo
-        src/demo/main.cpp
-)
 
 # Define libraries for different platforms
 if (EMSCRIPTEN)
@@ -154,6 +150,11 @@ add_library(Brambles
         src/Brambles/Resources/Model.cpp
         src/Brambles/Resources/Shader.cpp
         src/Brambles/Resources/Shader.h
+)
+
+# Define the demo executable
+add_executable(demo
+        src/demo/main.cpp
 )
 
 # Link Brambles to rend

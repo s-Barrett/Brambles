@@ -42,11 +42,10 @@ namespace Brambles
             timeSinceLastPrint = 0.0f;
         }
 
-        // Fixed timestep logic (reduced rate to 60Hz)
-        const float fixedTimeStep = 1.0f / 60.0f;
+        const float fixedTimeStep = 1.0f / 120.0f;
         m_accumulator += m_deltaTime;
 
-        int maxSteps = 3;  // Limit physics steps per frame
+        int maxSteps = 5;  // Limit physics steps per frame
         int steps = 0;
         while (m_accumulator >= fixedTimeStep && steps < maxSteps)
         {
