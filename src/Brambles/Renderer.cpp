@@ -9,14 +9,31 @@
 
 #include "Resources/Texture.h"
 
+
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#include <emscripten/emscripten.h>
+#endif
+
+
 namespace Brambles
 {
 
+#ifdef __EMSCRIPTEN__
+
+    Renderer::Renderer()
+        : shader("../assets/shaders/light/lightwebgl.vert"
+            , "../assets/shaders/light/lightwebgl.frag")
+    {
+    }
+#else
     Renderer::Renderer()
         : shader("../assets/shaders/light/light.vert"
             , "../assets/shaders/light/light.frag")
     {
     }
+
+#endif
 
     void Renderer::setTexture(std::shared_ptr<Texture> _texturePath) {
         m_texture = _texturePath;
@@ -77,7 +94,7 @@ namespace Brambles
 
             if (material.diffuseTextureID != 0) {
                 // Bind the texture if it exists
-                glActiveTexture(GL_TEXTURE0);  // Ensure we're binding the texture to the correct texture unit
+               
                 glBindTexture(GL_TEXTURE_2D, material.diffuseTextureID);
                 shader.uniform("u_Texture", 0);  // Assuming u_Texture is the uniform for your diffuse texture
             }

@@ -61,6 +61,11 @@ else()
     endif()
 endif()
 
+# Define the demo executable
+add_executable(demo
+        src/demo/main.cpp
+)
+
 # Define the render library
 add_library(rend
         src/rend/rend.h
@@ -156,10 +161,7 @@ add_library(Brambles
         src/Brambles/Resources/Shader.h
 )
 
-# Define the demo executable
-add_executable(demo
-        src/demo/main.cpp
-)
+
 
 # Link Brambles to rend
 target_link_libraries(Brambles rend ${LIBAL})
