@@ -53,7 +53,7 @@ namespace Brambles
 
 
 		//calling a read acsess violation going to hard code in controller for now 
-		/*glm::vec2 mousePosition;
+		glm::vec2 mousePosition;
 		m_core.lock()->getInput()->getMousePosition(mousePosition.x, mousePosition.y);
 
 		if (getEntity() )
@@ -69,7 +69,7 @@ namespace Brambles
 					return 2;
 				}
 			}
-		}*/ 
+		}
 
 		return 0;
 	}

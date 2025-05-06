@@ -13,22 +13,62 @@ std::shared_ptr<Brambles::Core> core;
 std::string getUserInput()
 {
 #ifdef __EMSCRIPTEN__
-    // JavaScript prompt() from browser console
     char* map = (char*)EM_ASM_PTR({
-        let response = prompt("Enter map name (relative to assets/map/):", "hl1/1.obj");
-        let lengthBytes = lengthBytesUTF8(response) + 1;
-        let stringOnWasmHeap = _malloc(lengthBytes);
-        stringToUTF8(response, stringOnWasmHeap, lengthBytes);
-        return stringOnWasmHeap;
+        try {
+            var maps = FS.readdir('/assets/map').filter(n = > n != = "." && n != = "..");
+            if (maps.length == = 0) {
+                alert("No maps found.");
+                return 0;
+            }
+            var list = "Choose a map:\n";
+            for (var i = 0; i < maps.length; i++) {
+                list += (i + 1) + ": " + maps[i] + "\n";
+            }
+            var choice = prompt(list, "1");
+            var idx = parseInt(choice) - 1;
+            if (isNaN(idx) || idx < 0 || idx >= maps.length) {
+                idx = 0;
+            }
+            var full = maps[idx] + "/" + maps[idx] + ".obj";
+            var len = lengthBytesUTF8(full) + 1;
+            var ptr = _malloc(len);
+            stringToUTF8(full, ptr, len);
+            return ptr;
+        }
+ catch (e) {
+  console.error("Error reading maps: ", e);
+  return 0;
+}
     });
 
+    if (!map) return "c1a0/c1a0.obj"; // fallback
     std::string result(map);
     free(map);
     return result;
 #else
-    std::string input;
-    std::getline(std::cin, input);
-    return input;
+    // Without std::filesystem, use hardcoded fallback:
+    std::vector<std::string> maps = {
+        "c1a0",
+        "c1a0d",
+        "c1a0e",
+        "c1a2"
+    };
+
+    std::cout << "Available maps:\n";
+    for (size_t i = 0; i < maps.size(); ++i) {
+        std::cout << (i + 1) << ": " << maps[i] << "\n";
+    }
+
+    std::cout << "Enter map number: ";
+    int choice = 0;
+    std::cin >> choice;
+    std::cin.ignore();
+
+    if (choice < 1 || choice > maps.size()) {
+        choice = 1;
+    }
+
+    return maps[choice - 1] + "/" + maps[choice - 1] + ".obj";
 #endif
 }
 
@@ -49,15 +89,6 @@ bool getDebugChoice()
 
 int main(int argc, char* argv[])
 {
-
-    std::cout << "Available Maps:" <<std::endl;
-    std::cout << "hl1/1.obj" <<std::endl;
-    std::cout << "cs/1.obj" <<std::endl;
-    std::cout << "wallmart/1.obj" <<std::endl;
-    std::cout << "compound/1.obj" <<std::endl;
-    std::cout << " " <<std::endl;
-
-    std::cout << "Enter map path (e.g., hl1/1.obj):" <<std::endl;
 
     std::string mapName = getUserInput();
     std::string mapPath = "../assets/map/" + mapName;

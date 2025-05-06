@@ -28,6 +28,7 @@ namespace Brambles
         handleKeyboardInput();
     }
 
+
     void CameraController::handleMouseInput()
     {
         float sensitivity = 0.1f;

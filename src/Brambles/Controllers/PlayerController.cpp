@@ -7,6 +7,7 @@
 #include "../Transform.h"
 #include "../Camera.h"
 #include "../AudioSource.h"
+#include "../Gui.h"
 #include "../Sound.h"
 #include "../Component.h"
 #include "../Resources.h"
@@ -48,6 +49,7 @@ namespace Brambles
         footstepTimer = 0.0f;
         isMoving = false;
     }
+
 
     void PlayerController::handleFootsteps()
     {
